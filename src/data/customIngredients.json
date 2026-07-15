@@ -1,0 +1,54 @@
+[
+  {
+    "fdc_id": 900001,
+    "name": "Garam masala (custom entry, approximated from USDA curry powder)",
+    "calories": 325.0,
+    "protein": 14.29,
+    "carbs": 55.83,
+    "fat": 14.01,
+    "sugar": 2.76,
+    "fiber": 53.2,
+    "sat_fat": 1.648,
+    "sodium": 52.0,
+    "source_note": "USDA SR Legacy has no garam masala entry. Values borrowed from 'Spices, curry powder' (a compositionally similar dried ground spice blend) rather than averaging inconsistent branded web sources (which ranged 103-500 kcal/100g depending on brand). Treat as an approximation."
+  },
+  {
+    "fdc_id": 900002,
+    "name": "Oyster sauce (custom entry, sourced from USDA FoodData Central)",
+    "calories": 51.0,
+    "protein": 1.4,
+    "carbs": 11.0,
+    "fat": 0.25,
+    "sugar": 0.0,
+    "fiber": 0.3,
+    "sat_fat": 0.04,
+    "sodium": 2733.0,
+    "source_note": "From USDA FoodData Central 'Sauce, oyster, ready-to-serve' (FDC ID 174529), a Foundation Foods entry not present in the older SR Legacy snapshot bundled in ingredients.json."
+  },
+  {
+    "fdc_id": 900003,
+    "name": "Fish sauce (custom entry, sourced from USDA FoodData Central)",
+    "calories": 35.0,
+    "protein": 5.06,
+    "carbs": 3.64,
+    "fat": 0.0,
+    "sugar": 0.0,
+    "fiber": 0.0,
+    "sat_fat": 0.0,
+    "sodium": 7851.0,
+    "source_note": "From USDA FoodData Central 'Sauce, fish, ready-to-serve', consistent across multiple independent citations (FoodStruct, NutrientOptimiser, FatSecret, EatThisMuch all report 35 kcal/100g from the same USDA source)."
+  },
+  {
+    "fdc_id": 900004,
+    "name": "Gochujang (custom entry, approximated from public nutrition sources)",
+    "calories": 235.0,
+    "protein": 5.9,
+    "carbs": 47.0,
+    "fat": 1.0,
+    "sugar": 29.0,
+    "fiber": 2.0,
+    "sat_fat": 0.0,
+    "sodium": 2350.0,
+    "source_note": "No USDA entry exists (Korean condiment, underrepresented in US-government food data). Values scaled up from a per-tablespoon breakdown (NutriScan). Fiber value is a rough estimate, not independently sourced, since gochujang contains chili and rice solids. Less certain than the oyster/fish sauce entries above — flag to the user as approximate if precision matters."
+  }
+]
