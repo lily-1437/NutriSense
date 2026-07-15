@@ -1,6 +1,6 @@
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import theme from './theme';
-import RecipeInput from './components/recipeInput';
+import RecipeInput from './components/RecipeInput';
 
 function App() {
   return (
