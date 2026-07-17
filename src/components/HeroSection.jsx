@@ -1,6 +1,6 @@
-import { Box, Container, Typography, Button, Fade, Paper } from '@mui/material';
+import { Box, Container, Typography, Button, Fade } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Leaf } from 'lucide-react';
+import WaveDivider from './WaveDivider';
 
 export default function HeroSection() {
   const navigate = useNavigate();
@@ -9,122 +9,64 @@ export default function HeroSection() {
     <Box
       sx={{
         position: 'relative',
-        minHeight: '90vh',
+        minHeight: { xs: '75vh', md: '95vh' },
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'flex-start',
         backgroundImage:
-          'linear-gradient(180deg, rgba(63,71,40,0.75), rgba(63,71,40,0.9)), url(/hero.jpg)',
+          'linear-gradient(180deg, rgba(6, 77, 66, 0.35), rgba(52, 71, 6, 0.15)), url(/hero.jpg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        color: '#F0EADC',
+        overflow: 'hidden',
       }}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="lg" sx={{ textAlign: 'left' , pl: { xs: 2, lg: 6 }}}>
         <Fade in timeout={400}>
-          <Box>
-            <Box
-              sx={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 1,
-                bgcolor: 'rgba(240,234,220,0.12)',
-                border: '1px solid rgba(240,234,220,0.3)',
-                borderRadius: '999px',
-                px: 2,
-                py: 0.5,
-                mb: 3,
-              }}
-            >
-              <Leaf size={16} color="#FFD95E" />
-              <Typography variant="caption" sx={{ fontFamily: '"Special Gothic", sans-serif' }}>
-                Condition-aware nutrition, powered by AI
-              </Typography>
+          <Typography
+            variant="h1"
+            sx={{
+              fontFamily: '"Special Gothic Expanded One", sans-serif',
+              fontWeight: 100,
+              color: '#FFFFFF',
+              fontSize: { xs: 40, md: 72 },
+              textShadow: '0 2px 16px rgba(0,0,0,0.3)',
+            }}
+          >
+            Better meals. 
+            Better habits. 
+            A {' '}
+            <Box component="span" sx={{ fontStyle: 'italic', color: '#ccdf5e'}}>
+              healthier 
             </Box>
-
-            <Typography
-              variant="h1"
-              sx={{
-                fontFamily: '"Special Gothic Expanded One", sans-serif',
-                fontSize: { xs: 40, md: 64 },
-                lineHeight: 1.05,
-                mb: 2,
-              }}
-            >
-              Know exactly what's in your next meal
-            </Typography>
-
-            <Typography
-              variant="body1"
-              sx={{ fontFamily: '"Special Gothic", sans-serif', fontSize: 18, maxWidth: 520, mb: 4, opacity: 0.9 }}
-            >
-              Paste any recipe and get an instant nutrition breakdown, health
-              risk flags, and AI-generated meal plans tailored to your goals
-              and conditions.
-            </Typography>
-
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-              <Button
-                variant="contained"
-                endIcon={<ArrowRight size={18} />}
-                onClick={() => navigate('/analyze')}
-                sx={{
-                  bgcolor: '#576238',
-                  color: '#F0EADC',
-                  borderRadius: '999px',
-                  px: 3,
-                  py: 1.2,
-                  textTransform: 'none',
-                  fontFamily: '"Special Gothic", sans-serif',
-                  transition: 'background-color 200ms ease',
-                  '&:hover': { bgcolor: '#8D844D' },
-                }}
-              >
-                Analyze a Recipe
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => navigate('/about')}
-                sx={{
-                  borderColor: '#FFD95E',
-                  color: '#FFD95E',
-                  borderRadius: '999px',
-                  px: 3,
-                  py: 1.2,
-                  textTransform: 'none',
-                  fontFamily: '"Special Gothic", sans-serif',
-                  transition: 'background-color 200ms ease, color 200ms ease',
-                  '&:hover': { bgcolor: '#FFD95E', color: '#3F4728' },
-                }}
-              >
-                Learn More
-              </Button>
-            </Box>
-          </Box>
+             you
+          </Typography>
         </Fade>
 
-        {/* Floating mission card, bottom-right per the reference layout */}
-        <Paper
-          elevation={4}
-          sx={{
-            display: { xs: 'none', md: 'block' },
-            position: 'absolute',
-            right: 40,
-            bottom: 40,
-            maxWidth: 260,
-            p: 2.5,
-            borderRadius: '16px',
-            bgcolor: 'rgba(255,255,255,0.9)',
-          }}
-        >
-          <Typography variant="subtitle1" sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif', color: '#3F4728', mb: 0.5 }}>
-            Our Mission
-          </Typography>
-          <Typography variant="body2" sx={{ fontFamily: '"Special Gothic", sans-serif', color: '#6B6550' }}>
-            Making nutrition analysis accessible, accurate, and personal to
-            your health conditions — not just calorie counts.
-          </Typography>
-        </Paper>
+        <Fade in timeout={600}>
+          <Box sx={{ mt: 3 }}>
+            <Button
+              onClick={() => navigate('/analyze')}
+              sx={{
+                bgcolor: '#cef046',
+                color: '#151b06',
+                border: '2px solid #455715',
+                borderRadius: '15px',
+                px: 3.5,
+                py: 1.2,
+                textTransform: 'none',
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 'bold',
+                transition: 'transform 150ms ease, background-color 150ms ease',
+                '&:hover': { bgcolor: '#475611', color: '#fcf8ed', border: '2px solid #f4fad2', transform: 'scale(1.03)' },
+              }}
+            >
+              Analyze Recipe
+            </Button>
+          </Box>
+        </Fade>
       </Container>
+
+      <WaveDivider toColor="#FAF3E7" />
     </Box>
   );
 }

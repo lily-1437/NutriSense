@@ -6,8 +6,8 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#576238',       // Verdigris
-      dark: '#3F4728',
+      main: '#637239',       // Verdigris
+      dark: '#475229',
       contrastText: '#F0EADC',
     },
     secondary: {
@@ -39,7 +39,7 @@ const theme = createTheme({
     caption: { fontFamily: '"Special Gothic", sans-serif' },
   },
   shape: {
-    borderRadius: 16, // matches card radius convention from the UI guide
+    borderRadius: 25, // matches card radius convention from the UI guide
   },
 });
 

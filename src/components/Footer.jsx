@@ -9,7 +9,7 @@ const FOOTER_LINKS = [
 
 export default function Footer() {
   return (
-    <Box sx={{ bgcolor: '#3F4728', color: '#F0EADC', py: 4 }}>
+    <Box sx={{ bgcolor: '#3E4A1F', color: '#F0EADC', py: 4 }}>
       <Container maxWidth="md" sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
         <Typography sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif' }}>
           NutriSense

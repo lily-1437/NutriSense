@@ -37,7 +37,7 @@ export default function AppNavbar() {
             fontFamily: '"Special Gothic Expanded One", sans-serif',
             color: '#F0EADC',
             cursor: 'pointer',
-            fontSize: 20,
+            fontSize: 23,
           }}
         >
           NutriSense
@@ -50,9 +50,10 @@ export default function AppNavbar() {
                 key={link.path}
                 onClick={() => navigate(link.path)}
                 sx={{
-                  color: '#F0EADC',
+                  color: '#fff9e6',
                   textTransform: 'none',
                   fontFamily: '"Special Gothic", sans-serif',
+                  fontWeight: 'bold',
                   transition: 'color 200ms ease',
                   '&:hover': { color: '#FFD95E' },
                 }}
