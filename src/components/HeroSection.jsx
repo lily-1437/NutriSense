@@ -9,7 +9,7 @@ export default function HeroSection() {
     <Box
       sx={{
         position: 'relative',
-        minHeight: { xs: '75vh', md: '95vh' },
+        minHeight: { xs: '75vh', md: '100vh' },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -25,8 +25,9 @@ export default function HeroSection() {
           <Typography
             variant="h1"
             sx={{
-              fontFamily: '"Special Gothic Expanded One", sans-serif',
-              fontWeight: 100,
+              fontFamily: '"Viaoda Libre", serif',
+              fontSize: { xs: 40, md: 72 },
+              fontWeight: 500,
               color: '#FFFFFF',
               fontSize: { xs: 40, md: 72 },
               textShadow: '0 2px 16px rgba(0,0,0,0.3)',
@@ -54,7 +55,8 @@ export default function HeroSection() {
                 px: 3.5,
                 py: 1.2,
                 textTransform: 'none',
-                fontFamily: 'Inter, sans-serif',
+                fontFamily: '"Kameron", serif',
+                fontSize: { xs: 12, md: 16 },
                 fontWeight: 'bold',
                 transition: 'transform 150ms ease, background-color 150ms ease',
                 '&:hover': { bgcolor: '#475611', color: '#fcf8ed', border: '2px solid #f4fad2', transform: 'scale(1.03)' },

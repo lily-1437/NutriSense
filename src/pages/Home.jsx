@@ -14,18 +14,18 @@ export default function Home() {
       <IntroSection />
 
       <SplitFeatureSection
-        heading="Instant recipe parsing"
-        body="Paste ingredients and get matched USDA nutrition data in seconds — no manual lookups, no spreadsheets."
+        heading="Meal That Fits Your Lifestyle"
+        body="Healthy eating looks different for everyone. Build meal plans tailored to your tastes, goals, and lifestyle, making every meal a simple step toward a healthier, happier you."
         reverse={false}
       />
       <SplitFeatureSection
-        heading="Full nutrition breakdown"
+        heading="Know What's on Your Plate"
         body="Understand your meals beyond the ingredients. Each recipe is carefully analyzed to provide a comprehensive per-serving breakdown of calories, macronutrients, and essential vitamins and minerals, helping you make smarter, healthier food choices every day."
         reverse={true}
       />
       <SplitFeatureSection
-        heading="Condition-aware risk flags"
-        body="Warnings surface right on the results page when an ingredient conflicts with a health condition you've set."
+        heading="Things to Watch For Your Health"
+        body="Smart health alerts help you spot ingredients that may conflict with your dietary needs before you eat. With a tailored dashboard, you can analyze and compare meals, monitor nutrition, manage health conditions, and set personalized rules to make healthier choices with confidence."
         reverse={false}
       />
 

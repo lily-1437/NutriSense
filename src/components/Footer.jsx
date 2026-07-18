@@ -22,7 +22,7 @@ export default function Footer() {
               underline="none"
               sx={{
                 color: '#F0EADC',
-                fontFamily: '"Special Gothic", sans-serif',
+                fontFamily: '"Kameron", serif',
                 fontSize: 14,
                 opacity: 0.85,
                 '&:hover': { color: '#FFD95E' },

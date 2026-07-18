@@ -46,6 +46,8 @@ export default function IntroSection() {
             px: 3.5,
             py: 1.2,
             textTransform: 'none',
+            fontFamily: '"Kameron", serif',
+            fontSize: { xs: 12, md: 16 },
             fontWeight: 'bold',
             transition: 'transform 150ms ease, background-color 150ms ease',
             '&:hover': { bgcolor: '#475611', color: '#fcf8ed',transform: 'scale(1.03)' },

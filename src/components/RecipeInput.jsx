@@ -1,13 +1,15 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Box, Container, TextField, Button, CircularProgress, Typography,
-  List, ListItem, ListItemText, Collapse, Paper, Slide, Grid,
+  List, ListItem, ListItemText, Collapse, Paper, Grid,
   Card, CardContent, Accordion, AccordionSummary, AccordionDetails,
   Table, TableHead, TableRow, TableCell, TableBody, Snackbar, Alert,
 } from '@mui/material';
 import { ChevronDown, RotateCcw } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { motion, AnimatePresence, LayoutGroup, useMotionValue, useTransform, animate } from 'framer-motion';
 import ConfidenceChip from './ConfidenceChip';
+import { fadeUp, staggerContainer, scaleIn } from '../motion/variants';
 
 // ---- Confirmed analyzeRecipe.js / calculateNutrition.js interface ----
 // prepareRecipeAnalysis(rawText: string) => Array<{
@@ -20,6 +22,9 @@ import ConfidenceChip from './ConfidenceChip';
 //   perServing: { ...same fields as totals },
 // }
 import { prepareRecipeAnalysis, finalizeNutrition } from '../logic/analyzeRecipe';
+
+const MotionButton = motion(Button);
+const MotionCard = motion(Card);
 
 const MACRO_COLORS = {
   protein: '#576238', // Verdigris
@@ -35,6 +40,34 @@ const MICRO_LABELS = {
   sugar: 'Sugar (g)',
   sodium: 'Sodium (mg)',
 };
+
+// ---- Stage transition variants (roadmap §7.5) ----
+// The one place a directional motion is semantically correct: input -> confirm -> results
+// are genuinely sequential steps in one flow.
+const stageVariants = {
+  initial: { opacity: 0, x: 40 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+  exit: { opacity: 0, x: -40, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+};
+
+// ---- Count-up number (roadmap §7.8) ----
+function CountUpNumber({ value, ...typographyProps }) {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => Math.round(v));
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(count, value, { duration: 0.6, ease: 'easeOut' });
+    const unsub = rounded.on('change', (v) => setDisplay(v));
+    return () => {
+      controls.stop();
+      unsub();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  return <Typography {...typographyProps}>{display}</Typography>;
+}
 
 export default function RecipeInput() {
   const [stage, setStage] = useState('input'); // 'input' | 'confirm' | 'results'
@@ -116,234 +149,283 @@ export default function RecipeInput() {
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 6 }}>
       <Container maxWidth="md">
-
-        {/* ---------- Stage 1: Input ---------- */}
-        <Slide direction="left" in={stage === 'input'} mountOnEnter unmountOnExit>
-          <Box>
-            <Card sx={{ borderRadius: '16px', maxWidth: 640, mx: 'auto', p: 1 }} elevation={1}>
-              <CardContent>
-                <Typography
-                  variant="h3"
-                  sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif', mb: 2, color: 'text.primary' }}
-                >
-                  Analyze a Recipe
-                </Typography>
-                <TextField
-                  multiline
-                  minRows={8}
-                  fullWidth
-                  value={rawText}
-                  onChange={(e) => setRawText(e.target.value)}
-                  label="Paste your recipe ingredients"
-                  helperText="One ingredient per line works best"
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      '& fieldset': { borderColor: 'text.secondary' },
-                      '&.Mui-focused fieldset': { borderColor: 'primary.main' },
-                    },
-                  }}
-                />
-                <TextField
-                  type="number"
-                  label="Servings"
-                  value={servings}
-                  onChange={(e) => setServings(Math.max(1, Number(e.target.value) || 1))}
-                  inputProps={{ min: 1 }}
-                  sx={{ mt: 2, width: 120 }}
-                />
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-                  <Button
-                    variant="contained"
-                    disabled={!rawText.trim() || isParsing}
-                    onClick={handleParse}
-                    sx={{
-                      bgcolor: 'primary.main',
-                      color: '#F0EADC',
-                      borderRadius: '20px',
-                      px: 3,
-                      transition: 'background-color 200ms ease',
-                      '&:hover': { bgcolor: 'secondary.main' },
-                    }}
-                  >
-                    {isParsing ? <CircularProgress size={20} sx={{ color: '#F0EADC' }} /> : 'Parse Recipe'}
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
-          </Box>
-        </Slide>
-
-        {/* ---------- Stage 2: Match Confirmation ---------- */}
-        <Slide direction="left" in={stage === 'confirm'} mountOnEnter unmountOnExit>
-          <Box>
-            <Card sx={{ borderRadius: '16px' }} elevation={1}>
-              <CardContent>
-                <Typography variant="h3" sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif', mb: 2 }}>
-                  Confirm Ingredient Matches
-                </Typography>
-                <List>
-                  {ingredients.map((ing) => (
-                    <ListItem
-                      key={ing.id}
-                      onClick={() => setExpandedId(expandedId === ing.id ? null : ing.id)}
-                      sx={{ flexDirection: 'column', alignItems: 'stretch', borderBottom: '1px solid #F0EADC', cursor: 'pointer' }}
-                    >
-                      <ListItemText
-                        primary={ing.original.raw}
-                        secondary={
-                          ing.candidates.find((c) => c.fdc_id === ing.selectedMatchId)?.name ?? 'No match selected'
-                        }
-                      />
-                      <Collapse in={expandedId === ing.id || !ing.selectedMatchId}>
-                        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', pt: 1, pb: 2 }}>
-                          {ing.candidates.map((match) => (
-                            <ConfidenceChip
-                              key={match.fdc_id}
-                              label={match.name}
-                              level={match.confidence}
-                              selected={ing.selectedMatchId === match.fdc_id}
-                              onClick={() => handleSelectMatch(ing.id, match.fdc_id)}
-                            />
-                          ))}
-                        </Box>
-                      </Collapse>
-                    </ListItem>
-                  ))}
-                </List>
-              </CardContent>
-            </Card>
-
-            <Paper
-              elevation={2}
-              sx={{ position: 'sticky', bottom: 16, mt: 2, p: 2, display: 'flex', justifyContent: 'flex-end', borderRadius: '16px' }}
+        <AnimatePresence mode="wait">
+          {stage === 'input' && (
+            <motion.div
+              key="input"
+              variants={stageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
-              <Button
-                variant="contained"
-                disabled={!allResolved}
-                onClick={handleConfirmMatches}
-                sx={{
-                  bgcolor: allResolved ? 'primary.main' : '#8D844D',
-                  color: '#F0EADC',
-                  borderRadius: '20px',
-                  px: 3,
-                }}
+              {/* ---------- Stage 1: Input ---------- */}
+              <MotionCard
+                variants={scaleIn}
+                initial="hidden"
+                animate="visible"
+                sx={{ borderRadius: '16px', maxWidth: 640, mx: 'auto', p: 1 }}
+                elevation={1}
               >
-                Confirm Matches
-              </Button>
-            </Paper>
-          </Box>
-        </Slide>
+                <CardContent>
+                  <Typography
+                    variant="h3"
+                    sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif', mb: 2, color: 'text.primary' }}
+                  >
+                    Analyze a Recipe
+                  </Typography>
+                  <TextField
+                    multiline
+                    minRows={8}
+                    fullWidth
+                    value={rawText}
+                    onChange={(e) => setRawText(e.target.value)}
+                    label="Paste your recipe ingredients"
+                    helperText="One ingredient per line works best"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': { borderColor: 'text.secondary' },
+                        '&.Mui-focused fieldset': { borderColor: 'primary.main' },
+                      },
+                    }}
+                  />
+                  <TextField
+                    type="number"
+                    label="Servings"
+                    value={servings}
+                    onChange={(e) => setServings(Math.max(1, Number(e.target.value) || 1))}
+                    inputProps={{ min: 1 }}
+                    sx={{ mt: 2, width: 120 }}
+                  />
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                    <MotionButton
+                      variant="contained"
+                      disabled={!rawText.trim() || isParsing}
+                      onClick={handleParse}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.96 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                      sx={{
+                        bgcolor: 'primary.main',
+                        color: '#F0EADC',
+                        borderRadius: '20px',
+                        px: 3,
+                        transition: 'background-color 200ms ease',
+                        '&:hover': { bgcolor: 'secondary.main' },
+                      }}
+                    >
+                      {isParsing ? <CircularProgress size={20} sx={{ color: '#F0EADC' }} /> : 'Parse Recipe'}
+                    </MotionButton>
+                  </Box>
+                </CardContent>
+              </MotionCard>
+            </motion.div>
+          )}
 
-        {/* ---------- Stage 3: Results ---------- */}
-        <Slide direction="left" in={stage === 'results'} mountOnEnter unmountOnExit>
-          <Box>
-            {nutrition && (
-              <>
-                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
-                  Per serving ({servings} {servings === 1 ? 'serving' : 'servings'} total)
-                </Typography>
+          {stage === 'confirm' && (
+            <motion.div
+              key="confirm"
+              variants={stageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              {/* ---------- Stage 2: Match Confirmation ---------- */}
+              <Card sx={{ borderRadius: '16px' }} elevation={1}>
+                <CardContent>
+                  <Typography variant="h3" sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif', mb: 2 }}>
+                    Confirm Ingredient Matches
+                  </Typography>
+                  <motion.div variants={staggerContainer(0.06)} initial="hidden" animate="visible">
+                    <List>
+                      {ingredients.map((ing) => (
+                        <motion.div key={ing.id} variants={fadeUp}>
+                          <ListItem
+                            onClick={() => setExpandedId(expandedId === ing.id ? null : ing.id)}
+                            sx={{ flexDirection: 'column', alignItems: 'stretch', borderBottom: '1px solid #F0EADC', cursor: 'pointer' }}
+                          >
+                            <ListItemText
+                              primary={ing.original.raw}
+                              secondary={
+                                ing.candidates.find((c) => c.fdc_id === ing.selectedMatchId)?.name ?? 'No match selected'
+                              }
+                            />
+                            <Collapse in={expandedId === ing.id || !ing.selectedMatchId}>
+                              {/* LayoutGroup scopes the chip-fill layoutId to this ingredient's row,
+                                  so selecting a different candidate glides the fill within the row
+                                  only — it never animates across rows (UI guide, MatchConfirmation). */}
+                              <LayoutGroup id={ing.id}>
+                                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', pt: 1, pb: 2 }}>
+                                  {ing.candidates.map((match) => (
+                                    <ConfidenceChip
+                                      key={match.fdc_id}
+                                      groupId={ing.id}
+                                      label={match.name}
+                                      level={match.confidence}
+                                      selected={ing.selectedMatchId === match.fdc_id}
+                                      onClick={() => handleSelectMatch(ing.id, match.fdc_id)}
+                                    />
+                                  ))}
+                                </Box>
+                              </LayoutGroup>
+                            </Collapse>
+                          </ListItem>
+                        </motion.div>
+                      ))}
+                    </List>
+                  </motion.div>
+                </CardContent>
+              </Card>
 
-                {/* 1. Nutrition summary */}
+              <Paper
+                elevation={2}
+                sx={{ position: 'sticky', bottom: 16, mt: 2, p: 2, display: 'flex', justifyContent: 'flex-end', borderRadius: '16px' }}
+              >
+                <MotionButton
+                  variant="contained"
+                  disabled={!allResolved}
+                  onClick={handleConfirmMatches}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  sx={{
+                    bgcolor: allResolved ? 'primary.main' : '#8D844D',
+                    color: '#F0EADC',
+                    borderRadius: '20px',
+                    px: 3,
+                  }}
+                >
+                  Confirm Matches
+                </MotionButton>
+              </Paper>
+            </motion.div>
+          )}
+
+          {stage === 'results' && nutrition && (
+            <motion.div
+              key="results"
+              variants={stageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+            >
+              {/* ---------- Stage 3: Results ---------- */}
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                Per serving ({servings} {servings === 1 ? 'serving' : 'servings'} total)
+              </Typography>
+
+              {/* 1. Nutrition summary */}
+              <motion.div variants={staggerContainer(0.08)} initial="hidden" animate="visible">
                 <Grid container spacing={2} sx={{ mb: 2 }}>
                   {['calories', 'protein', 'fat', 'carbs'].map((key) => (
                     <Grid item xs={6} sm={3} key={key}>
-                      <Card sx={{ borderRadius: '16px', textAlign: 'center', p: 1 }} elevation={1}>
-                        <CardContent>
-                          <Typography variant="h4" sx={{ color: 'primary.dark', fontFamily: '"Special Gothic Expanded One", sans-serif' }}>
-                            {Math.round(nutrition.perServing[key])}
-                          </Typography>
-                          <Typography variant="caption" sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-                            {key === 'calories' ? 'Calories' : `${key} (g)`}
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <motion.div variants={fadeUp}>
+                        <Card sx={{ borderRadius: '16px', textAlign: 'center', p: 1 }} elevation={1}>
+                          <CardContent>
+                            <CountUpNumber
+                              value={Math.round(nutrition.perServing[key])}
+                              variant="h4"
+                              sx={{ color: 'primary.dark', fontFamily: '"Special Gothic Expanded One", sans-serif' }}
+                            />
+                            <Typography variant="caption" sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
+                              {key === 'calories' ? 'Calories' : `${key} (g)`}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
                     </Grid>
                   ))}
                 </Grid>
+              </motion.div>
 
-                {/* 2. Medical risk badge placeholder — wired in Increment 3 */}
-                {/* <MedicalRiskBadge flags={riskFlags} /> */}
+              {/* 2. Medical risk badge placeholder — wired in Increment 3 */}
+              {/* <MedicalRiskBadge flags={riskFlags} /> */}
 
-                <Grid container spacing={2} sx={{ mb: 2 }}>
-                  {/* 3. Macro chart */}
-                  <Grid item xs={12} md={6}>
-                    <Card sx={{ borderRadius: '16px', p: 1 }} elevation={1}>
-                      <CardContent>
-                        <Typography variant="subtitle1" sx={{ mb: 1 }}>Macronutrient Breakdown</Typography>
-                        <ResponsiveContainer width="100%" height={220}>
-                          <PieChart>
-                            <Pie
-                              data={macroChartData}
-                              dataKey="value"
-                              nameKey="name"
-                              outerRadius={80}
-                              isAnimationActive
-                              animationDuration={400}
-                            >
-                              {macroChartData.map((entry) => (
-                                <Cell key={entry.key} fill={MACRO_COLORS[entry.key]} />
-                              ))}
-                            </Pie>
-                            <Tooltip />
-                          </PieChart>
-                        </ResponsiveContainer>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-
-                  {/* 4. Substitution suggestions placeholder — Increment 3 */}
-                  <Grid item xs={12} md={6}>
-                    <Card sx={{ borderRadius: '16px', p: 1, opacity: 0.6 }} elevation={1}>
-                      <CardContent>
-                        <Typography variant="subtitle1" sx={{ mb: 1 }}>Suggested Substitutions</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Available once condition-aware substitution ships in Increment 3.
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
+              <Grid container spacing={2} sx={{ mb: 2 }}>
+                {/* 3. Macro chart */}
+                <Grid item xs={12} md={6}>
+                  <MotionCard
+                    variants={scaleIn}
+                    initial="hidden"
+                    animate="visible"
+                    sx={{ borderRadius: '16px', p: 1 }}
+                    elevation={1}
+                  >
+                    <CardContent>
+                      <Typography variant="subtitle1" sx={{ mb: 1 }}>Macronutrient Breakdown</Typography>
+                      <ResponsiveContainer width="100%" height={220}>
+                        <PieChart>
+                          <Pie
+                            data={macroChartData}
+                            dataKey="value"
+                            nameKey="name"
+                            outerRadius={80}
+                            isAnimationActive
+                            animationDuration={400}
+                          >
+                            {macroChartData.map((entry) => (
+                              <Cell key={entry.key} fill={MACRO_COLORS[entry.key]} />
+                            ))}
+                          </Pie>
+                          <Tooltip />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    </CardContent>
+                  </MotionCard>
                 </Grid>
 
-                {/* 5. Micronutrient table, collapsed by default */}
-                <Accordion sx={{ borderRadius: '16px', mb: 2 }}>
-                  <AccordionSummary expandIcon={<ChevronDown size={20} />}>
-                    <Typography variant="subtitle1">Micronutrient Detail</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Table size="small">
-                      <TableHead>
-                        <TableRow sx={{ bgcolor: 'background.default' }}>
-                          <TableCell>Nutrient</TableCell>
-                          <TableCell align="right">Amount</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {Object.entries(MICRO_LABELS).map(([key, label]) => (
-                          <TableRow key={key}>
-                            <TableCell>{label}</TableCell>
-                            <TableCell align="right">{nutrition.perServing[key]}</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </AccordionDetails>
-                </Accordion>
+                {/* 4. Substitution suggestions placeholder — Increment 3 */}
+                <Grid item xs={12} md={6}>
+                  <Card sx={{ borderRadius: '16px', p: 1, opacity: 0.6 }} elevation={1}>
+                    <CardContent>
+                      <Typography variant="subtitle1" sx={{ mb: 1 }}>Suggested Substitutions</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Available once condition-aware substitution ships in Increment 3.
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
 
-                {/* 6. Reset */}
-                <Box sx={{ textAlign: 'center' }}>
-                  <Button
-                    variant="text"
-                    startIcon={<RotateCcw size={16} />}
-                    onClick={handleReset}
-                    sx={{ color: 'accent.main' }}
-                  >
-                    Analyze another
-                  </Button>
-                </Box>
-              </>
-            )}
-          </Box>
-        </Slide>
+              {/* 5. Micronutrient table, collapsed by default */}
+              <Accordion sx={{ borderRadius: '16px', mb: 2 }}>
+                <AccordionSummary expandIcon={<ChevronDown size={20} />}>
+                  <Typography variant="subtitle1">Micronutrient Detail</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow sx={{ bgcolor: 'background.default' }}>
+                        <TableCell>Nutrient</TableCell>
+                        <TableCell align="right">Amount</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {Object.entries(MICRO_LABELS).map(([key, label]) => (
+                        <TableRow key={key}>
+                          <TableCell>{label}</TableCell>
+                          <TableCell align="right">{nutrition.perServing[key]}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </AccordionDetails>
+              </Accordion>
+
+              {/* 6. Reset */}
+              <Box sx={{ textAlign: 'center' }}>
+                <MotionButton
+                  variant="text"
+                  startIcon={<RotateCcw size={16} />}
+                  onClick={handleReset}
+                  whileHover={{ scale: 1.03 }}
+                  sx={{ color: 'accent.main' }}
+                >
+                  Analyze another
+                </MotionButton>
+              </Box>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </Container>
 
       <Snackbar

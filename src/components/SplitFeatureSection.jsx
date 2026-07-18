@@ -39,11 +39,11 @@ export default function SplitFeatureSection({ image, heading, body, reverse = fa
           <Box sx={{ order: { xs: 2, md: reverse ? 1 : 2 } }}>
             <Typography
               variant="h3"
-              sx={{ fontFamily: 'Georgia, serif', color: '#3E4A1F', fontSize: { xs: 22, md: 26 }, mb: 2 }}
+              sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif', color: '#3E4A1F', fontSize: 34, mb: 2 }}
             >
               {heading}
             </Typography>
-            <Typography sx={{ color: '#4A4530', fontSize: 15, lineHeight: 1.7 }}>
+            <Typography sx={{ fontFamily: '"Kameron", serif', color: '#4A4530', fontSize: 20, lineHeight: 1.7 }}>
               {body}
             </Typography>
           </Box>

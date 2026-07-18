@@ -16,8 +16,8 @@ const theme = createTheme({
       contrastText: '#F0EADC',
     },
     accent: {
-      main: '#FFD95E',       // Dandelion
-      dark: '#E0BA3F',
+      main: '#ffcd28',       // Dandelion
+      dark: '#d4ad2d',
       contrastText: '#3F4728',
     },
     background: {
@@ -34,9 +34,9 @@ const theme = createTheme({
     h1: { fontFamily: '"Special Gothic Expanded One", sans-serif', fontWeight: 400 },
     h2: { fontFamily: '"Special Gothic Expanded One", sans-serif', fontWeight: 400 },
     h3: { fontFamily: '"Special Gothic Expanded One", sans-serif', fontWeight: 400 },
-    subtitle1: { fontFamily: '"Special Gothic Expanded One", sans-serif' },
-    body1: { fontFamily: '"Special Gothic", sans-serif' },
-    caption: { fontFamily: '"Special Gothic", sans-serif' },
+    subtitle1: { fontFamily: '"Kameron", serif' },
+    body1: { fontFamily: '"Kameron", serif' },
+    caption: { fontFamily: '"Kameron", serif' },
   },
   shape: {
     borderRadius: 25, // matches card radius convention from the UI guide
