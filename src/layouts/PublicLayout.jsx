@@ -9,16 +9,26 @@
 //
 // AppLayout (AppNavbar + AppDrawer, wrapped in ProtectedRoute) is Increment 2
 // work -- it depends on useAuth, which doesn't exist yet.
+//
+// AppNavbar (and its spacer) is hidden on /login and /signup -- those pages
+// use a plain, fast, distraction-free auth screen per the UI guide.
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Box } from '@mui/material';
 import AppNavbar, { NAVBAR_HEIGHT, NAVBAR_TOP_OFFSET } from '../components/AppNavbar';
 
 export default function PublicLayout() {
+  const { pathname } = useLocation();
+  const hideNavbar = pathname === '/login' || pathname === '/signup' || pathname === '/';
+
   return (
     <>
-      <AppNavbar />
-      <Box sx={{ height: NAVBAR_HEIGHT + NAVBAR_TOP_OFFSET }} />
+      {!hideNavbar && (
+        <>
+          <AppNavbar />
+          <Box sx={{ height: NAVBAR_HEIGHT + NAVBAR_TOP_OFFSET }} />
+        </>
+      )}
       <Outlet />
     </>
   );
