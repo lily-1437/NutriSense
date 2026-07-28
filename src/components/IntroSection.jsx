@@ -37,7 +37,7 @@ export default function IntroSection() {
           Healthy eating doesn't have to be complicated. Discover what's in your meals, understand your nutrition, and build habits that help you feel your best every day.
         </Typography>
         <Button
-          onClick={() => navigate('/analyze')}
+          onClick={() => navigate('/signup')}
           sx={{
             bgcolor: '#cef046',
             color: '#2F3817',

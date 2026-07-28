@@ -70,7 +70,7 @@ export default function AppNavbar() {
           margin: '0 auto',
           height: NAVBAR_HEIGHT,
           zIndex: theme.zIndex.appBar,
-          bgcolor: 'rgba(44, 65, 38, 0.85)',
+          bgcolor: 'rgba(24, 50, 17, 0.85)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255,255,255,0.08)',
@@ -111,7 +111,7 @@ export default function AppNavbar() {
                   textTransform: 'none',
                   fontFamily: '"Kameron", serif',
                   fontWeight: 400,
-                  fontSize: 19,
+                  fontSize: 16,
                   px: 1.5,
                   bgcolor: 'transparent',
                   transition: 'color 200ms ease',
@@ -190,6 +190,8 @@ export default function AppNavbar() {
                     textTransform: 'none',
                     fontFamily: '"Kameron", serif',
                     fontSize: 15,
+                    transition: 'color 200ms ease',
+                  '&:hover': { color: 'accent.main', bgcolor: 'transparent' },
                   }}
                 >
                   Login

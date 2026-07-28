@@ -56,11 +56,7 @@ export default function AuthLayout({ headline, description, title, titleLinkTo, 
             overflow: 'hidden',
             backgroundImage: imageSrc
               ? `url(${imageSrc})`
-              : `radial-gradient(circle at 18% 15%, rgba(229, 178, 12, 0.39), transparent 45%),
-         radial-gradient(circle at 82% 18%, rgba(195, 230, 90, 0.35), transparent 40%),
-         radial-gradient(circle at 55% 85%, rgba(255, 215, 105, 0.34), transparent 50%),
-         radial-gradient(circle at 65% 45%, rgba(120, 160, 55, 0.27), transparent 35%),
-         linear-gradient(135deg, #5e7a12 0%, #394918 55%, #59501e 100%)`,
+              : 'radial-gradient(circle at 20% 15%, rgba(201, 155, 6, 0.53), transparent 45%), linear-gradient(135deg, #586c22 0%, #38460f 60%, #5e5205 100%)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}

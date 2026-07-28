@@ -14,13 +14,13 @@ import Signup from './pages/Signup';
 import AnalyzeRecipe from './pages/AnalyzeRecipe';
 
 // --- Pages not yet built — swap in as each lands ---
-// import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard';
 import HealthGoals from './pages/HealthGoals';
 // import Profile from './pages/Profile';
 // import MealPlanner from './pages/MealPlanner';
 // import Simulator from './pages/Simulator';
 // import History from './pages/History';
-// import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound';
 
 import { useAuth } from './hooks/useAuth';
 
@@ -49,12 +49,12 @@ export const router = createBrowserRouter([
   {
     element: (
       <ProtectedRoute>
-        <AppLayout /> {/* AppNavbar (solid) + AppDrawer */}
+        <AppLayout /> {/* AppNavbar + AppDrawer */}
       </ProtectedRoute>
     ),
     children: [
       // --- Uncomment each line as its page gets built ---
-      // { path: '/dashboard', element: <Dashboard /> },
+      { path: '/dashboard', element: <Dashboard /> },
       { path: '/goals', element: <HealthGoals /> },
       // { path: '/profile', element: <Profile /> },
       // { path: '/meal-planner', element: <MealPlanner /> },
@@ -64,5 +64,5 @@ export const router = createBrowserRouter([
       // { path: '/history/:recipeId', element: <AnalyzeRecipe /> }, // reopens Stage 3 results view for a past recipe
     ],
   },
-  // { path: '*', element: <NotFound /> }, // uncomment once NotFound.jsx exists
+   { path: '*', element: <NotFound /> }, // uncomment once NotFound.jsx exists
 ]);
