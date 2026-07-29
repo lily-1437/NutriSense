@@ -10,6 +10,9 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion, AnimatePresence, LayoutGroup, useMotionValue, useTransform, animate } from 'framer-motion';
 import ConfidenceChip from './ConfidenceChip';
 import { fadeUp, staggerContainer, scaleIn } from '../motion/variants';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { saveRecipe, getRecipe } from '../logic/firestoreRecipes';
 
 // ---- Confirmed analyzeRecipe.js / calculateNutrition.js interface ----
 // prepareRecipeAnalysis(rawText: string) => Array<{
@@ -69,7 +72,10 @@ function CountUpNumber({ value, ...typographyProps }) {
   return <Typography {...typographyProps}>{display}</Typography>;
 }
 
-export default function RecipeInput() {
+export default function RecipeInput({ recipeId }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const [stage, setStage] = useState('input'); // 'input' | 'confirm' | 'results'
   const [rawText, setRawText] = useState('');
   const [servings, setServings] = useState(1);
@@ -78,6 +84,50 @@ export default function RecipeInput() {
   const [expandedId, setExpandedId] = useState(null);
   const [nutrition, setNutrition] = useState(null); // Stage 3 state
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  // ---- History hydration (/history/:recipeId) ----
+  // When a recipeId is passed in, load that saved recipe from Firestore and
+  // jump straight to Stage 3, instead of showing a blank Stage 1.
+  const [isHydrating, setIsHydrating] = useState(Boolean(recipeId));
+  const [savedRecipeId, setSavedRecipeId] = useState(null); // set after a successful save this session
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (!recipeId) {
+      setIsHydrating(false);
+      return;
+    }
+    if (!user) {
+      // /history/:recipeId is behind ProtectedRoute, but guard anyway —
+      // auth state may still be resolving on first mount.
+      return;
+    }
+    let cancelled = false;
+    setIsHydrating(true);
+    getRecipe(user.uid, recipeId)
+      .then((data) => {
+        if (cancelled) return;
+        if (!data) {
+          setSnackbar({ open: true, message: 'Recipe not found.', severity: 'error' });
+          setIsHydrating(false);
+          return;
+        }
+        setRawText(data.rawInput ?? '');
+        setServings(data.servings ?? 1);
+        setNutrition({ totals: data.totals, perServing: data.perServing });
+        setSavedRecipeId(data.id);
+        setStage('results');
+        setIsHydrating(false);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setSnackbar({ open: true, message: 'Could not load this recipe.', severity: 'error' });
+        setIsHydrating(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [recipeId, user]);
 
   const allResolved = useMemo(
     () => ingredients.length > 0 && ingredients.every((ing) => ing.selectedMatchId),
@@ -129,12 +179,40 @@ export default function RecipeInput() {
     }
   };
 
+  // ---- Stage 3: Save to History ----
+  const handleSaveToHistory = async () => {
+    if (!user) {
+      // Anonymous use is allowed through Stage 3; saving requires login.
+      navigate('/login', { state: { from: { pathname: '/analyze' } } });
+      return;
+    }
+    if (!nutrition) return;
+    setIsSaving(true);
+    try {
+      const newId = await saveRecipe(user.uid, {
+        recipeName: rawText.split('\n')[0]?.slice(0, 60) || 'Untitled recipe',
+        rawInput: rawText,
+        ingredients,
+        totals: nutrition.totals,
+        perServing: nutrition.perServing,
+        servings,
+      });
+      setSavedRecipeId(newId);
+      setSnackbar({ open: true, message: 'Saved to history', severity: 'success' });
+    } catch (err) {
+      setSnackbar({ open: true, message: 'Could not save recipe. Please try again.', severity: 'error' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   // ---- Stage 3: Reset ----
   const handleReset = () => {
     setRawText('');
     setServings(1);
     setIngredients([]);
     setNutrition(null);
+    setSavedRecipeId(null);
     setStage('input');
   };
 
@@ -145,6 +223,14 @@ export default function RecipeInput() {
         { name: 'Carbs', value: nutrition.perServing.carbs, key: 'carbs' },
       ]
     : [];
+
+  if (isHydrating) {
+    return (
+      <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <CircularProgress sx={{ color: 'primary.main' }} />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', py: 6 }}>
@@ -411,8 +497,34 @@ export default function RecipeInput() {
                 </AccordionDetails>
               </Accordion>
 
-              {/* 6. Reset */}
-              <Box sx={{ textAlign: 'center' }}>
+              {/* 6. Save to History + Reset */}
+              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
+                <MotionButton
+                  variant="contained"
+                  onClick={handleSaveToHistory}
+                  disabled={isSaving || Boolean(savedRecipeId)}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  sx={{
+                    bgcolor: savedRecipeId ? 'secondary.main' : 'primary.main',
+                    color: '#F0EADC',
+                    borderRadius: '20px',
+                    px: 3,
+                    '&:hover': { bgcolor: 'secondary.main' },
+                  }}
+                >
+                  {isSaving ? (
+                    <CircularProgress size={18} sx={{ color: '#F0EADC' }} />
+                  ) : savedRecipeId ? (
+                    'Saved!'
+                  ) : user ? (
+                    'Save to History'
+                  ) : (
+                    'Log in to save this'
+                  )}
+                </MotionButton>
+
                 <MotionButton
                   variant="text"
                   startIcon={<RotateCcw size={16} />}
