@@ -6,7 +6,7 @@
 // reviewing something already saved (no "Save to History"/"Analyze another"
 // actions, just the data + a way back + delete).
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -41,6 +41,9 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useAuth } from '../hooks/useAuth';
 import { getRecipe, deleteRecipe } from '../logic/firestoreRecipes';
 import { fadeUp, staggerContainer, scaleIn } from '../motion/variants';
+import MedicalRiskBadge from '../components/MedicalRiskBadge';
+import SubstitutionSuggestion from '../components/SubstitutionSuggestion';
+import { getSubstitutions } from '../logic/substitutionEngine';
 
 const MotionCard = motion(Card);
 
@@ -76,6 +79,12 @@ export default function RecipeDetails() {
   const [isLoading, setIsLoading] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  // Hooks must run unconditionally on every render -- this has to sit above
+  // the early returns below (loading spinner / "not found" state), even
+  // though `recipe` is still null on those first renders. Optional chaining
+  // keeps it safe: getSubstitutions([]) just returns [].
+  const substitutions = useMemo(() => getSubstitutions(recipe?.riskFlags), [recipe]);
 
   useEffect(() => {
     if (authLoading || !user || !recipeId) return;
@@ -122,7 +131,7 @@ export default function RecipeDetails() {
   if (!recipe) {
     return (
       <Box sx={{ maxWidth: 640, mx: 'auto', textAlign: 'center', py: 10 }}>
-        <Typography sx={{ fontSize: 26, color: 'text.secondary', mb: 2 }}>
+        <Typography sx={{ fontSize: 16, color: 'text.secondary', mb: 2 }}>
           This recipe couldn't be found.
         </Typography>
         <Button onClick={() => navigate('/history')} sx={{ color: 'primary.main' }}>
@@ -135,7 +144,7 @@ export default function RecipeDetails() {
     );
   }
 
-  const { recipeName, rawInput, servings, perServing, totals, ingredients, createdAt } = recipe;
+  const { recipeName, rawInput, servings, perServing, totals, ingredients, createdAt, riskFlags } = recipe;
 
   const macroChartData = [
     { name: 'Protein', value: perServing?.protein ?? 0, key: 'protein' },
@@ -206,6 +215,9 @@ export default function RecipeDetails() {
         </Grid>
       </motion.div>
 
+      {/* Medical risk badges (Increment 3) — renders nothing if riskFlags is empty */}
+      <MedicalRiskBadge flags={riskFlags} />
+
       <Grid container spacing={2} sx={{ mb: 2 }}>
         {/* Macro chart */}
         <Grid item xs={12} md={6}>
@@ -240,7 +252,7 @@ export default function RecipeDetails() {
                   flexGrow: 1,
                   overflowY: 'auto',
                   maxHeight: 220,
-                  fontSize: 18,
+                  fontSize: 13,
                   color: 'text.secondary',
                   whiteSpace: 'pre-wrap',
                   bgcolor: 'background.default',
@@ -254,6 +266,11 @@ export default function RecipeDetails() {
           </Card>
         </Grid>
       </Grid>
+
+      {/* Substitution suggestions (Increment 3) */}
+      <Box sx={{ mb: 2 }}>
+        <SubstitutionSuggestion suggestions={substitutions} />
+      </Box>
 
       {/* Ingredients used */}
       {Array.isArray(ingredients) && ingredients.length > 0 && (

@@ -107,17 +107,17 @@ function DrawerContent({ onNavigate }) {
     >
       {/* Logo */}
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 2.5, py: 3 }}>
-  <Box
-    component="img"
-    src="/assets/favicon.svg"
-    alt="NutriSense logo"
-    sx={{
-      width: 34,
-      height: 34,
-      borderRadius: '10px',
-      objectFit: 'contain',
-    }}
-  />
+      <Box
+        component="img"
+        src="/assets/favicon.svg"
+        alt="NutriSense logo"
+        sx={{
+          width: 34,
+          height: 34,
+          borderRadius: '10px',
+          objectFit: 'contain',
+        }}
+      />
   <Typography
     sx={{
       fontFamily: '"Special Gothic Expanded One", sans-serif',

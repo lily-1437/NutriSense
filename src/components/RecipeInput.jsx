@@ -9,10 +9,16 @@ import { ChevronDown, RotateCcw } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion, AnimatePresence, LayoutGroup, useMotionValue, useTransform, animate } from 'framer-motion';
 import ConfidenceChip from './ConfidenceChip';
+import MedicalRiskBadge from './MedicalRiskBadge';
+import SubstitutionSuggestion from './SubstitutionSuggestion';
+import ProfessionalConsultationAdvisory from './ProfessionalConsultationAdvisory';
 import { fadeUp, staggerContainer, scaleIn } from '../motion/variants';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { saveRecipe, getRecipe } from '../logic/firestoreRecipes';
+import { getUserConditions } from '../logic/firestoreUser';
+import { flagRisks } from '../logic/riskFlagging';
+import { getSubstitutions } from '../logic/substitutionEngine';
 
 // ---- Confirmed analyzeRecipe.js / calculateNutrition.js interface ----
 // prepareRecipeAnalysis(rawText: string) => Array<{
@@ -83,6 +89,13 @@ export default function RecipeInput({ recipeId }) {
   const [ingredients, setIngredients] = useState([]); // Stage 2 state
   const [expandedId, setExpandedId] = useState(null);
   const [nutrition, setNutrition] = useState(null); // Stage 3 state
+  const [matchedIngredients, setMatchedIngredients] = useState([]); // confirmedSelections shape, used by riskFlagging + save
+  const [riskFlags, setRiskFlags] = useState([]); // Increment 3 — computed once nutrition is finalized
+
+  // Substitutions are a pure derivation of riskFlags -- no separate state
+  // or Firestore round-trip needed, recomputes automatically whenever
+  // riskFlags changes (fresh analysis or hydrated from a saved recipe).
+  const substitutions = useMemo(() => getSubstitutions(riskFlags), [riskFlags]);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   // ---- History hydration (/history/:recipeId) ----
@@ -115,6 +128,8 @@ export default function RecipeInput({ recipeId }) {
         setRawText(data.rawInput ?? '');
         setServings(data.servings ?? 1);
         setNutrition({ totals: data.totals, perServing: data.perServing });
+        setMatchedIngredients(data.ingredients ?? []);
+        setRiskFlags(data.riskFlags ?? []);
         setSavedRecipeId(data.id);
         setStage('results');
         setIsHydrating(false);
@@ -164,7 +179,7 @@ export default function RecipeInput({ recipeId }) {
     );
   };
 
-  const handleConfirmMatches = () => {
+  const handleConfirmMatches = async () => {
     try {
       const confirmedSelections = ingredients.map((ing) => ({
         original: ing.original,
@@ -172,8 +187,23 @@ export default function RecipeInput({ recipeId }) {
       }));
       const result = finalizeNutrition(confirmedSelections, servings);
       setNutrition(result);
+      setMatchedIngredients(confirmedSelections);
       setStage('results');
       setSnackbar({ open: true, message: 'Matches confirmed', severity: 'success' });
+
+      // Increment 3: flag risks against the user's saved conditions as soon
+      // as results are available, so MedicalRiskBadge can show immediately
+      // -- not only after the recipe is explicitly saved to History.
+      if (user) {
+        try {
+          const conditions = await getUserConditions(user.uid);
+          setRiskFlags(flagRisks(conditions, { perServing: result.perServing, ingredients: confirmedSelections }));
+        } catch {
+          setRiskFlags([]);
+        }
+      } else {
+        setRiskFlags([]);
+      }
     } catch (err) {
       setSnackbar({ open: true, message: 'Could not calculate nutrition. Please try again.', severity: 'error' });
     }
@@ -192,10 +222,11 @@ export default function RecipeInput({ recipeId }) {
       const newId = await saveRecipe(user.uid, {
         recipeName: rawText.split('\n')[0]?.slice(0, 60) || 'Untitled recipe',
         rawInput: rawText,
-        ingredients,
+        ingredients: matchedIngredients,
         totals: nutrition.totals,
         perServing: nutrition.perServing,
         servings,
+        riskFlags, // already computed in handleConfirmMatches
       });
       setSavedRecipeId(newId);
       setSnackbar({ open: true, message: 'Saved to history', severity: 'success' });
@@ -211,7 +242,9 @@ export default function RecipeInput({ recipeId }) {
     setRawText('');
     setServings(1);
     setIngredients([]);
+    setMatchedIngredients([]);
     setNutrition(null);
+    setRiskFlags([]);
     setSavedRecipeId(null);
     setStage('input');
   };
@@ -395,6 +428,8 @@ export default function RecipeInput({ recipeId }) {
               exit="exit"
             >
               {/* ---------- Stage 3: Results ---------- */}
+              <ProfessionalConsultationAdvisory flags={riskFlags} />
+
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                 Per serving ({servings} {servings === 1 ? 'serving' : 'servings'} total)
               </Typography>
@@ -423,8 +458,8 @@ export default function RecipeInput({ recipeId }) {
                 </Grid>
               </motion.div>
 
-              {/* 2. Medical risk badge placeholder — wired in Increment 3 */}
-              {/* <MedicalRiskBadge flags={riskFlags} /> */}
+              {/* 2. Medical risk badges (Increment 3) — renders nothing if flags is empty */}
+              <MedicalRiskBadge flags={riskFlags} />
 
               <Grid container spacing={2} sx={{ mb: 2 }}>
                 {/* 3. Macro chart */}
@@ -459,16 +494,9 @@ export default function RecipeInput({ recipeId }) {
                   </MotionCard>
                 </Grid>
 
-                {/* 4. Substitution suggestions placeholder — Increment 3 */}
+                {/* 4. Substitution suggestions (Increment 3) */}
                 <Grid item xs={12} md={6}>
-                  <Card sx={{ borderRadius: '16px', p: 1, opacity: 0.6 }} elevation={1}>
-                    <CardContent>
-                      <Typography variant="subtitle1" sx={{ mb: 1 }}>Suggested Substitutions</Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Available once condition-aware substitution ships in Increment 3.
-                      </Typography>
-                    </CardContent>
-                  </Card>
+                  <SubstitutionSuggestion suggestions={substitutions} />
                 </Grid>
               </Grid>
 
@@ -508,14 +536,14 @@ export default function RecipeInput({ recipeId }) {
                   transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                   sx={{
                     bgcolor: savedRecipeId ? 'secondary.main' : 'primary.main',
-                    color: '#F0EADC',
+                    color: 'primary.contrastText',
                     borderRadius: '20px',
                     px: 3,
                     '&:hover': { bgcolor: 'secondary.main' },
                   }}
                 >
                   {isSaving ? (
-                    <CircularProgress size={18} sx={{ color: '#F0EADC' }} />
+                    <CircularProgress size={18} sx={{ color: 'primary.contrastText' }} />
                   ) : savedRecipeId ? (
                     'Saved!'
                   ) : user ? (

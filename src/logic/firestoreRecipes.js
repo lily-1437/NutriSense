@@ -7,11 +7,11 @@ import {
 const recipesRef = (uid) => collection(db, 'users', uid, 'recipes');
 
 // Save a finished analysis (called from Stage 3 "Save to History")
-export async function saveRecipe(uid, { recipeName, rawInput, ingredients, totals, perServing, servings }) {
+export async function saveRecipe(uid, { recipeName, rawInput, ingredients, totals, perServing, servings, riskFlags = [] }) {
   const docRef = await addDoc(recipesRef(uid), {
     recipeName, rawInput, ingredients, totals, perServing, servings,
     createdAt: serverTimestamp(),
-    riskFlags: [], // populated in Increment 3
+    riskFlags, // Increment 3: computed by riskFlagging.js before save
   });
   return docRef.id;
 }
