@@ -15,8 +15,8 @@ import AnalyzeRecipe from './pages/AnalyzeRecipe';
 import Dashboard from './pages/Dashboard';
 import HealthGoals from './pages/HealthGoals';
 //import Profile from './pages/Profile';
-//import MealPlanner from './pages/MealPlanner';
-//import Simulator from './pages/Simulator';
+import MealPlanner from './pages/MealPlanner';
+import Simulator from './pages/Simulator';
 import History from './pages/History';
 import RecipeDetails from './pages/RecipeDetails';
 import NotFound from './pages/NotFound';
@@ -55,9 +55,9 @@ export const router = createBrowserRouter([
       { path: '/dashboard', element: <Dashboard /> },
       { path: '/goals', element: <HealthGoals /> },
       //{ path: '/profile', element: <Profile /> },
-      //{ path: '/meal-planner', element: <MealPlanner /> },
-      //{ path: '/simulator', element: <Simulator /> },
-      //{ path: '/simulator/:recipeId', element: <Simulator /> }, // pre-loaded from History/Dashboard
+      { path: '/meal-planner', element: <MealPlanner /> },
+      { path: '/simulator', element: <Simulator /> },
+      { path: '/simulator/:recipeId', element: <Simulator /> }, // pre-loaded from History/Dashboard
       { path: '/history', element: <History /> },
       { path: '/history/:recipeId', element: <RecipeDetails /> }, // dedicated read-only detail view for a saved recipe
     ],

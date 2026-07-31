@@ -1,3 +1,4 @@
+// src/pages/RecipeInput.jsx (or src/components/RecipeInput.jsx — keep at its current path)
 import { useState, useMemo, useEffect } from 'react';
 import {
   Box, Container, TextField, Button, CircularProgress, Typography,
@@ -6,12 +7,12 @@ import {
   Table, TableHead, TableRow, TableCell, TableBody, Snackbar, Alert,
 } from '@mui/material';
 import { ChevronDown, RotateCcw } from 'lucide-react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import { motion, AnimatePresence, LayoutGroup, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import ConfidenceChip from './ConfidenceChip';
 import MedicalRiskBadge from './MedicalRiskBadge';
 import SubstitutionSuggestion from './SubstitutionSuggestion';
 import ProfessionalConsultationAdvisory from './ProfessionalConsultationAdvisory';
+import NutritionSummary from './NutritionSummary';
 import { fadeUp, staggerContainer, scaleIn } from '../motion/variants';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -32,17 +33,10 @@ import { getSubstitutions } from '../logic/substitutionEngine';
 // }
 import { prepareRecipeAnalysis, finalizeNutrition } from '../logic/analyzeRecipe';
 
-const MotionButton = motion(Button);
-const MotionCard = motion(Card);
-
-const MACRO_COLORS = {
-  protein: '#576238', // Verdigris
-  fat: '#FFD95E',     // Dandelion
-  carbs: '#8D844D',   // Shadow
-};
+const MotionButton = motion.create(Button);
 
 // Extra per-100g fields calculateNutrition.js returns on `totals`/`perServing`,
-// beyond the four headline macros shown in the summary cards.
+// beyond the four headline macros shown in NutritionSummary's stat cards.
 const MICRO_LABELS = {
   sat_fat: 'Saturated Fat (g)',
   fiber: 'Fiber (g)',
@@ -58,25 +52,6 @@ const stageVariants = {
   animate: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
   exit: { opacity: 0, x: -40, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
 };
-
-// ---- Count-up number (roadmap §7.8) ----
-function CountUpNumber({ value, ...typographyProps }) {
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (v) => Math.round(v));
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    const controls = animate(count, value, { duration: 0.6, ease: 'easeOut' });
-    const unsub = rounded.on('change', (v) => setDisplay(v));
-    return () => {
-      controls.stop();
-      unsub();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
-
-  return <Typography {...typographyProps}>{display}</Typography>;
-}
 
 export default function RecipeInput({ recipeId }) {
   const { user } = useAuth();
@@ -185,7 +160,7 @@ export default function RecipeInput({ recipeId }) {
         original: ing.original,
         matchedItem: ing.candidates.find((c) => c.fdc_id === ing.selectedMatchId) ?? null,
       }));
-      const result = finalizeNutrition(confirmedSelections, servings);
+      const result = finalizeNutrition(confirmedSelections, servings, rawText);
       setNutrition(result);
       setMatchedIngredients(confirmedSelections);
       setStage('results');
@@ -249,14 +224,6 @@ export default function RecipeInput({ recipeId }) {
     setStage('input');
   };
 
-  const macroChartData = nutrition
-    ? [
-        { name: 'Protein', value: nutrition.perServing.protein, key: 'protein' },
-        { name: 'Fat', value: nutrition.perServing.fat, key: 'fat' },
-        { name: 'Carbs', value: nutrition.perServing.carbs, key: 'carbs' },
-      ]
-    : [];
-
   if (isHydrating) {
     return (
       <Box sx={{ bgcolor: 'background.default', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -278,65 +245,61 @@ export default function RecipeInput({ recipeId }) {
               exit="exit"
             >
               {/* ---------- Stage 1: Input ---------- */}
-              <MotionCard
-                variants={scaleIn}
-                initial="hidden"
-                animate="visible"
-                sx={{ borderRadius: '16px', maxWidth: 640, mx: 'auto', p: 1 }}
-                elevation={1}
-              >
-                <CardContent>
-                  <Typography
-                    variant="h3"
-                    sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif', mb: 2, color: 'text.primary' }}
-                  >
-                    Analyze a Recipe
-                  </Typography>
-                  <TextField
-                    multiline
-                    minRows={8}
-                    fullWidth
-                    value={rawText}
-                    onChange={(e) => setRawText(e.target.value)}
-                    label="Paste your recipe ingredients"
-                    helperText="One ingredient per line works best"
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        '& fieldset': { borderColor: 'text.secondary' },
-                        '&.Mui-focused fieldset': { borderColor: 'primary.main' },
-                      },
-                    }}
-                  />
-                  <TextField
-                    type="number"
-                    label="Servings"
-                    value={servings}
-                    onChange={(e) => setServings(Math.max(1, Number(e.target.value) || 1))}
-                    inputProps={{ min: 1 }}
-                    sx={{ mt: 2, width: 120 }}
-                  />
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-                    <MotionButton
-                      variant="contained"
-                      disabled={!rawText.trim() || isParsing}
-                      onClick={handleParse}
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.96 }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                      sx={{
-                        bgcolor: 'primary.main',
-                        color: '#F0EADC',
-                        borderRadius: '20px',
-                        px: 3,
-                        transition: 'background-color 200ms ease',
-                        '&:hover': { bgcolor: 'secondary.main' },
-                      }}
+              <motion.div variants={scaleIn} initial="hidden" animate="visible">
+                <Card sx={{ borderRadius: '16px', maxWidth: 640, mx: 'auto', p: 1 }} elevation={1}>
+                  <CardContent>
+                    <Typography
+                      variant="h3"
+                      sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif', mb: 2, color: 'text.primary' }}
                     >
-                      {isParsing ? <CircularProgress size={20} sx={{ color: '#F0EADC' }} /> : 'Parse Recipe'}
-                    </MotionButton>
-                  </Box>
-                </CardContent>
-              </MotionCard>
+                      Analyze a Recipe
+                    </Typography>
+                    <TextField
+                      multiline
+                      minRows={8}
+                      fullWidth
+                      value={rawText}
+                      onChange={(e) => setRawText(e.target.value)}
+                      label="Paste your recipe ingredients"
+                      helperText="One ingredient per line works best"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': { borderColor: 'text.secondary' },
+                          '&.Mui-focused fieldset': { borderColor: 'primary.main' },
+                        },
+                      }}
+                    />
+                    <TextField
+                      type="number"
+                      label="Servings"
+                      value={servings}
+                      onChange={(e) => setServings(Math.max(1, Number(e.target.value) || 1))}
+                      inputProps={{ min: 1 }}
+                      sx={{ mt: 2, width: 120 }}
+                    />
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                      <MotionButton
+                        variant="contained"
+                        disabled={!rawText.trim() || isParsing}
+                        onClick={handleParse}
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.96 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                        sx={{
+                          bgcolor: 'primary.main',
+                          color: '#F0EADC',
+                          borderRadius: '20px',
+                          px: 3,
+                          transition: 'background-color 200ms ease',
+                          '&:hover': { bgcolor: 'secondary.main' },
+                        }}
+                      >
+                        {isParsing ? <CircularProgress size={20} sx={{ color: '#F0EADC' }} /> : 'Parse Recipe'}
+                      </MotionButton>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </motion.div>
           )}
 
@@ -434,73 +397,22 @@ export default function RecipeInput({ recipeId }) {
                 Per serving ({servings} {servings === 1 ? 'serving' : 'servings'} total)
               </Typography>
 
-              {/* 1. Nutrition summary */}
-              <motion.div variants={staggerContainer(0.08)} initial="hidden" animate="visible">
-                <Grid container spacing={2} sx={{ mb: 2 }}>
-                  {['calories', 'protein', 'fat', 'carbs'].map((key) => (
-                    <Grid item xs={6} sm={3} key={key}>
-                      <motion.div variants={fadeUp}>
-                        <Card sx={{ borderRadius: '16px', textAlign: 'center', p: 1 }} elevation={1}>
-                          <CardContent>
-                            <CountUpNumber
-                              value={Math.round(nutrition.perServing[key])}
-                              variant="h4"
-                              sx={{ color: 'primary.dark', fontFamily: '"Special Gothic Expanded One", sans-serif' }}
-                            />
-                            <Typography variant="caption" sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
-                              {key === 'calories' ? 'Calories' : `${key} (g)`}
-                            </Typography>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    </Grid>
-                  ))}
-                </Grid>
-              </motion.div>
+              {/* 1. Nutrition summary — stat cards + macro chart, now shared with Simulator */}
+              <Box sx={{ mb: 2 }}>
+                <NutritionSummary nutrition={nutrition} />
+              </Box>
 
               {/* 2. Medical risk badges (Increment 3) — renders nothing if flags is empty */}
               <MedicalRiskBadge flags={riskFlags} />
 
-              <Grid container spacing={2} sx={{ mb: 2 }}>
-                {/* 3. Macro chart */}
-                <Grid item xs={12} md={6}>
-                  <MotionCard
-                    variants={scaleIn}
-                    initial="hidden"
-                    animate="visible"
-                    sx={{ borderRadius: '16px', p: 1 }}
-                    elevation={1}
-                  >
-                    <CardContent>
-                      <Typography variant="subtitle1" sx={{ mb: 1 }}>Macronutrient Breakdown</Typography>
-                      <ResponsiveContainer width="100%" height={220}>
-                        <PieChart>
-                          <Pie
-                            data={macroChartData}
-                            dataKey="value"
-                            nameKey="name"
-                            outerRadius={80}
-                            isAnimationActive
-                            animationDuration={400}
-                          >
-                            {macroChartData.map((entry) => (
-                              <Cell key={entry.key} fill={MACRO_COLORS[entry.key]} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                        </PieChart>
-                      </ResponsiveContainer>
-                    </CardContent>
-                  </MotionCard>
-                </Grid>
+              {/* 3. Substitution suggestions (Increment 3) — full-width now that the
+                   macro chart lives inside NutritionSummary above rather than sharing
+                   a 2-column row with this */}
+              <Box sx={{ mb: 2 }}>
+                <SubstitutionSuggestion suggestions={substitutions} />
+              </Box>
 
-                {/* 4. Substitution suggestions (Increment 3) */}
-                <Grid item xs={12} md={6}>
-                  <SubstitutionSuggestion suggestions={substitutions} />
-                </Grid>
-              </Grid>
-
-              {/* 5. Micronutrient table, collapsed by default */}
+              {/* 4. Micronutrient table, collapsed by default */}
               <Accordion sx={{ borderRadius: '16px', mb: 2 }}>
                 <AccordionSummary expandIcon={<ChevronDown size={20} />}>
                   <Typography variant="subtitle1">Micronutrient Detail</Typography>
@@ -525,7 +437,7 @@ export default function RecipeInput({ recipeId }) {
                 </AccordionDetails>
               </Accordion>
 
-              {/* 6. Save to History + Reset */}
+              {/* 5. Save to History + Reset */}
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
                 <MotionButton
                   variant="contained"

@@ -14,7 +14,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { scaleIn, fadeUp, staggerContainer } from '../motion/variants';
 
-const MotionBox = motion(Box);
+// motion.create() replaces the deprecated motion() wrapper syntax
+// (Framer Motion v12.42.2) — see project motion notes.
+const MotionBox = motion.create(Box);
 
 export default function AuthLayout({ headline, description, title, titleLinkTo, subtitle, children, imageSrc }) {
   return (

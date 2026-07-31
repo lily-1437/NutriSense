@@ -34,7 +34,7 @@ import { getAllRecipes, deleteRecipe } from '../logic/firestoreRecipes';
 import { fadeUp, staggerContainer } from '../motion/variants';
 import EmptyState from '../components/EmptyState';
 
-const MotionCard = motion(Card);
+const MotionCard = motion.create(Card);
 
 function formatDate(timestamp) {
   // Firestore Timestamp -> JS Date. Guard for the brief window right after

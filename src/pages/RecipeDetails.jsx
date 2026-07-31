@@ -4,7 +4,7 @@
 // clicking a card in History.jsx. Separate from AnalyzeRecipe/RecipeInput's
 // Stage 3 -- that flow is for live analysis; this page is purely for
 // reviewing something already saved (no "Save to History"/"Analyze another"
-// actions, just the data + a way back + delete).
+// actions, just the data + a way back + delete + a way into Simulator).
 
 import { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -35,7 +35,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ChevronDown, Trash2 } from 'lucide-react';
+import { ArrowLeft, ChevronDown, Trash2, SlidersHorizontal } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 import { useAuth } from '../hooks/useAuth';
@@ -45,7 +45,8 @@ import MedicalRiskBadge from '../components/MedicalRiskBadge';
 import SubstitutionSuggestion from '../components/SubstitutionSuggestion';
 import { getSubstitutions } from '../logic/substitutionEngine';
 
-const MotionCard = motion(Card);
+const MotionCard = motion.create(Card);
+const MotionButton = motion.create(Button);
 
 const MICRO_LABELS = {
   sat_fat: 'Saturated Fat (g)',
@@ -120,6 +121,10 @@ export default function RecipeDetails() {
     }
   };
 
+  const handleSimulate = () => {
+    navigate(`/simulator?recipeId=${recipeId}`);
+  };
+
   if (authLoading || isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', py: 10 }}>
@@ -154,8 +159,8 @@ export default function RecipeDetails() {
 
   return (
     <Box sx={{ maxWidth: 860, mx: 'auto', px: { xs: 2, md: 0 }, py: 4 }}>
-      {/* Back + delete row */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+      {/* Back + Simulate + delete row */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, flexWrap: 'wrap', gap: 1 }}>
         <Button
           startIcon={<ArrowLeft size={17} />}
           onClick={() => navigate('/history')}
@@ -163,9 +168,29 @@ export default function RecipeDetails() {
         >
           Back to History
         </Button>
-        <IconButton onClick={() => setConfirmDelete(true)} sx={{ color: 'secondary.main' }}>
-          <Trash2 size={18} />
-        </IconButton>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <MotionButton
+            variant="outlined"
+            startIcon={<SlidersHorizontal size={16} />}
+            onClick={handleSimulate}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            sx={{
+              borderColor: 'primary.main',
+              color: 'primary.main',
+              borderRadius: '20px',
+              textTransform: 'none',
+              '&:hover': { bgcolor: 'primary.main', color: '#F0EADC' },
+            }}
+          >
+            Simulate This Recipe
+          </MotionButton>
+          <IconButton onClick={() => setConfirmDelete(true)} sx={{ color: 'secondary.main' }}>
+            <Trash2 size={18} />
+          </IconButton>
+        </Box>
       </Box>
 
       <motion.div initial="hidden" animate="visible" variants={fadeUp}>

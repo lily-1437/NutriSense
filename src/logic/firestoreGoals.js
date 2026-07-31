@@ -1,7 +1,7 @@
 // src/logic/firestoreGoals.js
 import { db } from '../firebase';
 import {
-  collection, doc, getDocs, addDoc, updateDoc, deleteDoc, serverTimestamp,
+  collection, doc, getDocs, query, where, addDoc, updateDoc, deleteDoc, serverTimestamp,
 } from 'firebase/firestore';
 
 const goalsRef = (uid) => collection(db, 'users', uid, 'goals');
@@ -21,6 +21,15 @@ export async function createGoal(uid, {
 
 export async function getAllGoals(uid) {
   const snap = await getDocs(goalsRef(uid));
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+// Server-side filtered — cheaper than pulling every goal a user has ever
+// created just to find the current one. Used by MealPlanner so the AI coach
+// personalizes against the user's CURRENT goal, not a stale/completed one.
+export async function getActiveGoals(uid) {
+  const q = query(goalsRef(uid), where('status', '==', 'active'));
+  const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 

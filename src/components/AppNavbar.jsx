@@ -10,7 +10,7 @@ import { useAuth } from '../hooks/useAuth';
 
 const NAV_LINKS = [
   { label: 'Analyze', path: '/analyze' },
-  { label: 'Meal Plans', path: '/meal-plans' },
+  { label: 'Meal Plans', path: '/meal-planner' },
   { label: 'Goals', path: '/goals' },
   { label: 'About', path: '/about' },
 ];
