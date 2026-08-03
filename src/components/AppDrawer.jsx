@@ -33,6 +33,7 @@ import {
   CalendarDays,
   SlidersHorizontal,
   Target,
+  Calculator,
   History as HistoryIcon,
   UserCircle,
   LogOut,
@@ -48,6 +49,7 @@ const primaryNav = [
   { label: 'Analyze Recipe', to: '/analyze', icon: UtensilsCrossed },
   { label: 'Meal Planner', to: '/meal-planner', icon: CalendarDays },
   { label: 'Simulator', to: '/simulator', icon: SlidersHorizontal },
+  { label: 'BMI', to: '/bmi', icon: Calculator },
   { label: 'Health Goals', to: '/goals', icon: Target },
 ];
 

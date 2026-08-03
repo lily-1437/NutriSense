@@ -1,8 +1,3 @@
-// src/router.jsx
-// Route structure for NutriSense — matches Page Navigation Map.
-// Two shells: PublicLayout (AppNavbar only) and AppLayout (AppNavbar + AppDrawer).
-// ProtectedRoute redirects to /login if not authenticated, preserving intended destination.
-
 import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom';
 
 import PublicLayout from './layouts/PublicLayout';
@@ -14,9 +9,10 @@ import Signup from './pages/Signup';
 import AnalyzeRecipe from './pages/AnalyzeRecipe';
 import Dashboard from './pages/Dashboard';
 import HealthGoals from './pages/HealthGoals';
-//import Profile from './pages/Profile';
+import Profile from './pages/Profile';
 import MealPlanner from './pages/MealPlanner';
 import Simulator from './pages/Simulator';
+import BMI from './pages/BMI';
 import History from './pages/History';
 import RecipeDetails from './pages/RecipeDetails';
 import NotFound from './pages/NotFound';
@@ -34,14 +30,11 @@ function ProtectedRoute({ children }) {
 
 export const router = createBrowserRouter([
   {
-    element: <PublicLayout />, // AppNavbar only, no drawer
+    element: <PublicLayout />, 
     children: [
       { path: '/', element: <Home /> },
       { path: '/login', element: <Login /> },
       { path: '/signup', element: <Signup /> },
-      // Analyze Recipe is intentionally OUTSIDE ProtectedRoute — usable logged out.
-      // Stage 3's "Save to History" button checks auth state internally and
-      // prompts login rather than gating the whole route.
       { path: '/analyze', element: <AnalyzeRecipe /> },
     ],
   },
@@ -54,12 +47,13 @@ export const router = createBrowserRouter([
     children: [
       { path: '/dashboard', element: <Dashboard /> },
       { path: '/goals', element: <HealthGoals /> },
-      //{ path: '/profile', element: <Profile /> },
+      { path: '/profile', element: <Profile /> },
       { path: '/meal-planner', element: <MealPlanner /> },
       { path: '/simulator', element: <Simulator /> },
-      { path: '/simulator/:recipeId', element: <Simulator /> }, // pre-loaded from History/Dashboard
+      { path: '/simulator/:recipeId', element: <Simulator /> }, 
+      { path: '/bmi', element: <BMI /> },
       { path: '/history', element: <History /> },
-      { path: '/history/:recipeId', element: <RecipeDetails /> }, // dedicated read-only detail view for a saved recipe
+      { path: '/history/:recipeId', element: <RecipeDetails /> }, 
     ],
   },
   { path: '*', element: <NotFound /> },
