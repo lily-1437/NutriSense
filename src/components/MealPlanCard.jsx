@@ -1,223 +1,211 @@
 // src/components/MealPlanCard.jsx
 import { useState } from 'react';
+import { Box, Typography, Stack, Collapse, IconButton, Divider } from '@mui/material';
+import { motion } from 'framer-motion';
 import {
-  Card, CardContent, Box, Typography, Stack, Divider, Chip, Grid,
-  Dialog, DialogContent, IconButton, Button,
-} from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Dumbbell, Sparkles, X, RefreshCw, CheckCircle2, Circle } from 'lucide-react';
+  Coffee, UtensilsCrossed, Soup, Apple,
+  CheckCircle2, Circle, ChevronDown, Flame,
+} from 'lucide-react';
 import { fadeUp, staggerContainer } from '../motion/variants';
 
-const MotionCard = motion.create(Card);
-const MotionButton = motion.create(Button);
+const MotionBox = motion.create(Box);
 
-const MEAL_ORDER = ['breakfast', 'lunch', 'dinner', 'snack'];
-const MEAL_LABELS = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snack: 'Snack' };
+const DAY_PALETTE = ['#F7DDD5', '#D8A4AF', '#AFB8CD', '#CCC3D1', '#8D8B4C', '#65613F', '#6B403B'];
 
-function dayTeaser(day) {
-  return day.meals?.dinner?.recipeName || day.meals?.lunch?.recipeName || 'View meals';
+function textColorFor(hex) {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luminance > 0.6 ? '#6B403B' : '#F7DDD5';
 }
 
-// plan.completed is a { [day]: boolean } map, e.g. { Monday: true, Tuesday: false }
-export default function MealPlanCard({ plan, onRegenerate, regenerating, onToggleDone }) {
-  const [selectedDay, setSelectedDay] = useState(null);
+function toDate(generatedAt) {
+  if (!generatedAt) return null;
+  if (generatedAt instanceof Date) return generatedAt;
+  if (typeof generatedAt === 'number') return new Date(generatedAt);
+  if (typeof generatedAt.toDate === 'function') return generatedAt.toDate();
+  if (typeof generatedAt.seconds === 'number') return new Date(generatedAt.seconds * 1000);
+  return null;
+}
 
-  const isDone = (dayName) => Boolean(plan.completed?.[dayName]);
+function deriveDisplayDate(generatedAt, dayIndex) {
+  const base = toDate(generatedAt);
+  if (!base || Number.isNaN(base.getTime())) return { weekday: null, dateLabel: null };
+  const date = new Date(base);
+  date.setDate(date.getDate() + dayIndex);
+  return {
+    weekday: date.toLocaleDateString('en-US', { weekday: 'long' }),
+    dateLabel: date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }),
+  };
+}
+
+const MEAL_META = {
+  breakfast: { label: 'Breakfast', icon: Coffee },
+  lunch: { label: 'Lunch', icon: UtensilsCrossed },
+  dinner: { label: 'Dinner', icon: Soup },
+  snack: { label: 'Snack', icon: Apple },
+};
+const MEAL_ORDER = ['breakfast', 'lunch', 'dinner', 'snack'];
+
+function MealRow({ mealKey, meal, textColor, mutedColor }) {
+  const [open, setOpen] = useState(false);
+  const Meta = MEAL_META[mealKey];
+  const hasDetail = Boolean(meal.estCalories || meal.estProtein);
 
   return (
     <Box>
-      {plan.weeklyIntro && (
-        <Card
-          component={motion.div}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          sx={{ p: 3, mb: 3, borderRadius: 3, bgcolor: 'accent.main', color: 'accent.contrastText' }}
-        >
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-            <Sparkles size={18} />
-            <Typography variant="caption" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>
-              YOUR AI COACH
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={1.5}
+        onClick={() => hasDetail && setOpen((v) => !v)}
+        sx={{ cursor: hasDetail ? 'pointer' : 'default', py: 1 }}
+      >
+        <Meta.icon size={18} color={textColor} style={{ opacity: 0.85, flexShrink: 0 }} />
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Typography variant="caption" sx={{ color: mutedColor, fontWeight: 700, letterSpacing: 0.4, fontSize: '0.72rem' }}>
+            {Meta.label.toUpperCase()}
+          </Typography>
+          <Typography variant="body1" sx={{ color: textColor, fontWeight: 700, fontSize: 16, lineHeight: 1.35 }}>
+            {meal.recipeName}
+          </Typography>
+        </Box>
+        {hasDetail && (
+          <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
+            <ChevronDown size={18} color={mutedColor} />
+          </motion.div>
+        )}
+      </Stack>
+      <Collapse in={open} timeout={200}>
+        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ pb: 1.25, pl: '30px' }}>
+          {meal.estCalories && (
+            <Stack direction="row" spacing={0.5} alignItems="center">
+              <Flame size={14} color={mutedColor} />
+              <Typography variant="body2" sx={{ color: mutedColor }}>
+                ~{meal.estCalories} kcal
+              </Typography>
+            </Stack>
+          )}
+          {meal.estProtein && (
+            <Typography variant="body2" sx={{ color: mutedColor }}>
+              {meal.estProtein}g protein
             </Typography>
-          </Stack>
-          <Typography variant="body1">{plan.weeklyIntro}</Typography>
-        </Card>
-      )}
+          )}
+          {meal.rationale && (
+            <Typography variant="body2" sx={{ color: mutedColor, fontStyle: 'italic' }}>
+              {meal.rationale}
+            </Typography>
+          )}
+        </Stack>
+      </Collapse>
+    </Box>
+  );
+}
 
-      {!plan.aiGenerated && (
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
-          AI personalization is temporarily unavailable — showing your condition-matched plan with standard tips.
-        </Typography>
-      )}
+export default function MealPlanCard({ plan, onToggleDone }) {
+  const isDone = (dayKey) => Boolean(plan.completed?.[dayKey]);
 
-      <motion.div variants={staggerContainer(0.06)} initial="hidden" animate="visible">
-        <Grid container spacing={2}>
-          {plan.days.map((day) => {
-            const done = isDone(day.day);
-            return (
-              <Grid item xs={6} sm={4} md={3} lg={12 / 7} key={day.day}>
-                <motion.div variants={fadeUp}>
-                  <MotionCard
-                    onClick={() => setSelectedDay(day)}
-                    whileHover={{ y: -4 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-                    sx={{
-                      borderRadius: 3,
-                      bgcolor: 'background.paper',
-                      cursor: 'pointer',
-                      height: '100%',
-                      position: 'relative',
-                      opacity: done ? 0.65 : 1,
-                    }}
-                    elevation={0}
-                  >
-                    {done && (
-                      <CheckCircle2
-                        size={16}
-                        color="#637239"
-                        style={{ position: 'absolute', top: 8, right: 8 }}
-                      />
-                    )}
-                    <CardContent>
-                      <Typography variant="caption" sx={{ color: 'accent.dark', fontWeight: 700 }}>
-                        {day.day.toUpperCase()}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          fontWeight: 600,
-                          mt: 0.5,
-                          fontSize: 14,
-                          lineHeight: 1.3,
-                          textDecoration: done ? 'line-through' : 'none',
-                        }}
-                      >
-                        {dayTeaser(day)}
-                      </Typography>
-                    </CardContent>
-                  </MotionCard>
-                </motion.div>
-              </Grid>
-            );
-          })}
-        </Grid>
-      </motion.div>
+  return (
+    <motion.div variants={staggerContainer(0.09)} initial="hidden" animate="visible">
+      <Stack spacing={2.5}>
+        {plan.days.map((day, i) => {
+          const bg = DAY_PALETTE[i % DAY_PALETTE.length];
+          const textColor = textColorFor(bg);
+          const mutedColor = textColor === '#6B403B' ? 'rgba(107,64,59,0.68)' : 'rgba(247,221,213,0.8)';
+          const dividerColor = textColor === '#6B403B' ? 'rgba(107,64,59,0.18)' : 'rgba(247,221,213,0.25)';
+          const done = isDone(day.day);
+          const { weekday, dateLabel } = deriveDisplayDate(plan.generatedAt, i);
 
-      <Dialog open={Boolean(selectedDay)} onClose={() => setSelectedDay(null)} maxWidth="sm" fullWidth>
-        <AnimatePresence mode="wait">
-          {selectedDay && (
-            <Box
-              component={motion.div}
-              key={selectedDay.day}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+          return (
+            <MotionBox
+              key={day.day}
+              variants={fadeUp}
+              whileTap={{ scale: 0.99 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 26 }}
+              sx={{
+                bgcolor: bg,
+                borderRadius: '16px',
+                border: '2px solid',
+                borderColor: 'rgba(78, 41, 37, 0.96)',
+                p: { xs: 2.5, sm: 3.5 },
+                position: 'relative',
+                opacity: done ? 0.72 : 1,
+              }}
             >
-              <DialogContent
-                sx={{
-                  p: 3,
-                  // Hide scrollbar visually while keeping the content scrollable
-                  scrollbarWidth: 'none', // Firefox
-                  '&::-webkit-scrollbar': { display: 'none' }, // Chrome/Safari/Edge
-                  msOverflowStyle: 'none', // old Edge/IE
-                }}
+              <IconButton
+                size="small"
+                onClick={() => onToggleDone?.(day.day)}
+                sx={{ position: 'absolute', top: 14, right: 14, color: textColor }}
               >
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                  <Typography variant="h3" sx={{ fontSize: '1.3rem' }}>
-                    {selectedDay.day}
+                {done ? <CheckCircle2 size={22} /> : <Circle size={22} />}
+              </IconButton>
+
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={0}>
+                <Box sx={{ minWidth: { sm: 170 }, flexShrink: 0 }}>
+                  <Typography
+                    variant="h3"
+                    sx={{ fontSize: '1.5rem', color: textColor, fontFamily: '"Special Gothic Expanded One", sans-serif' }}
+                  >
+                    {weekday || day.day}
                   </Typography>
-                  <IconButton size="small" onClick={() => setSelectedDay(null)}>
-                    <X size={18} />
-                  </IconButton>
-                </Box>
-
-                <Stack spacing={2}>
-                  {MEAL_ORDER.map((mealKey) => {
-                    const meal = selectedDay.meals?.[mealKey];
-                    if (!meal) return null;
-                    return (
-                      <Box key={mealKey}>
-                        <Typography variant="caption" sx={{ color: 'accent.dark', fontWeight: 700 }}>
-                          {MEAL_LABELS[mealKey].toUpperCase()}
-                        </Typography>
-                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                          {meal.recipeName}
-                        </Typography>
-                        <Typography variant="body1" color="text.secondary">
-                          {meal.rationale}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          ~{meal.estCalories} kcal
-                        </Typography>
-                      </Box>
-                    );
-                  })}
-                </Stack>
-
-                <Divider sx={{ my: 2 }} />
-
-                <Stack spacing={1.5}>
-                  <Stack direction="row" spacing={1} alignItems="flex-start">
-                    <Dumbbell size={18} color="#ffcd28" style={{ marginTop: 2 }} />
-                    <Typography variant="body1">{selectedDay.exerciseTip}</Typography>
-                  </Stack>
-
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    alignItems="flex-start"
-                    sx={{ bgcolor: 'background.default', p: 1.5, borderRadius: 2 }}
-                  >
-                    <Sparkles size={16} color="#8D844D" style={{ marginTop: 2 }} />
-                    <Box>
-                      <Chip
-                        label="Coach's Note"
-                        size="small"
-                        sx={{ mb: 0.5, height: 18, fontSize: '0.65rem', bgcolor: 'secondary.main', color: '#F0EADC' }}
-                      />
-                      <Typography variant="body1">{selectedDay.coachNote}</Typography>
-                    </Box>
-                  </Stack>
-                </Stack>
-
-                <Divider sx={{ my: 2 }} />
-
-                {/* Mark as done / not done */}
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1.5 }}>
-                  <MotionButton
-                    variant={isDone(selectedDay.day) ? 'contained' : 'outlined'}
-                    startIcon={isDone(selectedDay.day) ? <CheckCircle2 size={16} /> : <Circle size={16} />}
-                    onClick={() => onToggleDone?.(selectedDay.day)}
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.96 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-                    sx={
-                      isDone(selectedDay.day)
-                        ? { bgcolor: 'primary.main', color: '#F0EADC', borderRadius: '20px', '&:hover': { bgcolor: 'primary.dark' } }
-                        : { borderColor: 'primary.main', color: 'primary.main', borderRadius: '20px', '&:hover': { bgcolor: 'primary.main', color: '#F0EADC' } }
-                    }
-                  >
-                    {isDone(selectedDay.day) ? 'Marked as Done' : 'Mark as Done'}
-                  </MotionButton>
-
-                  {onRegenerate && (
-                    <MotionButton
-                      variant="text"
-                      disabled={regenerating}
-                      onClick={onRegenerate}
-                      startIcon={<RefreshCw size={16} />}
-                      whileHover={{ scale: 1.03 }}
-                      sx={{ color: 'secondary.main' }}
-                    >
-                      {regenerating ? 'Regenerating…' : 'Regenerate Plan'}
-                    </MotionButton>
+                  {dateLabel && (
+                    <Typography variant="body2" sx={{ color: mutedColor, fontWeight: 600 }}>
+                      {dateLabel}
+                    </Typography>
+                  )}
+                  {day.healthTip && (
+                    <Typography variant="body2" sx={{ display: 'block', color: mutedColor, mt: 1 }}>
+                      {day.healthTip}
+                    </Typography>
+                  )}
+                  {day.exerciseTip && (
+                    <Typography variant="body2" sx={{ display: 'block', color: mutedColor, mt: 1, fontStyle: 'italic' }}>
+                      {day.exerciseTip}
+                    </Typography>
                   )}
                 </Box>
-              </DialogContent>
-            </Box>
-          )}
-        </AnimatePresence>
-      </Dialog>
-    </Box>
+
+                {/* Vertical divider — desktop only */}
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{ display: { xs: 'none', sm: 'block' }, borderColor: dividerColor, borderLeft: '1.5px solid', mx: 3.5 }}
+                />
+                {/* Horizontal divider — mobile only, stacked layout */}
+                <Divider
+                  orientation="horizontal"
+                  sx={{ display: { xs: 'block', sm: 'none' }, borderColor: dividerColor, my: 2 }}
+                />
+
+                {/* Right: meals */}
+                <Box sx={{ flex: 1, minWidth: 0 }}>
+                  <Stack divider={<Box sx={{ borderBottom: '1px solid', borderColor: dividerColor }} />}>
+                    {MEAL_ORDER.map((mealKey) => {
+                      const meal = day.meals?.[mealKey];
+                      if (!meal) return null;
+                      return (
+                        <MealRow
+                          key={mealKey}
+                          mealKey={mealKey}
+                          meal={meal}
+                          textColor={textColor}
+                          mutedColor={mutedColor}
+                        />
+                      );
+                    })}
+                  </Stack>
+                  {day.coachNote && (
+                    <Typography variant="body2" sx={{ display: 'block', mt: 1.5, color: mutedColor, fontStyle: 'italic' }}>
+                      "{day.coachNote}"
+                    </Typography>
+                  )}
+                </Box>
+              </Stack>
+            </MotionBox>
+          );
+        })}
+      </Stack>
+    </motion.div>
   );
 }

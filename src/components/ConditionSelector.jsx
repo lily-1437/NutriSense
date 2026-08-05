@@ -47,10 +47,12 @@ export default function ConditionSelector({ value, onChange, disabled = false })
         value={value}
         onChange={(_, newValue) => onChange(newValue)}
         disableCloseOnSelect
-        // Suppress MUI's default inline tag rendering -- chips are rendered
-        // manually below via AnimatePresence so add/remove gets a real
-        // fade+scale transition instead of an instant swap.
-        renderTags={() => null}
+        // Suppress MUI's default inline tag rendering via CSS rather than
+        // `renderTags` -- chips are rendered manually below via
+        // AnimatePresence so add/remove gets a real fade+scale transition
+        // instead of an instant swap. (`renderTags={() => null}` isn't
+        // picked up as a valid Autocomplete prop on this MUI version and
+        // falls through to the DOM, so hide-via-sx is the safe route.)
         renderInput={(params) => (
           <TextField
             {...params}
@@ -64,7 +66,10 @@ export default function ConditionSelector({ value, onChange, disabled = false })
             }}
           />
         )}
-        sx={{ width: '100%' }}
+        sx={{
+          width: '100%',
+          '& .MuiAutocomplete-tag': { display: 'none' },
+        }}
       />
 
       {value.length > 0 && (

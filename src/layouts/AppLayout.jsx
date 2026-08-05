@@ -25,12 +25,12 @@ export default function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh'}}>
       {isDashboard && (
         <AppDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
       )}
 
-      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1,bgcolor: 'background.default'  }}>
         <Box component="main" sx={{ flex: 1, p: isDashboard ? 0 : 3 }}>
           <Outlet context={{ drawerOpen, setDrawerOpen }} />
         </Box>

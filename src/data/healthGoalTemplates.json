@@ -1,0 +1,138 @@
+{
+  "blood_pressure": {
+    "label": "Blood Pressure Management",
+    "keywords": ["blood pressure", "hypertension", "bp", "sodium"],
+    "milestones": [
+      { "icon": "Droplet", "label": "Sodium limit", "detail": "Keep daily sodium intake within a heart-healthy range.", "value": 1500, "unit": "mg/day" },
+      { "icon": "Flame", "label": "Daily calorie target", "detail": "A moderate calorie target supports steady, healthy weight.", "value": 1800, "unit": "kcal/day" },
+      { "icon": "Activity", "label": "Aerobic activity", "detail": "Regular light cardio helps lower blood pressure over time.", "value": 150, "unit": "min/week" },
+      { "icon": "Droplet", "label": "Hydration", "detail": "Adequate water intake supports healthy circulation.", "value": 2, "unit": "L/day" }
+    ]
+  },
+  "weight_loss": {
+    "label": "Weight Loss",
+    "keywords": ["lose weight", "weight loss", "lose kg", "lose pounds", "slim down", "fat loss"],
+    "milestones": [
+      { "icon": "Flame", "label": "Daily calorie target", "detail": "A modest calorie deficit for gradual, sustainable loss.", "value": 1600, "unit": "kcal/day" },
+      { "icon": "Utensils", "label": "Protein intake", "detail": "Higher protein helps preserve muscle during weight loss.", "value": 100, "unit": "g/day" },
+      { "icon": "Activity", "label": "Exercise sessions", "detail": "Consistent movement supports fat loss and metabolism.", "value": 4, "unit": "x/week" },
+      { "icon": "TrendingDown", "label": "Weekly check-in", "detail": "Track weight weekly to monitor steady progress.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "diabetes_management": {
+    "label": "Diabetes-Friendly Eating",
+    "keywords": ["diabetes", "blood sugar", "glucose", "insulin", "a1c"],
+    "milestones": [
+      { "icon": "Utensils", "label": "Carb consistency", "detail": "Even carb intake across meals helps stabilize blood sugar.", "value": 45, "unit": "g/meal" },
+      { "icon": "Flame", "label": "Daily calorie target", "detail": "A steady calorie target supports healthy glucose control.", "value": 1800, "unit": "kcal/day" },
+      { "icon": "Activity", "label": "Post-meal activity", "detail": "Light activity after meals helps regulate blood sugar spikes.", "value": 20, "unit": "min/day" },
+      { "icon": "Moon", "label": "Consistent sleep", "detail": "Regular sleep supports insulin sensitivity.", "value": 7, "unit": "hr/night" }
+    ]
+  },
+  "heart_health": {
+    "label": "Heart Health",
+    "keywords": ["heart", "cholesterol", "cardiovascular", "cardiac"],
+    "milestones": [
+      { "icon": "Utensils", "label": "Saturated fat limit", "detail": "Lower saturated fat supports healthy cholesterol levels.", "value": 15, "unit": "g/day" },
+      { "icon": "Activity", "label": "Aerobic activity", "detail": "Regular cardio strengthens the heart over time.", "value": 150, "unit": "min/week" },
+      { "icon": "Droplet", "label": "Sodium limit", "detail": "Lower sodium reduces strain on the cardiovascular system.", "value": 2000, "unit": "mg/day" },
+      { "icon": "Heart", "label": "Weekly check-in", "detail": "Track how you're feeling and any symptoms weekly.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "muscle_gain": {
+    "label": "Muscle Gain",
+    "keywords": ["muscle", "bulk", "strength", "gain weight", "build muscle"],
+    "milestones": [
+      { "icon": "Flame", "label": "Daily calorie target", "detail": "A calorie surplus supports muscle growth.", "value": 2600, "unit": "kcal/day" },
+      { "icon": "Utensils", "label": "Protein intake", "detail": "Higher protein supports muscle repair and growth.", "value": 140, "unit": "g/day" },
+      { "icon": "Activity", "label": "Strength training", "detail": "Consistent resistance training drives muscle growth.", "value": 4, "unit": "x/week" },
+      { "icon": "Moon", "label": "Recovery sleep", "detail": "Sleep is when most muscle repair happens.", "value": 8, "unit": "hr/night" }
+    ]
+  },
+  "high_cholesterol": {
+    "label": "Cholesterol Management",
+    "keywords": ["cholesterol", "ldl", "hdl", "triglycerides"],
+    "milestones": [
+      { "icon": "Utensils", "label": "Saturated fat limit", "detail": "Lower saturated fat is the single biggest lever on LDL cholesterol.", "value": 13, "unit": "g/day" },
+      { "icon": "Utensils", "label": "Fiber intake", "detail": "Soluble fiber helps reduce cholesterol absorption.", "value": 30, "unit": "g/day" },
+      { "icon": "Activity", "label": "Aerobic activity", "detail": "Regular cardio raises HDL ('good') cholesterol.", "value": 150, "unit": "min/week" },
+      { "icon": "Heart", "label": "Weekly check-in", "detail": "Track how you're feeling and note any follow-up labs.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "kidney_health": {
+    "label": "Kidney-Friendly Eating",
+    "keywords": ["kidney", "renal", "dialysis", "ckd"],
+    "milestones": [
+      { "icon": "Droplet", "label": "Sodium limit", "detail": "Lower sodium reduces strain on kidney function.", "value": 1500, "unit": "mg/day" },
+      { "icon": "Utensils", "label": "Protein moderation", "detail": "Moderate protein intake eases kidney workload.", "value": 60, "unit": "g/day" },
+      { "icon": "Droplet", "label": "Fluid tracking", "detail": "Consistent fluid intake supports kidney management.", "value": 1.5, "unit": "L/day" },
+      { "icon": "Heart", "label": "Weekly check-in", "detail": "Track symptoms and note any upcoming lab work.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "celiac_gluten_free": {
+    "label": "Gluten-Free Eating",
+    "keywords": ["celiac", "gluten", "gluten-free", "gluten free"],
+    "milestones": [
+      { "icon": "Utensils", "label": "Gluten-free meals", "detail": "Track meals confirmed free of wheat, barley, and rye.", "value": 3, "unit": "meals/day" },
+      { "icon": "Utensils", "label": "Fiber intake", "detail": "Gluten-free diets can run low in fiber — track intake.", "value": 25, "unit": "g/day" },
+      { "icon": "Flame", "label": "Daily calorie target", "detail": "A steady calorie target supports balanced nutrition.", "value": 2000, "unit": "kcal/day" },
+      { "icon": "Heart", "label": "Weekly check-in", "detail": "Note any symptoms after meals to catch cross-contamination.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "lactose_intolerance": {
+    "label": "Lactose-Free Eating",
+    "keywords": ["lactose", "dairy intolerant", "dairy-free", "dairy free"],
+    "milestones": [
+      { "icon": "Utensils", "label": "Dairy-free meals", "detail": "Track meals using lactose-free or plant-based alternatives.", "value": 3, "unit": "meals/day" },
+      { "icon": "Droplet", "label": "Calcium intake", "detail": "Non-dairy sources help maintain calcium levels.", "value": 1000, "unit": "mg/day" },
+      { "icon": "Heart", "label": "Symptom check-in", "detail": "Note any digestive symptoms to identify trigger foods.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "ibs_management": {
+    "label": "IBS-Friendly Eating",
+    "keywords": ["ibs", "irritable bowel", "digestive", "bloating"],
+    "milestones": [
+      { "icon": "Utensils", "label": "Low-FODMAP meals", "detail": "Track meals following low-FODMAP guidance to reduce flares.", "value": 3, "unit": "meals/day" },
+      { "icon": "Droplet", "label": "Hydration", "detail": "Adequate water supports healthy digestion.", "value": 2, "unit": "L/day" },
+      { "icon": "Heart", "label": "Symptom check-in", "detail": "Log symptoms after meals to spot trigger foods.", "value": 1, "unit": "x/day" }
+    ]
+  },
+  "nut_allergy_safety": {
+    "label": "Nut Allergy Safety",
+    "keywords": ["nut allergy", "peanut allergy", "tree nut"],
+    "milestones": [
+      { "icon": "Heart", "label": "Label checks", "detail": "Verify packaged foods are checked for nut cross-contact.", "value": 1, "unit": "x/meal" },
+      { "icon": "Utensils", "label": "Safe recipe count", "detail": "Build a rotation of confirmed nut-free meals.", "value": 5, "unit": "recipes" },
+      { "icon": "Heart", "label": "Weekly check-in", "detail": "Review the week for any close calls or reactions.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "shellfish_allergy_safety": {
+    "label": "Shellfish Allergy Safety",
+    "keywords": ["shellfish allergy", "shellfish", "crustacean allergy"],
+    "milestones": [
+      { "icon": "Heart", "label": "Label checks", "detail": "Verify packaged and restaurant foods are checked for shellfish cross-contact.", "value": 1, "unit": "x/meal" },
+      { "icon": "Utensils", "label": "Safe recipe count", "detail": "Build a rotation of confirmed shellfish-free meals.", "value": 5, "unit": "recipes" },
+      { "icon": "Heart", "label": "Weekly check-in", "detail": "Review the week for any close calls or reactions.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "pregnancy_nutrition": {
+    "label": "Pregnancy Nutrition",
+    "keywords": ["pregnant", "pregnancy", "prenatal", "trimester"],
+    "milestones": [
+      { "icon": "Flame", "label": "Daily calorie target", "detail": "A modest calorie increase supports healthy pregnancy weight gain.", "value": 2200, "unit": "kcal/day" },
+      { "icon": "Utensils", "label": "Protein intake", "detail": "Protein supports fetal growth and development.", "value": 75, "unit": "g/day" },
+      { "icon": "Droplet", "label": "Hydration", "detail": "Staying well-hydrated supports pregnancy health.", "value": 2.5, "unit": "L/day" },
+      { "icon": "Heart", "label": "Prenatal check-in", "detail": "Stay on track with prenatal vitamin and appointment schedule.", "value": 1, "unit": "x/week" }
+    ]
+  },
+  "general_wellness": {
+    "label": "General Wellness",
+    "keywords": ["eat better", "healthier", "wellness", "feel better", "general health"],
+    "milestones": [
+      { "icon": "Utensils", "label": "Balanced meals", "detail": "Aim for balanced plates across the day.", "value": 3, "unit": "meals/day" },
+      { "icon": "Droplet", "label": "Hydration", "detail": "Staying hydrated supports overall energy and health.", "value": 2, "unit": "L/day" },
+      { "icon": "Activity", "label": "Daily movement", "detail": "Regular light activity supports general wellbeing.", "value": 30, "unit": "min/day" },
+      { "icon": "Moon", "label": "Consistent sleep", "detail": "Good sleep is foundational to overall health.", "value": 7, "unit": "hr/night" }
+    ]
+  }
+}

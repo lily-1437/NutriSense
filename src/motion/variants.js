@@ -37,3 +37,39 @@ export const riskPulse = {
   animate: { opacity: [1, 0.6, 1] },
   transition: { duration: 0.6, times: [0, 0.5, 1], repeat: 0 },
 };
+
+// Goal card completion — slide right, scale down, fade (Health Goals redesign).
+// Used with AnimatePresence when a goal is marked complete/undone.
+export const goalCompleteExit = {
+  opacity: 0,
+  scale: 0.92,
+  x: 60,
+  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
+};
+export const goalUndoEnter = {
+  hidden: { opacity: 0, scale: 0.92, x: 60 },
+  visible: {
+    opacity: 1, scale: 1, x: 0,
+    transition: { type: 'spring', stiffness: 280, damping: 26 },
+  },
+};
+
+// Workflow-card collapse (State 1/2 form card gracefully folding away
+// before the active-goals dashboard expands into place).
+export const cardCollapse = {
+  hidden: { opacity: 1, scaleY: 1, height: 'auto' },
+  visible: { opacity: 1, scaleY: 1, height: 'auto' },
+  exit: {
+    opacity: 0, scaleY: 0.8, height: 0,
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+// AI recommendation section sliding/fading in below the description field
+export const aiSectionReveal = {
+  hidden: { opacity: 0, y: 16, height: 0 },
+  visible: {
+    opacity: 1, y: 0, height: 'auto',
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+  },
+};

@@ -7,16 +7,28 @@ import {
 const goalsRef = (uid) => collection(db, 'users', uid, 'goals');
 
 export async function createGoal(uid, {
-  targetCalories, targetProtein, targetFat, targetCarbs, timeframe,
-  sourceText = null, rationale = null, conditionsConsidered = [],
+  targetName, startDate = null, endDate = null, description = null,
+  milestones = [], templateKey = null, sourceText = null, rationale = null, conditionsConsidered = [],
+  // Legacy macro fields kept optional so any old-shape callers don't break.
+  targetCalories = null, targetProtein = null, targetFat = null, targetCarbs = null, timeframe = null,
 }) {
   return addDoc(goalsRef(uid), {
-    targetCalories, targetProtein, targetFat, targetCarbs, timeframe,
+    targetName, startDate, endDate, description, milestones, templateKey,
     sourceText, rationale, conditionsConsidered,
+    targetCalories, targetProtein, targetFat, targetCarbs, timeframe,
     status: 'active',
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   });
+}
+
+// Toggle helpers — thin wrappers over updateGoal so callers (GoalCard) read
+// clearly and the animation trigger (status flip) is a single call.
+export async function markGoalComplete(uid, goalId) {
+  return updateGoal(uid, goalId, { status: 'completed' });
+}
+export async function markGoalActive(uid, goalId) {
+  return updateGoal(uid, goalId, { status: 'active' });
 }
 
 export async function getAllGoals(uid) {

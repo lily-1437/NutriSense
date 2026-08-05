@@ -9,22 +9,32 @@
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-const SYSTEM_INSTRUCTIONS = `You are a nutrition goal assistant. Given a user's free-text goal statement and their
-known health conditions, infer a reasonable structured daily nutrition target.
+const SYSTEM_INSTRUCTIONS = `You are a nutrition goal assistant. Given a user's free-text health goal
+description and their known health conditions, infer a short list of measurable
+milestones that together represent a reasonable plan toward that goal.
 
 Rules:
 - Return ONLY valid JSON, no markdown fences, no preamble.
-- Fields required: targetCalories (integer), targetProtein (integer, grams),
-  targetFat (integer, grams), targetCarbs (integer, grams), timeframe (one of
-  "weekly" or "monthly"), rationale (string, 1-2 plain-language sentences
-  explaining why these numbers were chosen, mentioning any condition
-  adjustments made).
-- If conditions are present (e.g. diabetes, hypertension), adjust targets
-  conservatively (e.g. lower simple-carb allowance for diabetes, lower sodium
-  is out of scope here, focus only on calories/macros) and say so in rationale.
-- Never suggest calorie targets below 1200 or above 4000, regardless of the request.
-- If the goal statement is unrelated to nutrition or too vague to infer numbers
-  from, return { "error": "..." } explaining what's missing instead of guessing.`;
+- Top-level fields required: "milestones" (array, 3-5 items) and "rationale"
+  (string, 1-2 plain-language sentences explaining the overall approach,
+  mentioning any condition adjustments made).
+- Each milestone object must have:
+  - "icon": one of "Flame" (calories), "Droplet" (hydration/sodium/fluids),
+    "Utensils" (meals/eating pattern), "Activity" (exercise), "Moon" (sleep/rest),
+    "TrendingDown" (weight/reduction goals), "Heart" (general health checkpoint)
+  - "label": short title, e.g. "Daily calorie target", "Sodium limit"
+  - "detail": one short plain-language sentence explaining why this milestone matters
+  - "value": a number (the editable target amount)
+  - "unit": short unit string, e.g. "kcal/day", "mg/day", "min/day", "L/day", "x/week"
+- Pick milestone types that actually fit the goal described (e.g. blood pressure
+  -> sodium limit + exercise + calories; weight loss -> calories + protein +
+  exercise; general wellness -> hydration + meals + activity).
+- If conditions are present (e.g. diabetes, hypertension), adjust values
+  conservatively and say so in rationale.
+- Never suggest a calorie milestone below 1200 or above 4000 kcal/day.
+- If the goal statement is unrelated to nutrition/health or too vague to infer
+  milestones from, return { "error": "..." } explaining what's missing instead
+  of guessing.`;
 
 export async function inferGoalFromText(goalText, conditions = []) {
   if (!goalText || !goalText.trim()) {
@@ -35,7 +45,7 @@ export async function inferGoalFromText(goalText, conditions = []) {
     ? `User's known health conditions: ${conditions.join(', ')}.`
     : 'User has no known health conditions on file.';
 
-  const prompt = `${SYSTEM_INSTRUCTIONS}\n\n${conditionsLine}\n\nUser's goal statement: "${goalText}"`;
+  const prompt = `${SYSTEM_INSTRUCTIONS}\n\n${conditionsLine}\n\nUser's goal description: "${goalText}"`;
 
   try {
     const response = await fetch(GEMINI_ENDPOINT, {
@@ -58,13 +68,23 @@ export async function inferGoalFromText(goalText, conditions = []) {
     if (parsed.error) {
       return { error: parsed.error };
     }
+    if (!Array.isArray(parsed.milestones) || parsed.milestones.length === 0) {
+      return { error: 'Could not generate milestones for that goal. Try adding more detail.' };
+    }
+
+    const ALLOWED_ICONS = ['Flame', 'Droplet', 'Utensils', 'Activity', 'Moon', 'TrendingDown', 'Heart'];
+
+    const milestones = parsed.milestones.map((m, i) => ({
+      id: `m${i}_${Date.now()}`,
+      icon: ALLOWED_ICONS.includes(m.icon) ? m.icon : 'Heart',
+      label: m.label || 'Milestone',
+      detail: m.detail || '',
+      value: Number(m.value) || 0,
+      unit: m.unit || '',
+    }));
 
     return {
-      targetCalories: Math.round(parsed.targetCalories),
-      targetProtein: Math.round(parsed.targetProtein),
-      targetFat: Math.round(parsed.targetFat),
-      targetCarbs: Math.round(parsed.targetCarbs),
-      timeframe: parsed.timeframe === 'monthly' ? 'monthly' : 'weekly',
+      milestones,
       rationale: parsed.rationale || '',
       sourceText: goalText,
       conditionsConsidered: conditions,

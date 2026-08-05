@@ -1,43 +1,56 @@
 // src/components/GoalForm.jsx
-// Two-step flow:
-//   1. "describe" — user types a free-text goal, we call inferGoalFromText()
-//   2. "review"   — inferred targets shown as editable fields + rationale;
-//                   user must press "Save Goal" to actually persist anything.
-// inferGoalFromText() never writes to Firestore itself — this component is
-// the only place createGoal() gets called, and only after explicit confirm.
+// Two-state progressive workflow (per redesign brief):
+//   State 1 "create"    — Target Name, Start Date, End Date, Description.
+//                          "Create" triggers AI inference, does NOT save yet.
+//   State 2 "recommend" — AI-generated milestone checklist slides/fades in
+//                          below the description. "Set Goal" persists +
+//                          notifies the parent (which shows the toast and
+//                          transitions to the Active Goals dashboard).
+//
+// inferGoalFromText() never writes to Firestore — createGoal() only fires
+// from handleSetGoal(), after the user has seen and can edit the milestones.
 
 import { useState, useEffect } from 'react';
 import {
-  Dialog, DialogTitle, DialogContent, DialogActions,
-  TextField, MenuItem, Button, Box, Typography, Alert, CircularProgress,
+  Dialog, DialogContent, TextField, Button, Box, Typography, Alert,
+  CircularProgress, InputAdornment, Grid,
 } from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Target, CalendarDays, FileText, Flame, Droplet, Utensils,
+  Activity, Moon, TrendingDown, Heart, Sparkles,
+} from 'lucide-react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 import { createGoal } from '../logic/firestoreGoals';
-import { inferGoalFromText } from '../logic/goalInference';
+import { selectGoalTemplate } from '../logic/goalTemplateSelector';
+import { fadeUp, staggerContainer, aiSectionReveal, buttonHover, buttonTap } from '../motion/variants';
 
-const emptyTargets = {
-  targetCalories: '', targetProtein: '', targetFat: '', targetCarbs: '', timeframe: 'weekly',
-};
+const MotionButton = motion(Button);
 
-export default function GoalForm({ open, onClose, onSaved }) {
+const ICONS = { Flame, Droplet, Utensils, Activity, Moon, TrendingDown, Heart };
+
+const emptyForm = { targetName: '', startDate: '', endDate: '', description: '' };
+
+export default function GoalForm({ open, onClose, onSetGoal }) {
   const { user } = useAuth();
-  const [stage, setStage] = useState('describe'); // 'describe' | 'review'
-  const [goalText, setGoalText] = useState('');
+  const [stage, setStage] = useState('create'); // 'create' | 'recommend'
+  const [form, setForm] = useState(emptyForm);
   const [conditions, setConditions] = useState([]);
-  const [targets, setTargets] = useState(emptyTargets);
+  const [milestones, setMilestones] = useState([]);
+  const [templateKey, setTemplateKey] = useState(null);
   const [rationale, setRationale] = useState('');
   const [error, setError] = useState('');
   const [inferring, setInferring] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  // Reset state each time the dialog opens, and load the user's saved conditions
   useEffect(() => {
     if (!open || !user) return;
-    setStage('describe');
-    setGoalText('');
-    setTargets(emptyTargets);
+    setStage('create');
+    setForm(emptyForm);
+    setMilestones([]);
+    setTemplateKey(null);
     setRationale('');
     setError('');
 
@@ -47,10 +60,25 @@ export default function GoalForm({ open, onClose, onSaved }) {
     })();
   }, [open, user]);
 
-  const handleSuggest = async () => {
+  const handleField = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+
+  const handleMilestoneValueChange = (id) => (e) => {
+    const v = e.target.value;
+    setMilestones((prev) => prev.map((m) => (m.id === id ? { ...m, value: v } : m)));
+  };
+
+  const handleCreate = async () => {
     setError('');
+    if (!form.targetName.trim()) {
+      setError('Give your goal a name.');
+      return;
+    }
+    if (!form.description.trim()) {
+      setError('Describe your health objective so we can suggest milestones.');
+      return;
+    }
     setInferring(true);
-    const result = await inferGoalFromText(goalText, conditions);
+    const result = await selectGoalTemplate(form.description, conditions);
     setInferring(false);
 
     if (result.error) {
@@ -58,129 +86,295 @@ export default function GoalForm({ open, onClose, onSaved }) {
       return;
     }
 
-    setTargets({
-      targetCalories: result.targetCalories,
-      targetProtein: result.targetProtein,
-      targetFat: result.targetFat,
-      targetCarbs: result.targetCarbs,
-      timeframe: result.timeframe,
-    });
+    setMilestones(result.milestones);
     setRationale(result.rationale);
-    setStage('review');
+    setTemplateKey(result.templateKey);
+    setStage('recommend');
   };
 
-  const handleFieldChange = (field) => (e) => setTargets({ ...targets, [field]: e.target.value });
+  const handleClear = () => {
+    setForm(emptyForm);
+    setError('');
+  };
 
-  const handleSave = async () => {
+  const handleSetGoal = async () => {
     setSaving(true);
     await createGoal(user.uid, {
-      targetCalories: Number(targets.targetCalories),
-      targetProtein: Number(targets.targetProtein),
-      targetFat: Number(targets.targetFat),
-      targetCarbs: Number(targets.targetCarbs),
-      timeframe: targets.timeframe,
-      sourceText: goalText,
+      targetName: form.targetName,
+      startDate: form.startDate || null,
+      endDate: form.endDate || null,
+      description: form.description,
+      milestones,
+      templateKey,
       rationale,
+      sourceText: form.description,
       conditionsConsidered: conditions,
     });
     setSaving(false);
-    onSaved?.();
+    onSetGoal?.(); // parent: show "Target has been set." toast + transition to dashboard
     onClose();
   };
 
-  const handleBack = () => setStage('describe');
-
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle sx={{ fontFamily: '"Special Gothic Expanded One", sans-serif' }}>
-        {stage === 'describe' ? 'New Goal' : 'Review your goal'}
-      </DialogTitle>
-
-      {stage === 'describe' && (
-        <>
-          <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Describe your goal in your own words — for example, "I want to lose 2kg" or
-              "help me eat better for my condition."
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      slotProps={{ paper: { sx: { borderRadius: '25px', overflow: 'hidden' } } }}
+    >
+      <DialogContent sx={{ p: { xs: 2.5, sm: 4 } }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+          <Box
+            sx={{
+              width: 40, height: 40, borderRadius: '14px', bgcolor: 'background.default',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
+            <Target size={20} color="#637239" />
+          </Box>
+          <Box>
+            <Typography variant="h3" sx={{ fontSize: '1.25rem', color: 'text.primary' }}>
+              {stage === 'create' ? 'New Health Goal' : form.targetName}
             </Typography>
-            <TextField
-              multiline
-              minRows={3}
-              placeholder="I want to lose 2kg over the next month"
-              value={goalText}
-              onChange={(e) => setGoalText(e.target.value)}
-            />
-            {conditions.length > 0 && (
-              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-                Your saved conditions ({conditions.join(', ')}) will be factored in.
-              </Typography>
-            )}
-            {error && <Alert severity="error">{error}</Alert>}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button
-              variant="contained"
-              onClick={handleSuggest}
-              disabled={inferring || !goalText.trim()}
-              sx={{ bgcolor: 'primary.main' }}
-            >
-              {inferring ? <CircularProgress size={18} sx={{ color: '#F0EADC' }} /> : 'Suggest goal'}
-            </Button>
-          </DialogActions>
-        </>
-      )}
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              {stage === 'create'
+                ? 'Tell us what you\u2019re working toward'
+                : 'Review your AI-recommended plan'}
+            </Typography>
+          </Box>
+        </Box>
 
-      {stage === 'review' && (
-        <>
-          <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
-            {rationale && (
-              <Box sx={{ bgcolor: 'background.default', borderRadius: '12px', p: 1.5 }}>
-                <Typography variant="body2" sx={{ color: 'text.primary' }}>{rationale}</Typography>
-              </Box>
-            )}
-            <TextField
-              label="Target Calories"
-              type="number"
-              value={targets.targetCalories}
-              onChange={handleFieldChange('targetCalories')}
-            />
-            <TextField
-              label="Target Protein (g)"
-              type="number"
-              value={targets.targetProtein}
-              onChange={handleFieldChange('targetProtein')}
-            />
-            <TextField
-              label="Target Fat (g)"
-              type="number"
-              value={targets.targetFat}
-              onChange={handleFieldChange('targetFat')}
-            />
-            <TextField
-              label="Target Carbs (g)"
-              type="number"
-              value={targets.targetCarbs}
-              onChange={handleFieldChange('targetCarbs')}
-            />
-            <TextField select label="Timeframe" value={targets.timeframe} onChange={handleFieldChange('timeframe')}>
-              <MenuItem value="weekly">Weekly</MenuItem>
-              <MenuItem value="monthly">Monthly</MenuItem>
-            </TextField>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleBack}>Back</Button>
-            <Button
-              variant="contained"
-              onClick={handleSave}
-              disabled={saving}
-              sx={{ bgcolor: 'primary.main' }}
+        <AnimatePresence mode="wait">
+          {stage === 'create' && (
+            <motion.div
+              key="create"
+              initial={{ opacity: 0, x: -16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -16 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             >
-              {saving ? <CircularProgress size={18} sx={{ color: '#F0EADC' }} /> : 'Save Goal'}
-            </Button>
-          </DialogActions>
-        </>
-      )}
+              <Grid container spacing={2.5}>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="Target Name"
+                    value={form.targetName}
+                    onChange={handleField('targetName')}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Target size={18} color="#6B6550" />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="Start Date"
+                    type="date"
+                    value={form.startDate}
+                    onChange={handleField('startDate')}
+                    slotProps={{
+                      inputLabel: { shrink: true },
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <CalendarDays size={16} color="#6B6550" />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </Grid>
+                <Grid size={{ xs: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="End Date"
+                    type="date"
+                    value={form.endDate}
+                    onChange={handleField('endDate')}
+                    slotProps={{
+                      inputLabel: { shrink: true },
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <CalendarDays size={16} color="#6B6550" />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    minRows={4}
+                    label="Target Description"
+                    placeholder='e.g. "I want to reduce my blood pressure by improving my eating habits over the next three months."'
+                    value={form.description}
+                    onChange={handleField('description')}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start" sx={{ alignSelf: 'flex-start', mt: 1.5 }}>
+                            <FileText size={18} color="#6B6550" />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                </Grid>
+                {conditions.length > 0 && (
+                  <Grid size={{ xs: 12 }}>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                      Your saved conditions ({conditions.join(', ')}) will be factored into your milestones.
+                    </Typography>
+                  </Grid>
+                )}
+                {error && (
+                  <Grid size={{ xs: 12 }}>
+                    <Alert severity="error" sx={{ borderRadius: '12px' }}>{error}</Alert>
+                  </Grid>
+                )}
+              </Grid>
+
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1.5, mt: 4 }}>
+                <Button
+                  variant="outlined"
+                  onClick={handleClear}
+                  sx={{ borderRadius: '25px', borderColor: 'text.secondary', color: 'text.secondary', px: 3 }}
+                >
+                  Clear
+                </Button>
+                <MotionButton
+                  variant="contained"
+                  whileHover={buttonHover}
+                  whileTap={buttonTap}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  onClick={handleCreate}
+                  disabled={inferring}
+                  sx={{ borderRadius: '25px', bgcolor: 'primary.main', px: 4, '&:hover': { bgcolor: 'secondary.main' } }}
+                >
+                  {inferring ? <CircularProgress size={18} sx={{ color: '#F0EADC' }} /> : 'Create'}
+                </MotionButton>
+              </Box>
+            </motion.div>
+          )}
+
+          {stage === 'recommend' && (
+            <motion.div
+              key="recommend"
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 16 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <Box sx={{ bgcolor: 'background.default', borderRadius: '16px', p: 2, mb: 1 }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                  {form.description}
+                </Typography>
+              </Box>
+
+              <motion.div variants={aiSectionReveal} initial="hidden" animate="visible">
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2.5, mb: 1.5 }}>
+                  <Sparkles size={16} color="#ffcd28" />
+                  <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.primary' }}>
+                    Suggested milestones
+                  </Typography>
+                </Box>
+
+                {rationale && (
+                  <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mb: 2 }}>
+                    {rationale}
+                  </Typography>
+                )}
+
+                <motion.div variants={staggerContainer(0.07)} initial="hidden" animate="visible">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
+                    {milestones.map((m) => {
+                      const Icon = ICONS[m.icon] || Heart;
+                      return (
+                        <motion.div key={m.id} variants={fadeUp}>
+                          <Box
+                            sx={{
+                              display: 'flex', alignItems: 'center', gap: 1.5,
+                              p: 1.75, borderRadius: '16px', bgcolor: 'background.paper',
+                              border: '1px solid', borderColor: 'background.default',
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                width: 36, height: 36, borderRadius: '12px', flexShrink: 0,
+                                bgcolor: 'background.default', display: 'flex',
+                                alignItems: 'center', justifyContent: 'center',
+                              }}
+                            >
+                              <Icon size={17} color="#637239" />
+                            </Box>
+                            <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                              <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                                {m.label}
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                                {m.detail}
+                              </Typography>
+                            </Box>
+                            <TextField
+                              size="small"
+                              type="number"
+                              value={m.value}
+                              onChange={handleMilestoneValueChange(m.id)}
+                              slotProps={{
+                                input: {
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                                        {m.unit}
+                                      </Typography>
+                                    </InputAdornment>
+                                  ),
+                                },
+                              }}
+                              sx={{ width: 132, flexShrink: 0 }}
+                            />
+                          </Box>
+                        </motion.div>
+                      );
+                    })}
+                  </Box>
+                </motion.div>
+              </motion.div>
+
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1.5, mt: 4 }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setStage('create')}
+                  sx={{ borderRadius: '25px', borderColor: 'text.secondary', color: 'text.secondary', px: 3 }}
+                >
+                  Back
+                </Button>
+                <MotionButton
+                  variant="contained"
+                  whileHover={buttonHover}
+                  whileTap={buttonTap}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  onClick={handleSetGoal}
+                  disabled={saving}
+                  sx={{ borderRadius: '25px', bgcolor: 'primary.main', px: 4, '&:hover': { bgcolor: 'secondary.main' } }}
+                >
+                  {saving ? <CircularProgress size={18} sx={{ color: '#F0EADC' }} /> : 'Set Goal'}
+                </MotionButton>
+              </Box>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </DialogContent>
     </Dialog>
   );
 }
