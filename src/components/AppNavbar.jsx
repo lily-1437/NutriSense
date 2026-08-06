@@ -70,7 +70,7 @@ export default function AppNavbar() {
           margin: '0 auto',
           height: NAVBAR_HEIGHT,
           zIndex: theme.zIndex.appBar,
-          bgcolor: 'rgba(24, 50, 17, 0.85)',
+          bgcolor: 'rgba(50, 36, 17, 0.85)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255,255,255,0.08)',

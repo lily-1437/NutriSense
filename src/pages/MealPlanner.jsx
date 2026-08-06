@@ -1,18 +1,19 @@
 // src/pages/MealPlanner.jsx
-import { useState, useEffect } from 'react';
-import { Container, Box, Typography, CircularProgress, Chip, Button, Stack } from '@mui/material';
+import { useState, useEffect, useRef } from 'react';
+import { Container, Box, Typography, CircularProgress, Chip, Button, Stack, Snackbar } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCw, Sparkles, Salad, ChefHat } from 'lucide-react';
+import { RefreshCw, Sparkles, Salad, ChefHat, Undo2 } from 'lucide-react';
 import { fadeUp } from '../motion/variants';
 import { useAuth } from '../hooks/useAuth';
 import { getUserConditions } from '../logic/firestoreUser';
 import { getActiveGoals } from '../logic/firestoreGoals';
 import { selectMealPlanTemplate } from '../logic/mealPlanSelector';
 import { generateCoachNotes, mergeCoachNotes } from '../logic/mealPlanCoach';
-import { saveMealPlan, getMealPlan } from '../logic/firestoreMealPlans';
+import { saveMealPlan, getMealPlan, deleteMealPlan } from '../logic/firestoreMealPlans';
 import MealPlanCard from '../components/MealPlanCard';
 
 const MotionButton = motion.create(Button);
+const UNDO_WINDOW_MS = 5000;
 
 function PlannerEmptyState({ onGenerate, generating }) {
   return (
@@ -33,7 +34,6 @@ function PlannerEmptyState({ onGenerate, generating }) {
         overflow: 'hidden',
       }}
     >
-      {/* soft floating gradient blobs */}
       <motion.div
         animate={{ y: [0, -14, 0], opacity: [0.5, 0.7, 0.5] }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
@@ -50,7 +50,6 @@ function PlannerEmptyState({ onGenerate, generating }) {
           borderRadius: '50%', background: 'radial-gradient(circle, #63723944, transparent 70%)',
         }}
       />
-
       <motion.div
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -109,9 +108,6 @@ function PlannerEmptyState({ onGenerate, generating }) {
   );
 }
 
-// AiInsightCard — rectangle instead of pill, and add background.default
-// awareness isn't needed here since it already sits on an ecru page, just
-// matching the rectangular shape language of the day cards:
 function AiInsightCard({ plan }) {
   return (
     <Box
@@ -122,7 +118,7 @@ function AiInsightCard({ plan }) {
       sx={{
         bgcolor: 'accent.main',
         color: 'accent.contrastText',
-        borderRadius: '16px', // was 4 (pill-like) — now matches the day cards
+        borderRadius: '16px',
         border: '2px solid',
         borderColor: 'rgba(78, 41, 37, 0.96)',
         p: { xs: 2.5, sm: 3.5 },
@@ -162,6 +158,17 @@ export default function MealPlanner() {
   const [coachStatus, setCoachStatus] = useState(null);
   const [error, setError] = useState(null);
 
+  // Undo-window state: pendingRemoval holds the day object that's been
+  // optimistically hidden but not yet committed to Firestore. pendingRef
+  // mirrors the same value synchronously (state updates are async / can be
+  // stale inside closures captured by setTimeout), so the rapid-click guard
+  // below always reads the CURRENT pending day, not a stale one from the
+  // render that scheduled the timer.
+  const [pendingRemoval, setPendingRemoval] = useState(null); // { day, dayKey }
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const timerRef = useRef(null);
+  const pendingRef = useRef(null);
+
   useEffect(() => {
     if (!user) return;
     (async () => {
@@ -171,7 +178,26 @@ export default function MealPlanner() {
     })();
   }, [user]);
 
+  // Clear any in-flight undo timer on unmount so it never fires against a
+  // component that's no longer there.
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
   const handleGenerate = async () => {
+    // A pending removal is moot once a whole new plan is about to replace
+    // it — cancel rather than commit, since the day it referred to won't
+    // exist in the new plan anyway.
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    pendingRef.current = null;
+    setPendingRemoval(null);
+    setSnackbarOpen(false);
+
     setGenerating(true);
     setError(null);
     setCoachStatus(null);
@@ -198,13 +224,10 @@ export default function MealPlanner() {
         setCoachStatus('unavailable');
       }
 
-      // generatedAt is the single source of truth MealPlanCard uses to derive
-      // both the weekday label and the date for every day in the plan.
       const planToSave = {
         ...merged,
         matchedCondition,
         usedFallbackTemplate: fallback,
-        completed: {},
         generatedAt: Date.now(),
       };
 
@@ -218,29 +241,91 @@ export default function MealPlanner() {
     }
   };
 
-  const handleToggleDone = async (dayKey) => {
-    if (!plan || !user) return;
+  // Step 1 of 2: user clicks the check — hide the day immediately (optimistic,
+  // nothing written yet) and start the undo window.
+  const handleRequestComplete = (dayKey) => {
+    if (!plan) return;
+    const dayObj = plan.days.find((d) => d.day === dayKey);
+    if (!dayObj) return;
+
+    // Only one pending removal at a time — if the user rapid-fires another
+    // day's check before the first one's window closes, commit the first
+    // immediately. Reads pendingRef (not the pendingRemoval state variable)
+    // so this always sees the latest value, not one captured by an earlier
+    // render's closure.
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      commitRemoval(pendingRef.current?.dayKey);
+    }
+
+    const next = { day: dayObj, dayKey };
+    pendingRef.current = next;
+    setPendingRemoval(next);
+    setSnackbarOpen(true);
+
+    timerRef.current = setTimeout(() => {
+      commitRemoval(dayKey);
+    }, UNDO_WINDOW_MS);
+  };
+
+  // Step 2: window closed without Undo — actually remove the day from the
+  // plan and persist it (or delete the whole plan doc if it was the last day).
+  const commitRemoval = async (dayKey) => {
+    timerRef.current = null;
+    pendingRef.current = null;
+    setPendingRemoval(null);
+    setSnackbarOpen(false);
+    if (!dayKey || !plan || !user) return;
+
     const previousPlan = plan;
-    const updatedPlan = {
-      ...plan,
-      completed: { ...(plan.completed || {}), [dayKey]: !plan.completed?.[dayKey] },
-    };
+    const remainingDays = plan.days.filter((d) => d.day !== dayKey);
+
+    if (remainingDays.length === 0) {
+      setPlan(null);
+      try {
+        await deleteMealPlan(user.uid);
+      } catch (err) {
+        console.error('Could not delete completed meal plan:', err);
+        setPlan(previousPlan);
+        setError('Could not update your plan. Please try again.');
+      }
+      return;
+    }
+
+    const updatedPlan = { ...plan, days: remainingDays };
     setPlan(updatedPlan);
     try {
       await saveMealPlan(user.uid, updatedPlan);
     } catch (err) {
-      console.error('Could not save completion status:', err);
+      console.error('Could not save meal plan after completing a day:', err);
       setPlan(previousPlan);
-      setError('Could not save your progress. Please try again.');
+      setError('Could not update your progress. Please try again.');
     }
+  };
+
+  const handleUndo = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    pendingRef.current = null;
+    setPendingRemoval(null);
+    setSnackbarOpen(false);
   };
 
   if (loading) return null;
 
+  // What MealPlanCard actually renders: the pending day is filtered out
+  // visually the instant it's clicked, even though it isn't deleted from
+  // `plan` (and Firestore) until the undo window closes.
+  const visiblePlan = plan && pendingRemoval
+    ? { ...plan, days: plan.days.filter((d) => d.day !== pendingRemoval.dayKey) }
+    : plan;
+
   return (
     <Container maxWidth="xl" sx={{ py: 6, px: { xs: 2, sm: 3, md: 4 } }}>
       <AnimatePresence mode="wait">
-        {!plan ? (
+        {!visiblePlan ? (
           <PlannerEmptyState key="empty" onGenerate={handleGenerate} generating={generating} />
         ) : (
           <motion.div
@@ -255,7 +340,7 @@ export default function MealPlanner() {
               </Typography>
             </Box>
 
-            <AiInsightCard plan={plan} />
+            <AiInsightCard plan={visiblePlan} />
 
             {generating && coachStatus === 'thinking' && (
               <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2, color: 'text.secondary' }}>
@@ -269,7 +354,7 @@ export default function MealPlanner() {
               </Typography>
             )}
 
-            <MealPlanCard plan={plan} onToggleDone={handleToggleDone} />
+            <MealPlanCard plan={visiblePlan} onComplete={handleRequestComplete} />
 
             <MotionButton
               fullWidth
@@ -296,6 +381,30 @@ export default function MealPlanner() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <Snackbar
+        open={snackbarOpen}
+        message={pendingRemoval ? `${pendingRemoval.dayKey} marked done` : ''}
+        action={
+          <MotionButton
+            size="small"
+            onClick={handleUndo}
+            startIcon={<Undo2 size={16} />}
+            whileTap={{ scale: 0.94 }}
+            sx={{ color: 'accent.main', fontWeight: 700 }}
+          >
+            Undo
+          </MotionButton>
+        }
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        sx={{
+          '& .MuiSnackbarContent-root': {
+            bgcolor: 'primary.dark',
+            color: '#F0EADC',
+            borderRadius: '12px',
+          },
+        }}
+      />
     </Container>
   );
 }

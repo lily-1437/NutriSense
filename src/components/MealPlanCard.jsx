@@ -4,7 +4,7 @@ import { Box, Typography, Stack, Collapse, IconButton, Divider } from '@mui/mate
 import { motion } from 'framer-motion';
 import {
   Coffee, UtensilsCrossed, Soup, Apple,
-  CheckCircle2, Circle, ChevronDown, Flame,
+  CheckCircle2, ChevronDown, Flame,
 } from 'lucide-react';
 import { fadeUp, staggerContainer } from '../motion/variants';
 
@@ -29,15 +29,32 @@ function toDate(generatedAt) {
   return null;
 }
 
-function deriveDisplayDate(generatedAt, dayIndex) {
+const WEEKDAY_ORDER = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+// Anchors to the Monday of the week the plan was generated in, then offsets
+// by the day's FIXED position in WEEKDAY_ORDER — never by its array index.
+// This guarantees the date shown always corresponds to the actual day.day
+// being displayed, regardless of what weekday the plan was generated on or
+// what order plan.days happens to iterate in. (Previously this was derived
+// from generatedAt + array index, which silently disagreed with day.day
+// whenever the plan wasn't generated on a Monday — that's what caused the
+// wrong day being deleted: the label shown and the key used by onComplete
+// were two different values.)
+function dateLabelFor(generatedAt, dayName) {
   const base = toDate(generatedAt);
-  if (!base || Number.isNaN(base.getTime())) return { weekday: null, dateLabel: null };
-  const date = new Date(base);
-  date.setDate(date.getDate() + dayIndex);
-  return {
-    weekday: date.toLocaleDateString('en-US', { weekday: 'long' }),
-    dateLabel: date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }),
-  };
+  if (!base || Number.isNaN(base.getTime())) return null;
+
+  const jsWeekday = base.getDay(); // 0=Sun..6=Sat
+  const mondayOffset = jsWeekday === 0 ? -6 : 1 - jsWeekday;
+  const monday = new Date(base);
+  monday.setDate(monday.getDate() + mondayOffset);
+
+  const dayIndex = WEEKDAY_ORDER.indexOf(dayName);
+  if (dayIndex === -1) return null;
+
+  const target = new Date(monday);
+  target.setDate(target.getDate() + dayIndex);
+  return target.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
 }
 
 const MEAL_META = {
@@ -103,9 +120,12 @@ function MealRow({ mealKey, meal, textColor, mutedColor }) {
   );
 }
 
-export default function MealPlanCard({ plan, onToggleDone }) {
-  const isDone = (dayKey) => Boolean(plan.completed?.[dayKey]);
-
+// onComplete(day.day) — matches MealPlanner.jsx's handleRequestComplete,
+// which hides the day immediately and starts the undo window. day.day is
+// ALWAYS what's rendered as the visible weekday label (never a separately
+// calculated one) so the label the user clicks under is guaranteed to match
+// the key that gets deleted.
+export default function MealPlanCard({ plan, onComplete }) {
   return (
     <motion.div variants={staggerContainer(0.09)} initial="hidden" animate="visible">
       <Stack spacing={2.5}>
@@ -114,14 +134,14 @@ export default function MealPlanCard({ plan, onToggleDone }) {
           const textColor = textColorFor(bg);
           const mutedColor = textColor === '#6B403B' ? 'rgba(107,64,59,0.68)' : 'rgba(247,221,213,0.8)';
           const dividerColor = textColor === '#6B403B' ? 'rgba(107,64,59,0.18)' : 'rgba(247,221,213,0.25)';
-          const done = isDone(day.day);
-          const { weekday, dateLabel } = deriveDisplayDate(plan.generatedAt, i);
+          const dateLabel = dateLabelFor(plan.generatedAt, day.day);
 
           return (
             <MotionBox
               key={day.day}
+              layout
               variants={fadeUp}
-              whileTap={{ scale: 0.99 }}
+              whileHover={{ y: -3, boxShadow: '0 14px 28px rgba(0,0,0,0.14)' }}
               transition={{ type: 'spring', stiffness: 300, damping: 26 }}
               sx={{
                 bgcolor: bg,
@@ -130,15 +150,24 @@ export default function MealPlanCard({ plan, onToggleDone }) {
                 borderColor: 'rgba(78, 41, 37, 0.96)',
                 p: { xs: 2.5, sm: 3.5 },
                 position: 'relative',
-                opacity: done ? 0.72 : 1,
               }}
             >
               <IconButton
                 size="small"
-                onClick={() => onToggleDone?.(day.day)}
-                sx={{ position: 'absolute', top: 14, right: 14, color: textColor }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onComplete?.(day.day);
+                }}
+                title="Mark day as done — removes it from your plan"
+                sx={{
+                  position: 'absolute',
+                  top: 14,
+                  right: 14,
+                  color: textColor,
+                  zIndex: 2,
+                }}
               >
-                {done ? <CheckCircle2 size={22} /> : <Circle size={22} />}
+                <CheckCircle2 size={22} />
               </IconButton>
 
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={0}>
@@ -147,7 +176,7 @@ export default function MealPlanCard({ plan, onToggleDone }) {
                     variant="h3"
                     sx={{ fontSize: '1.5rem', color: textColor, fontFamily: '"Special Gothic Expanded One", sans-serif' }}
                   >
-                    {weekday || day.day}
+                    {day.day}
                   </Typography>
                   {dateLabel && (
                     <Typography variant="body2" sx={{ color: mutedColor, fontWeight: 600 }}>
@@ -166,19 +195,16 @@ export default function MealPlanCard({ plan, onToggleDone }) {
                   )}
                 </Box>
 
-                {/* Vertical divider — desktop only */}
                 <Divider
                   orientation="vertical"
                   flexItem
                   sx={{ display: { xs: 'none', sm: 'block' }, borderColor: dividerColor, borderLeft: '1.5px solid', mx: 3.5 }}
                 />
-                {/* Horizontal divider — mobile only, stacked layout */}
                 <Divider
                   orientation="horizontal"
                   sx={{ display: { xs: 'block', sm: 'none' }, borderColor: dividerColor, my: 2 }}
                 />
 
-                {/* Right: meals */}
                 <Box sx={{ flex: 1, minWidth: 0 }}>
                   <Stack divider={<Box sx={{ borderBottom: '1px solid', borderColor: dividerColor }} />}>
                     {MEAL_ORDER.map((mealKey) => {

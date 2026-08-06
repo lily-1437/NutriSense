@@ -1,15 +1,17 @@
 import { Box, Container, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import WaveDivider from './WaveDivider'; // adjust path as needed
 
 export default function IntroSection() {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ bgcolor: '#FAF3E7', py: { xs: 8, md: 12 } }}>
+    <Box sx={{ position: 'relative', bgcolor: '#ffaa17', py: { xs: 8, md: 12 } }}>
+      <WaveDivider position="top" toColor="#fabf5a" />
+
       <Container maxWidth="sm" sx={{ textAlign: 'center' }}>
         <Typography
           sx={{
-
             fontSize: 12,
             letterSpacing: '0.12em',
             fontWeight: 600,
@@ -37,7 +39,7 @@ export default function IntroSection() {
           Healthy eating doesn't have to be complicated. Discover what's in your meals, understand your nutrition, and build habits that help you feel your best every day.
         </Typography>
         <Button
-          onClick={() => navigate('/signup')}
+          onClick={() => navigate('/analyze')}
           sx={{
             bgcolor: '#cef046',
             color: '#2F3817',
@@ -50,10 +52,10 @@ export default function IntroSection() {
             fontSize: { xs: 12, md: 16 },
             fontWeight: 'bold',
             transition: 'transform 150ms ease, background-color 150ms ease',
-            '&:hover': { bgcolor: '#475611', color: '#fcf8ed',transform: 'scale(1.03)' },
+            '&:hover': { bgcolor: '#475611', color: '#fcf8ed', transform: 'scale(1.03)' },
           }}
         >
-          Get started
+          Analyze Recipe
         </Button>
       </Container>
     </Box>

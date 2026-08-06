@@ -9,7 +9,7 @@ export default function HeroSection() {
     <Box
       sx={{
         position: 'relative',
-        minHeight: { xs: '75vh', md: '100vh' },
+        minHeight: { xs: '75vh', md: '90vh' },
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -25,28 +25,28 @@ export default function HeroSection() {
           <Typography
             variant="h1"
             sx={{
-              fontFamily: '"Viaoda Libre", serif',
               fontSize: { xs: 40, md: 72 },
-              fontWeight: 500,
+              fontWeight: 300,
               color: '#FFFFFF',
-              fontSize: { xs: 40, md: 72 },
               textShadow: '0 2px 16px rgba(0,0,0,0.3)',
             }}
           >
-            Better meals. 
-            Better habits. 
-            A {' '}
-            <Box component="span" sx={{ fontStyle: 'italic', color: '#ccdf5e'}}>
-              healthier 
-            </Box>
-             you
+            Better meals.
+            <br />
+            Better habits.
+            <br />
+            A{' '}
+            <Box component="span" sx={{ fontStyle: 'italic', color: '#ffaa17' }}>
+              healthier
+            </Box>{' '}
+            you
           </Typography>
         </Fade>
 
         <Fade in timeout={600}>
           <Box sx={{ mt: 3 }}>
             <Button
-              onClick={() => navigate('/analyze')}
+              onClick={() => navigate('/signup')}
               sx={{
                 bgcolor: '#cef046',
                 color: '#151b06',
@@ -62,13 +62,13 @@ export default function HeroSection() {
                 '&:hover': { bgcolor: '#475611', color: '#fcf8ed', border: '2px solid #f4fad2', transform: 'scale(1.03)' },
               }}
             >
-              Analyze Recipe
+              Get started
             </Button>
           </Box>
         </Fade>
       </Container>
 
-      <WaveDivider toColor="#FAF3E7" />
+      <WaveDivider toColor="#f5c571" />
     </Box>
   );
 }
