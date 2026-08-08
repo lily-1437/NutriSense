@@ -53,7 +53,7 @@ export default function SplitFeatureSection({ image, heading, body, reverse = fa
               <Box
                 sx={{
                   width: { xs: 180, sm: 220, md: 270 },
-                  height: { xs: 150, sm: 180, md: 210 },
+                  height: { xs: 180, sm: 220, md: 270 },
                   borderRadius: '20px',
                   bgcolor: '#F4F4EC',
                   boxShadow: '0 12px 28px rgba(62, 74, 31, 0.18)',

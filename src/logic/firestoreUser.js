@@ -17,7 +17,7 @@
 //     (null/absent when exercisesRegularly is false)
 
 import { db } from '../firebase';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, collection, getDocs, writeBatch } from 'firebase/firestore';
 
 export async function getUserConditions(uid) {
   const snap = await getDoc(doc(db, 'users', uid));
@@ -67,4 +67,42 @@ export async function updateUserProfile(
     },
     { merge: true }
   );
+}
+
+// -----------------------------------------------------------------------
+// Full account data wipe -- used by Profile.jsx's "Delete Account" flow.
+//
+// Deletes ALL of a user's data: goals, meal plan, recipes, and the user
+// doc itself (profile fields + conditions). Must be called BEFORE
+// deleteUser(auth.currentUser) in the deletion flow -- once the Firebase
+// Auth user is gone, Firestore security rules (which check
+// request.auth.uid == uid) will reject these deletes.
+//
+// Uses a single atomic writeBatch: either everything is deleted or nothing
+// is, so an account is never left in a half-deleted state.
+//
+// NOTE: writeBatch caps at 500 operations. If a user could plausibly have
+// 500+ combined goals/recipes, this needs chunking -- not implemented here
+// since that's far beyond this app's current scale.
+// -----------------------------------------------------------------------
+export async function deleteUserAccountData(uid) {
+  if (!uid) throw new Error('deleteUserAccountData: uid required');
+
+  const batch = writeBatch(db);
+
+  // Goals subcollection: users/{uid}/goals/*
+  const goalsSnap = await getDocs(collection(db, 'users', uid, 'goals'));
+  goalsSnap.forEach((d) => batch.delete(d.ref));
+
+  // Recipes subcollection: users/{uid}/recipes/*
+  const recipesSnap = await getDocs(collection(db, 'users', uid, 'recipes'));
+  recipesSnap.forEach((d) => batch.delete(d.ref));
+
+  // Meal plan: single doc at users/{uid}/mealPlans/current
+  batch.delete(doc(db, 'users', uid, 'mealPlans', 'current'));
+
+  // The user doc itself: profile fields + conditions
+  batch.delete(doc(db, 'users', uid));
+
+  await batch.commit();
 }

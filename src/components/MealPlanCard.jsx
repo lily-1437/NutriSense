@@ -125,7 +125,7 @@ function MealRow({ mealKey, meal, textColor, mutedColor }) {
 // ALWAYS what's rendered as the visible weekday label (never a separately
 // calculated one) so the label the user clicks under is guaranteed to match
 // the key that gets deleted.
-export default function MealPlanCard({ plan, onComplete }) {
+export default function MealPlanCard({ plan, onComplete, selectedDay, onSelectDay }) {
   return (
     <motion.div variants={staggerContainer(0.09)} initial="hidden" animate="visible">
       <Stack spacing={2.5}>
@@ -135,6 +135,7 @@ export default function MealPlanCard({ plan, onComplete }) {
           const mutedColor = textColor === '#6B403B' ? 'rgba(107,64,59,0.68)' : 'rgba(247,221,213,0.8)';
           const dividerColor = textColor === '#6B403B' ? 'rgba(107,64,59,0.18)' : 'rgba(247,221,213,0.25)';
           const dateLabel = dateLabelFor(plan.generatedAt, day.day);
+          const isSelected = selectedDay === day.day;
 
           return (
             <MotionBox
@@ -143,13 +144,16 @@ export default function MealPlanCard({ plan, onComplete }) {
               variants={fadeUp}
               whileHover={{ y: -3, boxShadow: '0 14px 28px rgba(0,0,0,0.14)' }}
               transition={{ type: 'spring', stiffness: 300, damping: 26 }}
+              onClick={() => onSelectDay?.(day.day)}
               sx={{
                 bgcolor: bg,
                 borderRadius: '16px',
                 border: '2px solid',
-                borderColor: 'rgba(78, 41, 37, 0.96)',
+                borderColor: isSelected ? 'primary.dark' : 'rgba(78, 41, 37, 0.96)',
                 p: { xs: 2.5, sm: 3.5 },
                 position: 'relative',
+                cursor: 'pointer',
+                boxShadow: isSelected ? '0 0 0 3px rgba(99,114,57,0.35)' : 'none',
               }}
             >
               <IconButton

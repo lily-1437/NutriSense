@@ -1,3 +1,11 @@
+// src/components/FooterBar.jsx
+//
+// Simple footer bar for protected app routes (Goals, Profile, History,
+// Meal Planner, Simulator, etc.) — brand name, nav links, copyright only.
+// This is intentionally lightweight, unlike the marketing homepage's
+// ApproachSection (which now contains the full image/stats footer) —
+// protected pages shouldn't show that heavy marketing block.
+
 import { Box, Container, Typography, Link as MuiLink } from '@mui/material';
 
 const FOOTER_LINKS = [
@@ -7,7 +15,7 @@ const FOOTER_LINKS = [
   { label: 'About', href: '/about' },
 ];
 
-export default function Footer() {
+export default function FooterBar() {
   return (
     <Box sx={{ bgcolor: '#3E4A1F', color: '#F0EADC', py: 4 }}>
       <Container maxWidth="md" sx={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>

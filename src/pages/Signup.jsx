@@ -40,7 +40,8 @@ export default function Signup() {
         conditions: [],
         createdAt: serverTimestamp(),
       });
-      navigate('/dashboard', { replace: true });
+      // justAuthed triggers the "Logged in successfully" welcome toast on Dashboard
+      navigate('/dashboard', { replace: true, state: { justAuthed: true } });
     } catch (err) {
       setError('Could not create account. Try a different email.');
     } finally {

@@ -27,6 +27,12 @@
 // FIRESTORE: all fields below (fullName, heightCm, weightKg, age, gender,
 // bio, exercisesRegularly, exerciseFrequency, conditions) now persist on
 // the users/{uid} document via src/logic/firestoreUser.js.
+//
+// ACCOUNT DELETION: handleDeleteAccount now wipes ALL user data -- goals,
+// meal plan, recipes, and the user doc itself -- via
+// deleteUserAccountData(uid) (src/logic/firestoreUser.js) BEFORE deleting
+// the Firebase Auth user. This replaces the previous version which only
+// deleted the users/{uid} doc and left goals/mealPlans/recipes orphaned.
 
 import { useState, useEffect } from 'react';
 import {
@@ -55,10 +61,9 @@ import {
   sendPasswordResetEmail,
   deleteUser,
 } from 'firebase/auth';
-import { doc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-import { auth, db } from '../firebase';
+import { auth } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 import { fadeUp, staggerContainer } from '../motion/variants';
 import PageCard from '../components/PageCard';
@@ -69,6 +74,7 @@ import {
   updateUserConditions,
   getUserProfile,
   updateUserProfile,
+  deleteUserAccountData,
 } from '../logic/firestoreUser';
 
 const GENDER_OPTIONS = ['Male', 'Female', 'Prefer not to say'];
@@ -232,10 +238,14 @@ export default function Profile() {
     }
   };
 
+  // Wipes goals, meal plan, recipes, and the user doc (via
+  // deleteUserAccountData), THEN deletes the Firebase Auth user. Order
+  // matters: Firestore security rules require an authenticated matching
+  // uid, so all Firestore deletes must happen before the auth user is gone.
   const handleDeleteAccount = async () => {
     setDeleting(true);
     try {
-      await deleteDoc(doc(db, 'users', user.uid));
+      await deleteUserAccountData(user.uid);
       await deleteUser(auth.currentUser);
       navigate('/');
     } catch (err) {
@@ -529,7 +539,7 @@ export default function Profile() {
       <ConfirmDialog
         open={deleteConfirmOpen}
         title="Delete your account?"
-        message="This permanently deletes your account, goals, history, and meal plans. This can't be undone."
+        message="This permanently deletes your account, health goals, meal plans, recipe history, and all saved data. This can't be undone."
         confirmLabel={deleting ? 'Deleting…' : 'Delete Account'}
         danger
         onConfirm={handleDeleteAccount}

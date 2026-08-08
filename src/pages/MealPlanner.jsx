@@ -11,6 +11,8 @@ import { selectMealPlanTemplate } from '../logic/mealPlanSelector';
 import { generateCoachNotes, mergeCoachNotes } from '../logic/mealPlanCoach';
 import { saveMealPlan, getMealPlan, deleteMealPlan } from '../logic/firestoreMealPlans';
 import MealPlanCard from '../components/MealPlanCard';
+import { sumDayNutrition, sumWeekNutrition } from '../logic/mealPlanNutrition';
+import NutritionScoreRow from '../components/NutritionScoreRow';
 
 const MotionButton = motion.create(Button);
 const UNDO_WINDOW_MS = 5000;
@@ -71,7 +73,7 @@ function PlannerEmptyState({ onGenerate, generating }) {
       </motion.div>
 
       <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '1.9rem' }, position: 'relative', zIndex: 1 }}>
-        Let AI build your week
+        Let AI build your week 
       </Typography>
       <Typography
         variant="body1"
@@ -157,17 +159,11 @@ export default function MealPlanner() {
   const [generating, setGenerating] = useState(false);
   const [coachStatus, setCoachStatus] = useState(null);
   const [error, setError] = useState(null);
-
-  // Undo-window state: pendingRemoval holds the day object that's been
-  // optimistically hidden but not yet committed to Firestore. pendingRef
-  // mirrors the same value synchronously (state updates are async / can be
-  // stale inside closures captured by setTimeout), so the rapid-click guard
-  // below always reads the CURRENT pending day, not a stale one from the
-  // render that scheduled the timer.
   const [pendingRemoval, setPendingRemoval] = useState(null); // { day, dayKey }
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const timerRef = useRef(null);
   const pendingRef = useRef(null);
+  const [selectedDay, setSelectedDay] = useState(null);
 
   useEffect(() => {
     if (!user) return;
@@ -233,6 +229,7 @@ export default function MealPlanner() {
 
       await saveMealPlan(user.uid, planToSave);
       setPlan(planToSave);
+      setSelectedDay(null);
     } catch (err) {
       console.error('Meal plan generation failed:', err);
       setError('Could not generate a meal plan right now. Please try again.');
@@ -240,6 +237,7 @@ export default function MealPlanner() {
       setGenerating(false);
     }
   };
+
 
   // Step 1 of 2: user clicks the check — hide the day immediately (optimistic,
   // nothing written yet) and start the undo window.
@@ -322,6 +320,12 @@ export default function MealPlanner() {
     ? { ...plan, days: plan.days.filter((d) => d.day !== pendingRemoval.dayKey) }
     : plan;
 
+    const activeDay = visiblePlan?.days.find((d) => d.day === selectedDay) || null;
+    const totals = activeDay ? sumDayNutrition(activeDay) : sumWeekNutrition(visiblePlan?.days);
+    const summaryLabel = activeDay
+      ? `Per serving — ${activeDay.day}`
+      : 'Per serving (week total) — tap a day for its breakdown';
+      
   return (
     <Container maxWidth="xl" sx={{ py: 6, px: { xs: 2, sm: 3, md: 4 } }}>
       <AnimatePresence mode="wait">
@@ -354,7 +358,8 @@ export default function MealPlanner() {
               </Typography>
             )}
 
-            <MealPlanCard plan={visiblePlan} onComplete={handleRequestComplete} />
+            <NutritionScoreRow totals={totals} label={summaryLabel} />
+            <MealPlanCard plan={visiblePlan} onComplete={handleRequestComplete} selectedDay={selectedDay} onSelectDay={setSelectedDay} />
 
             <MotionButton
               fullWidth

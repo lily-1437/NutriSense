@@ -8,12 +8,14 @@
 // (Progress / Schedule / Billing / Blog & Articles) that don't map to real
 // NutriSense routes yet. These have been swapped for the app's actual pages
 // per the established nav order (see Page Navigation Map):
-//   Dashboard, Analyze Recipe, Meal Planner, Simulator, Health Goals,
+//   Dashboard, Analyze Recipe, Meal Planner, Today's Task, Simulator,
+//   Health Goals,
 //   — divider —
 //   History, Profile
 // "Home" is intentionally left off this drawer (it's a logged-out marketing
 // route); Dashboard is the logged-in landing point instead.
 
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   Box,
@@ -31,16 +33,21 @@ import {
   LayoutDashboard,
   UtensilsCrossed,
   CalendarDays,
+  ListChecks,
   SlidersHorizontal,
   Target,
   Calculator,
   History as HistoryIcon,
   UserCircle,
+  Star,
   LogOut,
   Leaf,
 } from 'lucide-react';
 import { useTheme, alpha } from '@mui/material/styles';
 import { useAuth } from '../hooks/useAuth';
+// TODO: swap this placeholder for the real review card component once
+// Ink provides the design/spec for it.
+import RateUsDialog from './RateUsDialog';
 
 const DRAWER_WIDTH = 248;
 
@@ -48,6 +55,7 @@ const primaryNav = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
   { label: 'Analyze Recipe', to: '/analyze', icon: UtensilsCrossed },
   { label: 'Meal Planner', to: '/meal-planner', icon: CalendarDays },
+  { label: "Today's Task", to: '/tasks', icon: ListChecks },
   { label: 'Simulator', to: '/simulator', icon: SlidersHorizontal },
   { label: 'BMI', to: '/bmi', icon: Calculator },
   { label: 'Health Goals', to: '/goals', icon: Target },
@@ -57,6 +65,10 @@ const secondaryNav = [
   { label: 'History', to: '/history', icon: HistoryIcon },
   { label: 'Profile', to: '/profile', icon: UserCircle },
 ];
+
+// "Rate Us" is not a route — it opens the review card dialog instead of
+// navigating, so it's handled separately from NavRow/NavLink below.
+const rateUsItem = { label: 'Rate Us', icon: Star };
 
 const MotionListItemButton = motion.create(ListItemButton);
 
@@ -95,8 +107,36 @@ function NavRow({ item }) {
   );
 }
 
+function RateUsRow({ onOpen }) {
+  const Icon = rateUsItem.icon;
+  return (
+    <ListItemButton
+      onClick={onOpen}
+      sx={{
+        mx: 1.5,
+        mb: 0.5,
+        borderRadius: '14px',
+        color: 'text.primary',
+        transition: 'background-color 160ms ease, color 160ms ease',
+        '&:hover': {
+          bgcolor: (t) => alpha(t.palette.primary.main, 0.08),
+        },
+      }}
+    >
+      <ListItemIcon sx={{ minWidth: 36, color: 'text.secondary' }}>
+        <Icon size={20} strokeWidth={2} />
+      </ListItemIcon>
+      <ListItemText
+        primary={rateUsItem.label}
+        primaryTypographyProps={{ fontSize: 14.5, fontWeight: 500 }}
+      />
+    </ListItemButton>
+  );
+}
+
 function DrawerContent({ onNavigate }) {
   const { logout } = useAuth();
+  const [rateUsOpen, setRateUsOpen] = useState(false);
 
   return (
     <Box
@@ -105,6 +145,13 @@ function DrawerContent({ onNavigate }) {
         display: 'flex',
         flexDirection: 'column',
         bgcolor: 'background.paper',
+        overflowY: 'auto',
+        // Hide scrollbar visually, keep scroll functionality
+        scrollbarWidth: 'none', // Firefox
+        msOverflowStyle: 'none', // IE/Edge legacy
+        '&::-webkit-scrollbar': {
+          display: 'none', // Chrome/Safari/Edge Chromium
+        },
       }}
     >
       {/* Logo */}
@@ -142,11 +189,18 @@ function DrawerContent({ onNavigate }) {
       <Divider sx={{ mx: 2.5, my: 1, borderColor: 'background.default' }} />
 
       {/* Secondary nav group */}
-      <List onClick={onNavigate}>
+      <List>
         {secondaryNav.map((item) => (
-          <NavRow key={item.to} item={item} />
+          <Box key={item.to} onClick={onNavigate}>
+            <NavRow item={item} />
+          </Box>
         ))}
+        <RateUsRow onOpen={() => setRateUsOpen(true)} />
       </List>
+
+      {/* Review card — opens on "Rate Us" click, closes on its own.
+          Does not call onNavigate, since it isn't a route change. */}
+      <RateUsDialog open={rateUsOpen} onClose={() => setRateUsOpen(false)} />
 
       <Box sx={{ flexGrow: 1 }} />
 
@@ -202,6 +256,9 @@ export default function AppDrawer({ open = false, onClose }) {
             boxSizing: 'border-box',
             border: 'none',
             boxShadow: '1px 0 0 rgba(63,71,40,0.06)',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
           },
         }}
       >
@@ -220,6 +277,9 @@ export default function AppDrawer({ open = false, onClose }) {
         '& .MuiDrawer-paper': {
           width: DRAWER_WIDTH,
           boxSizing: 'border-box',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
         },
       }}
     >

@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import HealthGoals from './pages/HealthGoals';
 import Profile from './pages/Profile';
 import MealPlanner from './pages/MealPlanner';
+import TodaysTask from './pages/TodaysTask';
 import Simulator from './pages/Simulator';
 import BMI from './pages/BMI';
 import History from './pages/History';
@@ -49,6 +50,7 @@ export const router = createBrowserRouter([
       { path: '/goals', element: <HealthGoals /> },
       { path: '/profile', element: <Profile /> },
       { path: '/meal-planner', element: <MealPlanner /> },
+      { path: '/tasks', element: <TodaysTask /> },
       { path: '/simulator', element: <Simulator /> },
       { path: '/simulator/:recipeId', element: <Simulator /> }, 
       { path: '/bmi', element: <BMI /> },

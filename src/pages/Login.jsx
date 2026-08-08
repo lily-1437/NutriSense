@@ -29,7 +29,10 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, form.email, form.password);
       const redirectTo = location.state?.from?.pathname || '/dashboard';
-      navigate(redirectTo, { replace: true });
+      // justAuthed triggers the "Logged in successfully" welcome toast on
+      // Dashboard (only reads it there, so it's harmless if redirectTo is
+      // some other protected route).
+      navigate(redirectTo, { replace: true, state: { justAuthed: true } });
     } catch (err) {
       setError('Incorrect email or password.');
     } finally {
