@@ -68,9 +68,18 @@ export default function MiniCalendar() {
         </IconButton>
       </Box>
 
+      {/*
+        FIX: this project is on MUI's new Grid API (see Dashboard.jsx's
+        <Grid size={{ xs: 12, sm: 6 }}>) where `item` no longer exists and
+        column width goes through `size`, not a bare `xs` prop on its own.
+        The old `<Grid item xs={1}>` syntax below was silently ignored by
+        MUI, so every cell collapsed to its natural content width instead
+        of 1/7th of the row — that's what caused "MOTUWETHFRSASU" and all
+        the date numbers to bunch up with no spacing between columns.
+      */}
       <Grid container columns={7} sx={{ mb: 0.5 }}>
         {DAY_LABELS.map((d) => (
-          <Grid item xs={1} key={d} sx={{ textAlign: 'center' }}>
+          <Grid size={1} key={d} sx={{ textAlign: 'center' }}>
             <Typography sx={{ fontSize: 10.5, color: 'text.secondary', fontWeight: 600 }}>
               {d}
             </Typography>
@@ -88,7 +97,7 @@ export default function MiniCalendar() {
         >
           <Grid container columns={7} rowSpacing={0.5}>
             {cells.map((day, i) => (
-              <Grid item xs={1} key={i} sx={{ textAlign: 'center' }}>
+              <Grid size={1} key={i} sx={{ textAlign: 'center' }}>
                 {day && (
                   <Box
                     sx={{

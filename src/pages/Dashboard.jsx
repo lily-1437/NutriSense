@@ -29,22 +29,43 @@
 // Dashboard.jsx below reads the mobile-drawer toggle via useOutletContext()
 // instead of owning its own AppDrawer/drawerOpen state.
 //
-// Data notes:
-// - `todaysIntake`, `weekIntake`, `achievedGoals` are wired to placeholders
-//   shaped to match what firestoreLogs/firestoreGoals will eventually
-//   return — swap the mock loaders below for real calls once daily
-//   nutrition logging aggregation exists.
-// - `workouts` / `caloriesBurned` are mock data: NutriSense doesn't have a
-//   workout-tracking backend yet, so this is a UI-complete placeholder
-//   ready to wire to a future logic module (e.g. src/logic/workouts.js).
+// Data notes (UPDATED — real Firestore wiring):
+// - `todaysIntake` / `weekIntake` now come from src/logic/firestoreLogs.js,
+//   reading users/{uid}/logs/{logId} (actual logged meals) and aggregating
+//   them client-side via aggregateTodaysIntake / aggregateWeekIntake.
+//   Targets (the `target` half of each metric) come from the user's active
+//   goal (firestoreGoals.getActiveGoals) when one exists with matching
+//   milestone units, else fall back to sane defaults baked into
+//   aggregateTodaysIntake itself.
+// - `achievedGoals.completed`/`.total` now come from firestoreGoals.js,
+//   counting goal docs by status. `.streakDays`/`.todayPct` now come from
+//   firestoreMealCompletions.js, reading users/{uid}/mealCompletions/{date}
+//   docs written by MealPlanner.jsx's commitRemoval(). NOTE: this only has
+//   data going forward from whenever that write was added — no historical
+//   backfill is possible, since completions were previously destructive
+//   (see MealPlanner.jsx comments).
+// - `workouts` / `caloriesBurned` remain MOCK DATA: NutriSense has no
+//   workout-tracking collection or backend yet. This is still a
+//   UI-complete placeholder ready to wire to a future
+//   src/logic/firestoreWorkouts.js once that collection exists.
 //
 // Profile-completion prompt:
 // - Uses getUserProfile(uid) from src/logic/firestoreUser.js (same source
 //   of truth as Profile.jsx) to check whether the required fields
 //   (fullName, heightCm, weightKg, age, gender) are all filled in.
-// - Shows a dismissible "Complete your profile" banner at the top of the
-//   page if the doc doesn't exist yet (brand-new signup) OR any required
-//   field is missing/empty. Mirrors Profile.jsx's validate() exactly.
+// - Shows a dismissible "Complete your profile" toast, bottom-right,
+//   auto-dismissing after 3.5s (see FIX below), if the doc doesn't exist
+//   yet (brand-new signup) OR any required field is missing/empty.
+//   Mirrors Profile.jsx's validate() exactly.
+//
+// FIX (this version):
+// - Profile-completion Snackbar moved from top-right to bottom-right
+//   (anchorOrigin: { vertical: 'bottom', horizontal: 'right' }).
+// - Added autoHideDuration={3500} + a real onClose handler
+//   (setShowProfilePrompt(false)) — MUI's Snackbar won't auto-hide unless
+//   onClose is wired, which is why it previously stayed on screen.
+// - Removed the old mt offset that pushed it below the welcome toast
+//   (no longer needed now that they anchor to different corners).
 //
 // Post-login/signup welcome toast:
 // - Login.jsx / Signup.jsx must navigate here with
@@ -54,7 +75,7 @@
 //   reference design: white card, green check, "View" button), then
 //   immediately clears the router state via navigate(..., { replace: true,
 //   state: {} }) so refreshing /dashboard or navigating back to it later
-//   never re-triggers the toast. Auto-dismisses after 2.5s.
+//   never re-triggers the toast. Auto-dismisses after 2.5s. Stays top-right.
 //
 // Heading:
 // - "Good Morning, {firstName}" shows ONLY the first name, even if
@@ -101,8 +122,22 @@ import QuoteOfTheDay from '../components/dashboard/QuoteOfTheDay';
 import { useAuth } from '../hooks/useAuth';
 import { fadeUp, staggerContainer } from '../motion/variants';
 import { getUserProfile } from '../logic/firestoreUser';
+import { getActiveGoals, getAllGoals } from '../logic/firestoreGoals';
+import {
+  getLogsForDate,
+  getLogsForRange,
+  getLastNDateKeys,
+  toDateKey,
+  aggregateTodaysIntake,
+  aggregateWeekIntake,
+} from '../logic/firestoreLogs';
+import { getAllCompletions, calculateStreak, wasCompletedToday } from '../logic/firestoreMealCompletions';
 
-/* -------------------- Mock data (swap for real Firestore data) -------------------- */
+/* -------------------- Mock data -------------------- */
+// workouts/caloriesBurned: no backend yet, always mock.
+// todaysIntake/weekIntake/achievedGoals: real data is preferred, but these
+// act as a FALLBACK if the real fetch fails (e.g. rules not deployed yet,
+// missing index, offline) so the dashboard never shows blank cards.
 
 const mockTodaysIntake = {
   calories: { consumed: 1450, target: 2100 },
@@ -173,6 +208,24 @@ const mockWorkouts = [
 // Required fields for a "complete" profile — matches Profile.jsx's validate()
 const REQUIRED_PROFILE_FIELDS = ['fullName', 'heightCm', 'weightKg', 'age', 'gender'];
 
+// Pulls {calories, protein, fat, carbs} targets out of an active goal's
+// milestones, if the goal has milestones with matching units. Falls back
+// to null (letting aggregateTodaysIntake use its own defaults) if the
+// user's active goal doesn't have nutrition-shaped milestones — e.g. a
+// goal built around exercise/sleep milestones instead.
+function extractTargetsFromGoal(goal) {
+  if (!goal?.milestones?.length) return null;
+  const targets = {};
+  for (const m of goal.milestones) {
+    const unit = (m.unit || '').toLowerCase();
+    if (unit.startsWith('kcal')) targets.calories = m.value;
+    else if (m.label?.toLowerCase().includes('protein')) targets.protein = m.value;
+    else if (m.label?.toLowerCase().includes('carb')) targets.carbs = m.value;
+    else if (m.label?.toLowerCase().includes('fat')) targets.fat = m.value;
+  }
+  return Object.keys(targets).length ? targets : null;
+}
+
 /* -------------------- Top bar (Dashboard-owned, replaces AppNavbar here) -------------------- */
 
 function DashboardTopBar({ onMenuClick }) {
@@ -241,6 +294,15 @@ export default function Dashboard() {
   const [showProfilePrompt, setShowProfilePrompt] = useState(false);
   const [showWelcomeToast, setShowWelcomeToast] = useState(false);
 
+  // Starts as mock so cards always render something immediately, then gets
+  // swapped for real data once the fetch below resolves. If a given fetch
+  // fails, that card just keeps showing mock instead of going blank.
+  const [todaysIntake, setTodaysIntake] = useState(mockTodaysIntake);
+  const [weekIntake, setWeekIntake] = useState(mockWeekIntake);
+  const [achievedGoals, setAchievedGoals] = useState(mockAchievedGoals);
+  const [usingMockIntake, setUsingMockIntake] = useState(true);
+  const [usingMockGoals, setUsingMockGoals] = useState(true);
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -293,7 +355,67 @@ export default function Dashboard() {
     };
   }, [user]);
 
-  const remainingCalories = mockTodaysIntake.calories.target - mockTodaysIntake.calories.consumed;
+  // Real intake + goals data. Each card's data is fetched and applied
+  // INDEPENDENTLY (separate try/catch per group below) so if e.g. the logs
+  // collection's Firestore rules aren't deployed yet, only the intake cards
+  // stay on mock — the goals card still gets real data if that fetch
+  // succeeds, instead of one failure blanking everything.
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+
+    const today = toDateKey();
+    const weekKeys = getLastNDateKeys(7);
+
+    // Today's + week's intake
+    (async () => {
+      try {
+        const [todaysLogs, weekLogs, activeGoals] = await Promise.all([
+          getLogsForDate(user.uid, today),
+          getLogsForRange(user.uid, weekKeys[0], weekKeys[weekKeys.length - 1]),
+          getActiveGoals(user.uid).catch(() => []), // targets are optional — don't fail intake for this
+        ]);
+        if (cancelled) return;
+
+        const targets = extractTargetsFromGoal(activeGoals?.[0]);
+        setTodaysIntake(aggregateTodaysIntake(todaysLogs, targets));
+        setWeekIntake(aggregateWeekIntake(weekLogs, weekKeys));
+        setUsingMockIntake(false);
+      } catch (err) {
+        console.error('Failed to load intake logs — showing mock data instead. Check that Firestore rules for users/{uid}/logs are deployed:', err);
+        // leave todaysIntake/weekIntake as whatever they already are (mock)
+      }
+    })();
+
+    // Achieved goals (goal counts + completion streak)
+    (async () => {
+      try {
+        const [allGoals, completions] = await Promise.all([
+          getAllGoals(user.uid),
+          getAllCompletions(user.uid),
+        ]);
+        if (cancelled) return;
+
+        const completed = allGoals.filter((g) => g.status === 'completed').length;
+        setAchievedGoals({
+          completed,
+          total: allGoals.length || 1, // avoid /0 in AchievedGoalsCard's pct calc
+          streakDays: calculateStreak(completions),
+          todayPct: wasCompletedToday(completions) ? 100 : 0,
+        });
+        setUsingMockGoals(false);
+      } catch (err) {
+        console.error('Failed to load goals/completions — showing mock data instead. Check that Firestore rules for users/{uid}/mealCompletions are deployed:', err);
+        // leave achievedGoals as whatever it already is (mock)
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+  const remainingCalories = todaysIntake.calories.target - todaysIntake.calories.consumed;
 
   return (
     <Box
@@ -310,7 +432,7 @@ export default function Dashboard() {
         minHeight: '100vh',
       }}
     >
-      {/* Welcome toast — shown only right after login/signup, styled to match reference */}
+      {/* Welcome toast — shown only right after login/signup, styled to match reference. Top-right, unchanged. */}
       <Snackbar
         open={showWelcomeToast}
         autoHideDuration={2500}
@@ -356,11 +478,18 @@ export default function Dashboard() {
         </Box>
       </Snackbar>
 
-      {/* Profile completion prompt — styled to match the welcome toast card */}
+      {/*
+        Profile completion prompt — FIXED:
+        - anchored bottom-right instead of top-right
+        - autoHideDuration={3500} + onClose wired so it actually
+          self-dismisses after ~3.5s instead of staying stuck on screen
+      */}
       <Snackbar
         open={showProfilePrompt}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ mt: showWelcomeToast ? 11 : 2 }}
+        autoHideDuration={3500}
+        onClose={() => setShowProfilePrompt(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        sx={{ mb: 2 }}
       >
         <Box
           sx={{
@@ -418,8 +547,8 @@ export default function Dashboard() {
             Good Morning, {firstName}
           </Typography>
           <Typography sx={{ fontSize: 13.5, color: 'text.secondary', mt: 0.5, mb: 3 }}>
-            You've logged {mockTodaysIntake.calories.consumed} kcal today — {remainingCalories} kcal
-            left toward your target, and you're {mockAchievedGoals.todayPct}% of the way through
+            You've logged {todaysIntake.calories.consumed} kcal today — {remainingCalories} kcal
+            left toward your target, and you're {achievedGoals.todayPct}% of the way through
             today's goals. Keep it up!
           </Typography>
         </motion.div>
@@ -431,32 +560,39 @@ export default function Dashboard() {
           variants={staggerContainer()}
         >
           <Grid container spacing={2.5} sx={{ mb: 3 }}>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <motion.div variants={fadeUp}>
-                <TodaysIntakeCard data={mockTodaysIntake} />
+                <TodaysIntakeCard data={todaysIntake} />
               </motion.div>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <motion.div variants={fadeUp}>
-                <WeekIntakeSummaryCard data={mockWeekIntake} />
+                <WeekIntakeSummaryCard data={weekIntake} />
               </motion.div>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <motion.div variants={fadeUp}>
-                <AchievedGoalsCard data={mockAchievedGoals} />
+                <AchievedGoalsCard data={achievedGoals} />
               </motion.div>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <motion.div variants={fadeUp}>
+                {/* Still mock — no workout-tracking backend exists yet */}
                 <CaloriesBurnedCard data={mockCaloriesBurned} />
               </motion.div>
             </Grid>
           </Grid>
         </motion.div>
 
+        {(usingMockIntake || usingMockGoals) && (
+          <Typography sx={{ fontSize: 12, color: 'text.secondary', mb: 2, fontStyle: 'italic' }}>
+            Showing sample data while your real progress loads — if this doesn't update, check the browser console for a Firestore permissions or index error.
+          </Typography>
+        )}
+
         {/* Workouts + Workout Details */}
         <Grid container spacing={2.5}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Box sx={{ borderRadius: '20px', bgcolor: 'background.paper', p: 2.25 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
                 <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: 'text.primary' }}>
@@ -481,7 +617,7 @@ export default function Dashboard() {
             </Box>
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <Typography sx={{ fontSize: 14.5, fontWeight: 700, color: 'text.primary', mb: 1.5 }}>
               Workout Details
             </Typography>

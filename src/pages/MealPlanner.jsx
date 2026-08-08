@@ -10,6 +10,7 @@ import { getActiveGoals } from '../logic/firestoreGoals';
 import { selectMealPlanTemplate } from '../logic/mealPlanSelector';
 import { generateCoachNotes, mergeCoachNotes } from '../logic/mealPlanCoach';
 import { saveMealPlan, getMealPlan, deleteMealPlan } from '../logic/firestoreMealPlans';
+import { recordDayCompletion } from '../logic/firestoreMealCompletions';
 import MealPlanCard from '../components/MealPlanCard';
 import { sumDayNutrition, sumWeekNutrition } from '../logic/mealPlanNutrition';
 import NutritionScoreRow from '../components/NutritionScoreRow';
@@ -268,12 +269,30 @@ export default function MealPlanner() {
 
   // Step 2: window closed without Undo — actually remove the day from the
   // plan and persist it (or delete the whole plan doc if it was the last day).
+  //
+  // FIX: records a durable completion (users/{uid}/mealCompletions/{today})
+  // BEFORE the day is removed. Previously "completing" a day just deleted it
+  // from plan.days with no trace, so AchievedGoalsCard's streakDays/todayPct
+  // had nothing to read from — they were mocked because there was literally
+  // no history anywhere to compute them from. This doesn't backfill past
+  // completions (those are genuinely gone), but every completion from now on
+  // is recorded, so streaks start accumulating real data going forward.
+  //
+  // Written as "fire and forget" (not awaited before the plan write, not
+  // rolled back if it fails) on purpose: a completion-log write failing
+  // shouldn't block or revert the user's actual plan update, which is the
+  // more important state to keep consistent. Worst case a single day's
+  // streak credit is missed, not silently corrupted plan data.
   const commitRemoval = async (dayKey) => {
     timerRef.current = null;
     pendingRef.current = null;
     setPendingRemoval(null);
     setSnackbarOpen(false);
     if (!dayKey || !plan || !user) return;
+
+    recordDayCompletion(user.uid, dayKey).catch((err) => {
+      console.error('Could not record day completion (streak data):', err);
+    });
 
     const previousPlan = plan;
     const remainingDays = plan.days.filter((d) => d.day !== dayKey);
