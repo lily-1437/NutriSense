@@ -33,6 +33,17 @@
 // deleteUserAccountData(uid) (src/logic/firestoreUser.js) BEFORE deleting
 // the Firebase Auth user. This replaces the previous version which only
 // deleted the users/{uid} doc and left goals/mealPlans/recipes orphaned.
+//
+// RE-AUTH FIX (this version): Firebase's deleteUser() throws
+// 'auth/requires-recent-login' if the user's session isn't fresh, which
+// previously forced a full sign-out -> sign-in -> retry round trip just to
+// delete an account. That's a bad flow to force on someone who's already
+// decided to leave. The delete confirmation now asks for the account
+// password directly in the dialog and calls reauthenticateWithCredential()
+// silently right before the delete -- one click, no navigation, no
+// separate login screen. This only works because the app is email/password
+// auth only (see Login.jsx/Signup.jsx) -- if a social provider is ever
+// added, this dialog would need a provider-specific re-auth flow instead.
 
 import { useState, useEffect } from 'react';
 import {
@@ -53,13 +64,23 @@ import {
   Alert,
   Slide,
   Skeleton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  InputAdornment,
+  IconButton,
+  CircularProgress,
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import { KeyRound, Trash2, CheckCircle2 } from 'lucide-react';
+import { KeyRound, Trash2, CheckCircle2, Eye, EyeClosed } from 'lucide-react';
 import {
   updateProfile,
   sendPasswordResetEmail,
   deleteUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
@@ -67,7 +88,6 @@ import { auth } from '../firebase';
 import { useAuth } from '../hooks/useAuth';
 import { fadeUp, staggerContainer } from '../motion/variants';
 import PageCard from '../components/PageCard';
-import ConfirmDialog from '../components/ConfirmDialog';
 import ConditionSelector from '../components/ConditionSelector';
 import {
   getUserConditions,
@@ -133,8 +153,15 @@ export default function Profile() {
   const [savingConditions, setSavingConditions] = useState(false);
 
   const [snackbar, setSnackbar] = useState({ open: false, severity: 'success', message: '' });
+
+  // Delete-account dialog now owns its own password field + error state,
+  // since re-auth happens inline here rather than via a generic
+  // yes/no ConfirmDialog.
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [deletePassword, setDeletePassword] = useState('');
+  const [showDeletePassword, setShowDeletePassword] = useState(false);
+  const [deletePasswordError, setDeletePasswordError] = useState('');
 
   useEffect(() => {
     if (!user) return;
@@ -238,49 +265,74 @@ export default function Profile() {
     }
   };
 
-  // Wipes goals, meal plan, recipes, and the user doc (via
-  // deleteUserAccountData), THEN deletes the Firebase Auth user. Order
-  // matters: Firestore security rules require an authenticated matching
-  // uid, so all Firestore deletes must happen before the auth user is gone.
+  const openDeleteDialog = () => {
+    setDeletePassword('');
+    setDeletePasswordError('');
+    setShowDeletePassword(false);
+    setDeleteConfirmOpen(true);
+  };
+
+  const closeDeleteDialog = () => {
+    if (deleting) return; // don't allow closing mid-delete
+    setDeleteConfirmOpen(false);
+    setDeletePassword('');
+    setDeletePasswordError('');
+  };
+
+  // Re-authenticates with the password entered in the dialog, THEN wipes
+  // goals/recipes/reviews/tasks/logs/mealCompletions/mealPlan/user-doc (via
+  // deleteUserAccountData), THEN deletes the Firebase Auth user -- all in
+  // one confirmation, no sign-out/sign-in round trip. Order matters:
+  // Firestore security rules require an authenticated matching uid, so all
+  // Firestore deletes must happen before the auth user is gone; and the
+  // re-auth must happen before THAT, since it's what makes deleteUser()
+  // stop throwing 'auth/requires-recent-login' in the first place.
   const handleDeleteAccount = async () => {
+    if (!deletePassword) {
+      setDeletePasswordError('Enter your password to confirm.');
+      return;
+    }
+
     setDeleting(true);
+    setDeletePasswordError('');
     try {
+      const credential = EmailAuthProvider.credential(user.email, deletePassword);
+      await reauthenticateWithCredential(auth.currentUser, credential);
+
       await deleteUserAccountData(user.uid);
       await deleteUser(auth.currentUser);
       navigate('/');
     } catch (err) {
       console.error('Failed to delete account:', err);
-      const message =
-        err.code === 'auth/requires-recent-login'
-          ? 'For security, please sign out and back in, then try again.'
-          : 'Could not delete account. Please try again.';
-      setSnackbar({ open: true, severity: 'error', message });
+      if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        // Wrong password -- keep the dialog open, let them retry without
+        // starting over or losing their place.
+        setDeletePasswordError('Incorrect password. Please try again.');
+      } else if (err.code === 'auth/too-many-requests') {
+        setDeletePasswordError('Too many attempts. Please wait a moment and try again.');
+      } else {
+        setSnackbar({ open: true, severity: 'error', message: 'Could not delete account. Please try again.' });
+        setDeleteConfirmOpen(false);
+      }
+    } finally {
       setDeleting(false);
-      setDeleteConfirmOpen(false);
     }
   };
 
-  if (!user) return null; // ProtectedRoute handles the redirect
-
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100%', py: { xs: 3, md: 5 }, px: 2 }}>
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        style={{ maxWidth: 640, margin: '0 auto' }}
-      >
-        <Typography variant="h3" sx={{ mb: 0.5 }}>
-          Profile Settings
-        </Typography>
-        <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3 }}>
-          Keep your personal information up to date to receive more personalized nutrition
-          recommendations.
-        </Typography>
-
+    <Box sx={{ maxWidth: 640, mx: 'auto', px: { xs: 2, sm: 0 }, py: 4 }}>
+      <motion.div variants={staggerContainer(0.08)} initial="hidden" animate="visible">
         <PageCard sx={{ p: { xs: 2.5, sm: 4 } }}>
+          <Typography variant="h3" sx={{ mb: 3 }}>
+            Profile Settings
+          </Typography>
+
           {loading ? (
-            <Skeleton variant="rounded" height={420} />
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <Skeleton key={i} variant="rounded" height={56} />
+              ))}
+            </Box>
           ) : (
             <motion.div variants={staggerContainer(0.06)} initial="hidden" animate="visible">
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
@@ -501,7 +553,7 @@ export default function Profile() {
                 Change Password
               </Button>
               <Button
-                onClick={() => setDeleteConfirmOpen(true)}
+                onClick={openDeleteDialog}
                 startIcon={<Trash2 size={18} />}
                 variant="outlined"
                 sx={{
@@ -536,15 +588,68 @@ export default function Profile() {
         </Alert>
       </Snackbar>
 
-      <ConfirmDialog
-        open={deleteConfirmOpen}
-        title="Delete your account?"
-        message="This permanently deletes your account, health goals, meal plans, recipe history, and all saved data. This can't be undone."
-        confirmLabel={deleting ? 'Deleting…' : 'Delete Account'}
-        danger
-        onConfirm={handleDeleteAccount}
-        onCancel={() => setDeleteConfirmOpen(false)}
-      />
+      {/*
+        Delete-account confirmation, now with an inline password field for
+        re-authentication. Replaces the previous generic ConfirmDialog for
+        this specific action, since re-auth needs a form field the plain
+        yes/no dialog didn't have. One click, one dialog, no sign-out
+        round trip -- entering the correct password here both confirms
+        intent AND satisfies Firebase's "recent login" requirement for
+        deleteUser() in the same step.
+      */}
+      <Dialog open={deleteConfirmOpen} onClose={closeDeleteDialog} maxWidth="xs" fullWidth>
+        <DialogTitle sx={{ fontFamily: (t) => t.typography.h3.fontFamily, color: 'secondary.main' }}>
+          Delete your account?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText sx={{ fontSize: 14, color: 'text.secondary', mb: 2.5 }}>
+            This permanently deletes your account, health goals, meal plans, recipe history, and
+            all saved data. This can't be undone. Enter your password to confirm.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            fullWidth
+            type={showDeletePassword ? 'text' : 'password'}
+            label="Password"
+            value={deletePassword}
+            onChange={(e) => {
+              setDeletePassword(e.target.value);
+              if (deletePasswordError) setDeletePasswordError('');
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !deleting) handleDeleteAccount();
+            }}
+            error={!!deletePasswordError}
+            helperText={deletePasswordError}
+            disabled={deleting}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowDeletePassword((s) => !s)} edge="end" size="small">
+                      {showDeletePassword ? <EyeClosed size={18} color="#6B6550" /> : <Eye size={18} color="#6B6550" />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2.5 }}>
+          <Button onClick={closeDeleteDialog} disabled={deleting} sx={{ color: 'text.secondary' }}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteAccount}
+            disabled={deleting}
+            variant="contained"
+            startIcon={deleting ? <CircularProgress size={16} sx={{ color: '#fff' }} /> : null}
+            sx={{ bgcolor: 'secondary.main', '&:hover': { bgcolor: 'secondary.dark' } }}
+          >
+            {deleting ? 'Deleting…' : 'Delete Account'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
