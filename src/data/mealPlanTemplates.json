@@ -13,22 +13,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 10,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Brown Rice with Grilled Hilsa and Mixed Vegetables",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 15,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Grilled Tandoori Chicken with Stir-Fried Vegetables",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 23,
+              "estFat": 13,
+              "estCarbs": 55
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 32
             }
           },
           "exerciseTip": "15-20 min post-meal walk to help stabilize blood glucose.",
@@ -40,22 +52,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Vegetable Khichuri",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 10,
+              "estCarbs": 39
             },
             "lunch": {
               "recipeName": "Masoor Dal, Lau Ghonto and Grilled Rohu",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 14,
+              "estCarbs": 65
             },
             "dinner": {
               "recipeName": "Mixed Vegetable Curry with Grilled Chicken",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 24,
+              "estFat": 15,
+              "estCarbs": 50
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 13,
+              "estFat": 7,
+              "estCarbs": 36
             }
           },
           "exerciseTip": "15-20 min post-meal walk to help stabilize blood glucose.",
@@ -67,22 +91,34 @@
             "breakfast": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 8,
+              "estCarbs": 32
             },
             "lunch": {
               "recipeName": "Brown Rice with Grilled Hilsa and Mixed Vegetables",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 24,
+              "estFat": 18,
+              "estCarbs": 57
             },
             "dinner": {
               "recipeName": "Grilled Tandoori Chicken with Stir-Fried Vegetables",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 26,
+              "estFat": 12,
+              "estCarbs": 54
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 13,
+              "estFat": 9,
+              "estCarbs": 31
             }
           },
           "exerciseTip": "15-20 min post-meal walk to help stabilize blood glucose.",
@@ -94,22 +130,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 41
             },
             "lunch": {
               "recipeName": "Masoor Dal, Lau Ghonto and Grilled Rohu",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 17,
+              "estCarbs": 59
             },
             "dinner": {
               "recipeName": "Mixed Vegetable Curry with Grilled Chicken",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 15,
+              "estCarbs": 53
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 13,
+              "estFat": 8,
+              "estCarbs": 36
             }
           },
           "exerciseTip": "15-20 min post-meal walk to help stabilize blood glucose.",
@@ -121,22 +169,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Vegetable Khichuri",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 10,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Brown Rice with Grilled Hilsa and Mixed Vegetables",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 28,
+              "estFat": 17,
+              "estCarbs": 53
             },
             "dinner": {
               "recipeName": "Grilled Tandoori Chicken with Stir-Fried Vegetables",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 23,
+              "estFat": 13,
+              "estCarbs": 54
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 8,
+              "estCarbs": 34
             }
           },
           "exerciseTip": "15-20 min post-meal walk to help stabilize blood glucose.",
@@ -148,22 +208,34 @@
             "breakfast": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 12,
+              "estFat": 9,
+              "estCarbs": 34
             },
             "lunch": {
               "recipeName": "Masoor Dal, Lau Ghonto and Grilled Rohu",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 15,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Mixed Vegetable Curry with Grilled Chicken",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 15,
+              "estCarbs": 51
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 13,
+              "estFat": 9,
+              "estCarbs": 32
             }
           },
           "exerciseTip": "15-20 min post-meal walk to help stabilize blood glucose.",
@@ -175,22 +247,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 41
             },
             "lunch": {
               "recipeName": "Brown Rice with Grilled Hilsa and Mixed Vegetables",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 28,
+              "estFat": 15,
+              "estCarbs": 59
             },
             "dinner": {
               "recipeName": "Grilled Tandoori Chicken with Stir-Fried Vegetables",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 21,
+              "estFat": 12,
+              "estCarbs": 58
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Low-GI, fiber-rich ingredients help smooth blood sugar swings for Type 1 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 13,
+              "estFat": 9,
+              "estCarbs": 31
             }
           },
           "exerciseTip": "15-20 min post-meal walk to help stabilize blood glucose.",
@@ -212,22 +296,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 9,
+              "estCarbs": 39
             },
             "lunch": {
               "recipeName": "Multigrain Roti with Chicken Curry and Cucumber Salad",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 26,
+              "estFat": 18,
+              "estCarbs": 54
             },
             "dinner": {
               "recipeName": "Grilled Tandoori Chicken with Stir-Fried Vegetables",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 25,
+              "estFat": 15,
+              "estCarbs": 49
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 7,
+              "estCarbs": 34
             }
           },
           "exerciseTip": "30 min brisk walk or light cycling most days.",
@@ -239,22 +335,34 @@
             "breakfast": {
               "recipeName": "Besan Chilla with Spinach and Paneer",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 10,
+              "estCarbs": 34
             },
             "lunch": {
               "recipeName": "Masoor Dal, Lau Ghonto and Grilled Rohu",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 15,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Shorshe Salmon with Steamed Vegetables",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 24,
+              "estFat": 14,
+              "estCarbs": 52
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 15,
+              "estFat": 9,
+              "estCarbs": 30
             }
           },
           "exerciseTip": "30 min brisk walk or light cycling most days.",
@@ -266,22 +374,34 @@
             "breakfast": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 8,
+              "estCarbs": 34
             },
             "lunch": {
               "recipeName": "Rajma Curry with Mixed Millet Roti",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 25,
+              "estFat": 17,
+              "estCarbs": 57
             },
             "dinner": {
               "recipeName": "Palak Paneer with Cauliflower Rice",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 21,
+              "estFat": 14,
+              "estCarbs": 55
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 31
             }
           },
           "exerciseTip": "30 min brisk walk or light cycling most days.",
@@ -293,22 +413,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 8,
+              "estCarbs": 39
             },
             "lunch": {
               "recipeName": "Multigrain Roti with Chicken Curry and Cucumber Salad",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 18,
+              "estCarbs": 57
             },
             "dinner": {
               "recipeName": "Bengali Mixed Vegetable Curry with Grilled Chicken",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 21,
+              "estFat": 15,
+              "estCarbs": 53
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 29
             }
           },
           "exerciseTip": "30 min brisk walk or light cycling most days.",
@@ -320,22 +452,34 @@
             "breakfast": {
               "recipeName": "Besan Chilla with Spinach and Paneer",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 10,
+              "estCarbs": 35
             },
             "lunch": {
               "recipeName": "Masoor Dal, Lau Ghonto and Grilled Rohu",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 16,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Grilled Tandoori Chicken with Stir-Fried Vegetables",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 21,
+              "estFat": 12,
+              "estCarbs": 58
             },
             "snack": {
               "recipeName": "Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 30
             }
           },
           "exerciseTip": "30 min brisk walk or light cycling most days.",
@@ -347,22 +491,34 @@
             "breakfast": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 12,
+              "estFat": 9,
+              "estCarbs": 32
             },
             "lunch": {
               "recipeName": "Rajma Curry with Mixed Millet Roti",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 25,
+              "estFat": 16,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Shorshe Salmon with Steamed Vegetables",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 14,
+              "estCarbs": 54
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 8,
+              "estCarbs": 32
             }
           },
           "exerciseTip": "30 min brisk walk or light cycling most days.",
@@ -374,22 +530,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 11,
+              "estCarbs": 35
             },
             "lunch": {
               "recipeName": "Multigrain Roti with Chicken Curry and Cucumber Salad",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 22,
+              "estFat": 17,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Palak Paneer with Cauliflower Rice",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 14,
+              "estCarbs": 55
             },
             "snack": {
               "recipeName": "Greek Yogurt with Fruits and Nuts",
               "rationale": "Lean protein and low-GI vegetables support steady blood sugar for Type 2 management.",
-              "estCalories": 260
+              "estCalories": 260,
+              "estProtein": 14,
+              "estFat": 8,
+              "estCarbs": 32
             }
           },
           "exerciseTip": "30 min brisk walk or light cycling most days.",
@@ -411,22 +579,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 9,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Brown Rice with Lau Shobji and Grilled Fish",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 15,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Vegetable Stew with Red Rice",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 15,
+              "estCarbs": 53
             },
             "snack": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 11,
+              "estFat": 7,
+              "estCarbs": 20
             }
           },
           "exerciseTip": "20-30 min gentle cardio (walking, swimming) most days.",
@@ -438,22 +618,34 @@
             "breakfast": {
               "recipeName": "Mixed Vegetable Khichuri",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 9,
+              "estCarbs": 39
             },
             "lunch": {
               "recipeName": "Whole Wheat Roti with Mixed Vegetable Curry and Masoor Dal",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 28,
+              "estFat": 16,
+              "estCarbs": 55
             },
             "dinner": {
               "recipeName": "Palak Dal with Whole Wheat Roti",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 12,
+              "estCarbs": 60
             },
             "snack": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 5,
+              "estCarbs": 24
             }
           },
           "exerciseTip": "20-30 min gentle cardio (walking, swimming) most days.",
@@ -465,22 +657,34 @@
             "breakfast": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 9,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Moong Dal with Pumpkin and Spinach",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 24,
+              "estFat": 14,
+              "estCarbs": 64
             },
             "dinner": {
               "recipeName": "Grilled Lemon Fish with Stir-Fried Vegetables",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 14,
+              "estCarbs": 56
             },
             "snack": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 8,
+              "estFat": 5,
+              "estCarbs": 25
             }
           },
           "exerciseTip": "20-30 min gentle cardio (walking, swimming) most days.",
@@ -492,22 +696,34 @@
             "breakfast": {
               "recipeName": "Red Rice Poha with Vegetables",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 11,
+              "estCarbs": 35
             },
             "lunch": {
               "recipeName": "Chicken Vegetable Curry with Millet",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 22,
+              "estFat": 16,
+              "estCarbs": 63
             },
             "dinner": {
               "recipeName": "Vegetable Dalia (Broken Wheat Porridge)",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 12,
+              "estCarbs": 57
             },
             "snack": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 11,
+              "estFat": 6,
+              "estCarbs": 21
             }
           },
           "exerciseTip": "20-30 min gentle cardio (walking, swimming) most days.",
@@ -519,22 +735,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 11,
+              "estCarbs": 33
             },
             "lunch": {
               "recipeName": "Brown Rice with Lau Shobji and Grilled Fish (Bengali)",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 25,
+              "estFat": 15,
+              "estCarbs": 62
             },
             "dinner": {
               "recipeName": "Mixed Vegetable Stew with Red Rice",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 25,
+              "estFat": 15,
+              "estCarbs": 49
             },
             "snack": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 11,
+              "estFat": 5,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "20-30 min gentle cardio (walking, swimming) most days.",
@@ -546,22 +774,34 @@
             "breakfast": {
               "recipeName": "Vegetable Khichuri",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 41
             },
             "lunch": {
               "recipeName": "Whole Wheat Roti with Mixed Vegetable Curry and Masoor Dal",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 25,
+              "estFat": 14,
+              "estCarbs": 63
             },
             "dinner": {
               "recipeName": "Palak Dal with Whole Wheat Roti",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 15,
+              "estCarbs": 52
             },
             "snack": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "20-30 min gentle cardio (walking, swimming) most days.",
@@ -573,22 +813,34 @@
             "breakfast": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 9,
+              "estCarbs": 39
             },
             "lunch": {
               "recipeName": "Moong Dal with Pumpkin and Spinach",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 22,
+              "estFat": 16,
+              "estCarbs": 62
             },
             "dinner": {
               "recipeName": "Grilled Lemon Fish with Stir-Fried Vegetables",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 12,
+              "estCarbs": 59
             },
             "snack": {
               "recipeName": "Spinach Besan Chilla",
               "rationale": "Uses minimal added salt and potassium-rich vegetables to support healthy blood pressure.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 22
             }
           },
           "exerciseTip": "20-30 min gentle cardio (walking, swimming) most days.",
@@ -610,22 +862,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 10,
+              "estCarbs": 35
             },
             "lunch": {
               "recipeName": "Brown Rice with Masoor Dal and Mixed Vegetable Curry",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 15,
+              "estCarbs": 58
             },
             "dinner": {
               "recipeName": "Grilled Chicken with Stir-Fried Vegetables",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 25,
+              "estFat": 14,
+              "estCarbs": 50
             },
             "snack": {
               "recipeName": "Red Rice Vegetable Idli with Coconut-Mint Chutney",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 8,
+              "estFat": 5,
+              "estCarbs": 25
             }
           },
           "exerciseTip": "30 min moderate aerobic activity like brisk walking.",
@@ -637,22 +901,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Vegetable Chilla",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 9,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Rui Fish Curry with Brown Rice",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 24,
+              "estFat": 16,
+              "estCarbs": 59
             },
             "dinner": {
               "recipeName": "Lau Chingri (Low-Oil Version) with Red Rice",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 13,
+              "estCarbs": 58
             },
             "snack": {
               "recipeName": "Red Rice Vegetable Idli with Coconut-Mint Chutney",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 11,
+              "estFat": 5,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "30 min moderate aerobic activity like brisk walking.",
@@ -664,22 +940,34 @@
             "breakfast": {
               "recipeName": "Vegetable Dalia (Broken Wheat Porridge)",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 9,
+              "estCarbs": 41
             },
             "lunch": {
               "recipeName": "Chickpea Palak Curry with Whole Wheat Roti",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 24,
+              "estFat": 17,
+              "estCarbs": 58
             },
             "dinner": {
               "recipeName": "Tofu and Vegetable Curry with Whole Wheat Roti",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 15,
+              "estCarbs": 55
             },
             "snack": {
               "recipeName": "Red Rice Vegetable Idli with Coconut-Mint Chutney",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 5,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "30 min moderate aerobic activity like brisk walking.",
@@ -691,22 +979,34 @@
             "breakfast": {
               "recipeName": "Red Rice Vegetable Idli with Coconut-Mint Chutney",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 10,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Mixed Vegetable Khichuri",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 25,
+              "estFat": 14,
+              "estCarbs": 64
             },
             "dinner": {
               "recipeName": "Masoor Dal with Steamed Vegetables and Brown Rice",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 12,
+              "estCarbs": 60
             },
             "snack": {
               "recipeName": "Red Rice Vegetable Idli with Coconut-Mint Chutney",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 7,
+              "estCarbs": 20
             }
           },
           "exerciseTip": "30 min moderate aerobic activity like brisk walking.",
@@ -718,22 +1018,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 10,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Brown Rice with Masoor Dal and Mixed Vegetable Curry",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 17,
+              "estCarbs": 58
             },
             "dinner": {
               "recipeName": "Grilled Chicken with Stir-Fried Vegetables",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 25,
+              "estFat": 13,
+              "estCarbs": 53
             },
             "snack": {
               "recipeName": "Red Rice Vegetable Idli with Coconut-Mint Chutney",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "30 min moderate aerobic activity like brisk walking.",
@@ -745,22 +1057,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Vegetable Chilla",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 9,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Rui Fish Curry with Brown Rice",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 17,
+              "estCarbs": 54
             },
             "dinner": {
               "recipeName": "Lau Chingri (Low-Oil Version) with Red Rice",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 15,
+              "estCarbs": 52
             },
             "snack": {
               "recipeName": "Red Rice Vegetable Idli with Coconut-Mint Chutney",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 8,
+              "estFat": 6,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "30 min moderate aerobic activity like brisk walking.",
@@ -772,22 +1096,34 @@
             "breakfast": {
               "recipeName": "Vegetable Dalia (Broken Wheat Porridge)",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 10,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Chickpea Palak Curry with Whole Wheat Roti",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 24,
+              "estFat": 15,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Tofu and Vegetable Curry with Whole Wheat Roti",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 21,
+              "estFat": 12,
+              "estCarbs": 60
             },
             "snack": {
               "recipeName": "Red Rice Vegetable Idli with Coconut-Mint Chutney",
               "rationale": "Olive/mustard oil in small amounts plus lean protein and fiber, light on saturated fat.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 8,
+              "estFat": 6,
+              "estCarbs": 22
             }
           },
           "exerciseTip": "30 min moderate aerobic activity like brisk walking.",
@@ -809,22 +1145,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 11,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Brown Rice with Rui Fish Curry and Mixed Vegetables",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 14,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Whole Wheat Roti with Lau Chingri (Low-Oil Version)",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 23,
+              "estFat": 15,
+              "estCarbs": 51
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "Short, doctor-approved low-intensity walk; avoid overexertion.",
@@ -836,22 +1184,34 @@
             "breakfast": {
               "recipeName": "Red Rice Chira (Flattened Rice) with Mixed Vegetables",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 10,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Masoor Dal, Brown Rice & Stir-Fried Spinach",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 14,
+              "estCarbs": 62
             },
             "dinner": {
               "recipeName": "Whole Wheat Roti with Palak Paneer (Low-Fat)",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 21,
+              "estFat": 12,
+              "estCarbs": 60
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 8,
+              "estFat": 6,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "Short, doctor-approved low-intensity walk; avoid overexertion.",
@@ -863,22 +1223,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 10,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Grilled Chicken with Red Rice and Vegetable Curry",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 29,
+              "estFat": 14,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Vegetable & Chickpea Curry with Whole Wheat Roti",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 26,
+              "estFat": 15,
+              "estCarbs": 48
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 6,
+              "estCarbs": 20
             }
           },
           "exerciseTip": "Short, doctor-approved low-intensity walk; avoid overexertion.",
@@ -890,22 +1262,34 @@
             "breakfast": {
               "recipeName": "Vegetable Dalia (Broken Wheat Porridge)",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 39
             },
             "lunch": {
               "recipeName": "Bengali Mixed Vegetable Khichuri (Moong Dal & Brown Rice)",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 22,
+              "estFat": 17,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Steamed Fish with Vegetable Soup and Red Rice",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 420
+              "estCalories": 420,
+              "estProtein": 20,
+              "estFat": 13,
+              "estCarbs": 55
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "Short, doctor-approved low-intensity walk; avoid overexertion.",
@@ -917,22 +1301,34 @@
             "breakfast": {
               "recipeName": "Vegetable Oats Upma",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 10,
+              "estCarbs": 35
             },
             "lunch": {
               "recipeName": "Brown Rice with Rui Fish Curry and Mixed Vegetables",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 17,
+              "estCarbs": 58
             },
             "dinner": {
               "recipeName": "Whole Wheat Roti with Lau Chingri (Low-Oil Version)",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 13,
+              "estCarbs": 57
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 6,
+              "estCarbs": 21
             }
           },
           "exerciseTip": "Short, doctor-approved low-intensity walk; avoid overexertion.",
@@ -944,22 +1340,34 @@
             "breakfast": {
               "recipeName": "Red Rice Chira (Flattened Rice) with Mixed Vegetables",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 11,
+              "estCarbs": 33
             },
             "lunch": {
               "recipeName": "Masoor Dal, Brown Rice & Stir-Fried Spinach",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 18,
+              "estCarbs": 53
             },
             "dinner": {
               "recipeName": "Whole Wheat Roti with Palak Paneer (Low-Fat)",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 12,
+              "estCarbs": 57
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 22
             }
           },
           "exerciseTip": "Short, doctor-approved low-intensity walk; avoid overexertion.",
@@ -971,22 +1379,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 11,
+              "estCarbs": 32
             },
             "lunch": {
               "recipeName": "Grilled Chicken with Red Rice and Vegetable Curry",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 14,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Vegetable & Chickpea Curry with Whole Wheat Roti",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 25,
+              "estFat": 13,
+              "estCarbs": 54
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt Dip",
               "rationale": "Low-oil, low-salt preparation with lean protein and vegetables to support heart health.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 11,
+              "estFat": 5,
+              "estCarbs": 22
             }
           },
           "exerciseTip": "Short, doctor-approved low-intensity walk; avoid overexertion.",
@@ -1008,22 +1428,34 @@
             "breakfast": {
               "recipeName": "Bengali Vegetable Suji Upma",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 8,
+              "estCarbs": 41
             },
             "lunch": {
               "recipeName": "Steamed Rice with Lau Fish Curry",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 28,
+              "estFat": 17,
+              "estCarbs": 54
             },
             "dinner": {
               "recipeName": "Bengali Vegetable Pulao with Grilled Fish",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 14,
+              "estCarbs": 65
             },
             "snack": {
               "recipeName": "Soft Rice Idli with Coconut Chutney",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 22
             }
           },
           "exerciseTip": "Light walking as tolerated; avoid strenuous exercise without medical clearance.",
@@ -1035,22 +1467,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 40
             },
             "lunch": {
               "recipeName": "Rice with Cabbage Moong Dal and Chicken Curry",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 16,
+              "estCarbs": 62
             },
             "dinner": {
               "recipeName": "Chapati with Lau Chicken Curry",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 13,
+              "estCarbs": 56
             },
             "snack": {
               "recipeName": "Soft Rice Idli with Coconut Chutney",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 5,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "Light walking as tolerated; avoid strenuous exercise without medical clearance.",
@@ -1062,22 +1506,34 @@
             "breakfast": {
               "recipeName": "Vegetable Poha",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 10,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Bengali Lau Chingri with Rice",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 26,
+              "estFat": 17,
+              "estCarbs": 54
             },
             "dinner": {
               "recipeName": "Rice with Mixed Vegetable Curry and Paneer",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 16,
+              "estCarbs": 50
             },
             "snack": {
               "recipeName": "Soft Rice Idli with Coconut Chutney",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 7,
+              "estCarbs": 20
             }
           },
           "exerciseTip": "Light walking as tolerated; avoid strenuous exercise without medical clearance.",
@@ -1089,22 +1545,34 @@
             "breakfast": {
               "recipeName": "Soft Rice Idli with Coconut Chutney",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 9,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Vegetable Khichdi with Egg White Omelette",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 420
+              "estCalories": 420,
+              "estProtein": 22,
+              "estFat": 13,
+              "estCarbs": 54
             },
             "dinner": {
               "recipeName": "Bengali Rice Noodles with Mixed Vegetables and Egg White",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 25,
+              "estFat": 15,
+              "estCarbs": 49
             },
             "snack": {
               "recipeName": "Soft Rice Idli with Coconut Chutney",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 5,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "Light walking as tolerated; avoid strenuous exercise without medical clearance.",
@@ -1116,22 +1584,34 @@
             "breakfast": {
               "recipeName": "Bengali Vegetable Suji Upma",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 10,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Steamed Rice with Lau Fish Curry",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 15,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Bengali Vegetable Pulao with Grilled Fish",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 15,
+              "estCarbs": 63
             },
             "snack": {
               "recipeName": "Soft Rice Idli with Coconut Chutney",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "Light walking as tolerated; avoid strenuous exercise without medical clearance.",
@@ -1143,22 +1623,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 9,
+              "estCarbs": 40
             },
             "lunch": {
               "recipeName": "Rice with Cabbage Moong Dal and Chicken Curry ",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 25,
+              "estFat": 17,
+              "estCarbs": 58
             },
             "dinner": {
               "recipeName": "Chapati with Lau Chicken Curry",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 25,
+              "estFat": 15,
+              "estCarbs": 48
             },
             "snack": {
               "recipeName": "Soft Rice Idli with Coconut Chutney",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 8,
+              "estFat": 5,
+              "estCarbs": 25
             }
           },
           "exerciseTip": "Light walking as tolerated; avoid strenuous exercise without medical clearance.",
@@ -1170,22 +1662,34 @@
             "breakfast": {
               "recipeName": "Vegetable Poha",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 9,
+              "estCarbs": 39
             },
             "lunch": {
               "recipeName": "Bengali Lau Chingri with Rice",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 14,
+              "estCarbs": 65
             },
             "dinner": {
               "recipeName": "Rice with Mixed Vegetable Curry and Paneer",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 12,
+              "estCarbs": 58
             },
             "snack": {
               "recipeName": "Soft Rice Idli with Coconut Chutney",
               "rationale": "Lower-sodium, controlled-portion recipe with moderate protein for kidney-friendly eating.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "Light walking as tolerated; avoid strenuous exercise without medical clearance.",
@@ -1207,22 +1711,34 @@
             "breakfast": {
               "recipeName": "Soft Vegetable Khichuri",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 9,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Steamed Rice with Rui Fish Curry",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 15,
+              "estCarbs": 63
             },
             "dinner": {
               "recipeName": "Grilled Rohu Fish with Vegetable Rice",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 13,
+              "estCarbs": 58
             },
             "snack": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 6,
+              "estCarbs": 20
             }
           },
           "exerciseTip": "Gentle walking or yoga to support digestion, avoid intense post-meal exercise.",
@@ -1234,22 +1750,34 @@
             "breakfast": {
               "recipeName": "Vegetable Poha",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 10,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Chicken Vegetable Stew",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 28,
+              "estFat": 17,
+              "estCarbs": 55
             },
             "dinner": {
               "recipeName": "Chicken Khichuri",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 21,
+              "estFat": 14,
+              "estCarbs": 54
             },
             "snack": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 5,
+              "estCarbs": 24
             }
           },
           "exerciseTip": "Gentle walking or yoga to support digestion, avoid intense post-meal exercise.",
@@ -1261,22 +1789,34 @@
             "breakfast": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 10,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Lemon Rice with Grilled Chicken",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 28,
+              "estFat": 17,
+              "estCarbs": 54
             },
             "dinner": {
               "recipeName": "Palak Paneer with Jeera Rice",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 21,
+              "estFat": 13,
+              "estCarbs": 58
             },
             "snack": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 5,
+              "estCarbs": 23
             }
           },
           "exerciseTip": "Gentle walking or yoga to support digestion, avoid intense post-meal exercise.",
@@ -1288,22 +1828,34 @@
             "breakfast": {
               "recipeName": "Rice Porridge (Panta Style without Fermentation)",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 10,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Masoor Dal with Steamed Rice and Pumpkin",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 15,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Egg Curry with Rice",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 15,
+              "estCarbs": 53
             },
             "snack": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 11,
+              "estFat": 5,
+              "estCarbs": 22
             }
           },
           "exerciseTip": "Gentle walking or yoga to support digestion, avoid intense post-meal exercise.",
@@ -1315,22 +1867,34 @@
             "breakfast": {
               "recipeName": "Soft Vegetable Khichuri",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 9,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Steamed Rice with Rui Fish Curry",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 28,
+              "estFat": 18,
+              "estCarbs": 52
             },
             "dinner": {
               "recipeName": "Grilled Rohu Fish with Vegetable Rice",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 25,
+              "estFat": 12,
+              "estCarbs": 55
             },
             "snack": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 6,
+              "estCarbs": 24
             }
           },
           "exerciseTip": "Gentle walking or yoga to support digestion, avoid intense post-meal exercise.",
@@ -1342,22 +1906,34 @@
             "breakfast": {
               "recipeName": "Vegetable Poha",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 11,
+              "estCarbs": 35
             },
             "lunch": {
               "recipeName": "Chicken Vegetable Soup with Steamed Rice",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 28,
+              "estFat": 14,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Chicken Khichuri with salad",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 12,
+              "estCarbs": 59
             },
             "snack": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 11,
+              "estFat": 5,
+              "estCarbs": 22
             }
           },
           "exerciseTip": "Gentle walking or yoga to support digestion, avoid intense post-meal exercise.",
@@ -1369,22 +1945,34 @@
             "breakfast": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 9,
+              "estCarbs": 40
             },
             "lunch": {
               "recipeName": "Lemon Rice with Grilled Chicken",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 24,
+              "estFat": 15,
+              "estCarbs": 62
             },
             "dinner": {
               "recipeName": "Palak Paneer with Jeera Rice",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 24,
+              "estFat": 14,
+              "estCarbs": 51
             },
             "snack": {
               "recipeName": "Rice Idli with Coconut Chutney",
               "rationale": "Gentle, low-spice ingredients with garlic-infused oil to ease digestion for IBS.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 8,
+              "estFat": 6,
+              "estCarbs": 22
             }
           },
           "exerciseTip": "Gentle walking or yoga to support digestion, avoid intense post-meal exercise.",
@@ -1406,22 +1994,34 @@
             "breakfast": {
               "recipeName": "Tofu and Vegetable Stir-fry",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 10,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Brown Rice with Rui Fish Curry and Mixed Vegetables",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 22,
+              "estFat": 16,
+              "estCarbs": 62
             },
             "dinner": {
               "recipeName": "Mixed Vegetable Chicken Soup",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 320
+              "estCalories": 320,
+              "estProtein": 19,
+              "estFat": 9,
+              "estCarbs": 41
             },
             "snack": {
               "recipeName": "Chana",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 7,
+              "estCarbs": 21
             }
           },
           "exerciseTip": "30-45 min combined cardio and light strength training.",
@@ -1433,22 +2033,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 9,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Grilled Chicken with Mixed Vegetable Stir-fry",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 15,
+              "estCarbs": 63
             },
             "dinner": {
               "recipeName": "Tandoori Fish with Cucumber Salad",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 24,
+              "estFat": 15,
+              "estCarbs": 51
             },
             "snack": {
               "recipeName": "Ras Malai",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 8,
+              "estFat": 5,
+              "estCarbs": 25
             }
           },
           "exerciseTip": "30-45 min combined cardio and light strength training.",
@@ -1460,22 +2072,34 @@
             "breakfast": {
               "recipeName": "Vegetable Dalia (Broken Wheat Porridge)",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 10,
+              "estCarbs": 40
             },
             "lunch": {
               "recipeName": "Masoor Dal, Brown Rice and Lau Bhaji",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 26,
+              "estFat": 17,
+              "estCarbs": 56
             },
             "dinner": {
               "recipeName": "Shukto Curry with Whole Wheat Roti",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 20,
+              "estFat": 12,
+              "estCarbs": 60
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 6,
+              "estCarbs": 21
             }
           },
           "exerciseTip": "30-45 min combined cardio and light strength training.",
@@ -1487,22 +2111,34 @@
             "breakfast": {
               "recipeName": "Vegetable Egg Scramble with Whole Wheat Roti",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 10,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Palak Chicken with Multigrain Roti",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 14,
+              "estCarbs": 65
             },
             "dinner": {
               "recipeName": "Paneer Bhurji with Mixed Vegetable Salad",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 23,
+              "estFat": 16,
+              "estCarbs": 49
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 5,
+              "estCarbs": 24
             }
           },
           "exerciseTip": "30-45 min combined cardio and light strength training.",
@@ -1514,22 +2150,34 @@
             "breakfast": {
               "recipeName": "Masala Omelette",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 14,
+              "estFat": 11,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Brown Rice with Rui Fish Curry and Mixed Vegetables",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 15,
+              "estCarbs": 62
             },
             "dinner": {
               "recipeName": "Mixed Vegetable Chicken Soup",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 320
+              "estCalories": 320,
+              "estProtein": 17,
+              "estFat": 12,
+              "estCarbs": 36
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 11,
+              "estFat": 6,
+              "estCarbs": 21
             }
           },
           "exerciseTip": "30-45 min combined cardio and light strength training.",
@@ -1541,22 +2189,34 @@
             "breakfast": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 8,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Grilled Chicken with Mixed Vegetable Stir-fry",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 25,
+              "estFat": 16,
+              "estCarbs": 60
             },
             "dinner": {
               "recipeName": "Tandoori Fish with Cucumber Salad",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 26,
+              "estFat": 14,
+              "estCarbs": 50
             },
             "snack": {
               "recipeName": "Moong Dal Chilla with Mint Yogurt",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 9,
+              "estFat": 5,
+              "estCarbs": 24
             }
           },
           "exerciseTip": "30-45 min combined cardio and light strength training.",
@@ -1568,22 +2228,34 @@
             "breakfast": {
               "recipeName": "Vegetable Dalia (Broken Wheat Porridge)",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 11,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Masoor Dal, Brown Rice and Lau Bhaji",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 22,
+              "estFat": 16,
+              "estCarbs": 62
             },
             "dinner": {
               "recipeName": "Moong Dal Khichuri",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 19,
+              "estFat": 13,
+              "estCarbs": 58
             },
             "snack": {
               "recipeName": "A bowl of fruits (apple, papaya, and banana)",
               "rationale": "Lean protein and vegetable-forward portions keep this meal lower in calorie density.",
-              "estCalories": 180
+              "estCalories": 180,
+              "estProtein": 10,
+              "estFat": 7,
+              "estCarbs": 20
             }
           },
           "exerciseTip": "30-45 min combined cardio and light strength training.",
@@ -1605,22 +2277,34 @@
             "breakfast": {
               "recipeName": "light curries with luchi and boiled egg",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 10,
+              "estCarbs": 37
             },
             "lunch": {
               "recipeName": "Brown Rice with Rui Fish Curry and Spinach",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 24,
+              "estFat": 16,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Grilled Chicken with Vegetable Pulao",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 520
+              "estCalories": 520,
+              "estProtein": 25,
+              "estFat": 17,
+              "estCarbs": 67
             },
             "snack": {
               "recipeName": "Ragi Porridge with Banana and Almonds",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 220
+              "estCalories": 220,
+              "estProtein": 11,
+              "estFat": 8,
+              "estCarbs": 26
             }
           },
           "exerciseTip": "Gentle prenatal yoga or a short, easy-paced walk.",
@@ -1632,22 +2316,34 @@
             "breakfast": {
               "recipeName": "Vegetable Suji Upma with Boiled Egg",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 9,
+              "estCarbs": 39
             },
             "lunch": {
               "recipeName": "Whole Wheat Roti with Chicken Curry and Mixed Vegetable Sabzi",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 17,
+              "estCarbs": 55
             },
             "dinner": {
               "recipeName": "Palak Paneer with Whole Wheat Roti",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 24,
+              "estFat": 14,
+              "estCarbs": 51
             },
             "snack": {
               "recipeName": "Ragi Porridge with Banana and Almonds",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 220
+              "estCalories": 220,
+              "estProtein": 13,
+              "estFat": 7,
+              "estCarbs": 26
             }
           },
           "exerciseTip": "Gentle prenatal yoga or a short, easy-paced walk.",
@@ -1659,22 +2355,34 @@
             "breakfast": {
               "recipeName": "Soya vegetable pulao",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 10,
+              "estCarbs": 35
             },
             "lunch": {
               "recipeName": "Chickpea Spinach Curry with Multigrain Roti",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 14,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Mixed Vegetable Curry with Moong Dal and Egg",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 22,
+              "estFat": 15,
+              "estCarbs": 52
             },
             "snack": {
               "recipeName": "Ragi Porridge with Banana and Almonds",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 220
+              "estCalories": 220,
+              "estProtein": 12,
+              "estFat": 7,
+              "estCarbs": 28
             }
           },
           "exerciseTip": "Gentle prenatal yoga or a short, easy-paced walk.",
@@ -1686,22 +2394,34 @@
             "breakfast": {
               "recipeName": "Vegetable Moong Dal Chilla with Mint Yogurt",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 9,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Masoor Dal, Pumpkin Curry and Grilled Hilsa",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 23,
+              "estFat": 16,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Shorshe Salmon with Red Rice and Vegetables",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 23,
+              "estFat": 15,
+              "estCarbs": 50
             },
             "snack": {
               "recipeName": "Ragi Porridge with Banana and Almonds",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 220
+              "estCalories": 220,
+              "estProtein": 13,
+              "estFat": 6,
+              "estCarbs": 28
             }
           },
           "exerciseTip": "Gentle prenatal yoga or a short, easy-paced walk.",
@@ -1713,22 +2433,34 @@
             "breakfast": {
               "recipeName": "Vegetable Suji Upma with Boiled Egg",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 15,
+              "estFat": 10,
+              "estCarbs": 38
             },
             "lunch": {
               "recipeName": "Brown Rice with Rui Fish Curry and Spinach",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 27,
+              "estFat": 13,
+              "estCarbs": 63
             },
             "dinner": {
               "recipeName": "Grilled Chicken with Vegetable Pulao",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 520
+              "estCalories": 520,
+              "estProtein": 30,
+              "estFat": 17,
+              "estCarbs": 62
             },
             "snack": {
               "recipeName": "Ragi Porridge with Banana and Almonds",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 220
+              "estCalories": 220,
+              "estProtein": 13,
+              "estFat": 7,
+              "estCarbs": 26
             }
           },
           "exerciseTip": "Gentle prenatal yoga or a short, easy-paced walk.",
@@ -1740,22 +2472,34 @@
             "breakfast": {
               "recipeName": "Red Rice Vegetable Khichuri",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 17,
+              "estFat": 10,
+              "estCarbs": 35
             },
             "lunch": {
               "recipeName": "Whole Wheat Roti with Chicken Curry and Mixed Vegetable Sabzi",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 26,
+              "estFat": 15,
+              "estCarbs": 59
             },
             "dinner": {
               "recipeName": "Palak Paneer with Whole Wheat Roti",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 26,
+              "estFat": 14,
+              "estCarbs": 51
             },
             "snack": {
               "recipeName": "Ragi Porridge with Banana and Almonds",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 220
+              "estCalories": 220,
+              "estProtein": 13,
+              "estFat": 7,
+              "estCarbs": 27
             }
           },
           "exerciseTip": "Gentle prenatal yoga or a short, easy-paced walk.",
@@ -1767,22 +2511,34 @@
             "breakfast": {
               "recipeName": "Vegetable Moong Dal Chilla with Mint Yogurt",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 300
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 11,
+              "estCarbs": 36
             },
             "lunch": {
               "recipeName": "Chickpea Spinach Curry with Multigrain Roti",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 480
+              "estCalories": 480,
+              "estProtein": 26,
+              "estFat": 15,
+              "estCarbs": 61
             },
             "dinner": {
               "recipeName": "Mixed Vegetable Curry with Moong Dal and Egg",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 430
+              "estCalories": 430,
+              "estProtein": 23,
+              "estFat": 12,
+              "estCarbs": 57
             },
             "snack": {
               "recipeName": "Ragi Porridge with Banana and Almonds",
               "rationale": "Nutrient-dense, fully cooked ingredients with folate- and iron-rich vegetables for pregnancy.",
-              "estCalories": 220
+              "estCalories": 220,
+              "estProtein": 11,
+              "estFat": 7,
+              "estCarbs": 29
             }
           },
           "exerciseTip": "Gentle prenatal yoga or a short, easy-paced walk.",
@@ -1790,6 +2546,289 @@
         }
       ],
       "repeatNote": "Source PDF only provides 3-4 recipes per meal-slot for this condition, so recipes repeat more than twice across the 7-day cycle (no new recipes invented). No dedicated 'snack' recipes exist in the source, so the snack slot reuses a light existing recipe from this condition's set."
+    },
+    {
+      "id": "no_health_condition",
+      "condition": "Healthy",
+      "goalTypeTags": [
+        "healthy_lifestyle"
+      ],
+      "days": [
+        {
+          "day": "Monday",
+          "meals": {
+            "breakfast": {
+              "recipeName": "Luchi with Alu Posto",
+              "rationale": "Balanced vegetarian Bengali breakfast pairing deep-fried puffy bread with a nutty poppy-seed potato curry.",
+              "estCalories": 494,
+              "estProtein": 27,
+              "estFat": 16,
+              "estCarbs": 60
+            },
+            "lunch": {
+              "recipeName": "Panchmishali Torkari with Steamed Rice",
+              "rationale": "A medley of winter vegetables slow-cooked in their own juices, offering fiber and micronutrient variety.",
+              "estCalories": 480,
+              "estProtein": 22,
+              "estFat": 17,
+              "estCarbs": 59
+            },
+            "dinner": {
+              "recipeName": "Chhana'r Polao",
+              "rationale": "Cottage-cheese based polao providing plant protein alongside aromatic rice for a satisfying, balanced dinner.",
+              "estCalories": 420,
+              "estProtein": 24,
+              "estFat": 15,
+              "estCarbs": 47
+            },
+            "snack": {
+              "recipeName": "Kumro Phul'er Bora",
+              "rationale": "Light, crisp batter-fried pumpkin flowers for a low-calorie evening snack.",
+              "estCalories": 78,
+              "estProtein": 4,
+              "estFat": 3,
+              "estCarbs": 10
+            }
+          },
+          "exerciseTip": "30 minutes of brisk walking or light cycling.",
+          "healthTip": "Favor mustard-oil and ghee in moderation; balance fried items with steamed vegetables through the day."
+        },
+        {
+          "day": "Tuesday",
+          "meals": {
+            "breakfast": {
+              "recipeName": "Begun Bhaja with Luchi",
+              "rationale": "Fried eggplant paired with puffy bread, a classic light Bengali vegetarian breakfast combination.",
+              "estCalories": 350,
+              "estProtein": 16,
+              "estFat": 13,
+              "estCarbs": 42
+            },
+            "lunch": {
+              "recipeName": "Phulkopi-Chhanar Dalna with Steamed Rice",
+              "rationale": "A festive cauliflower-and-cottage-cheese dalna in ginger-cumin sauce, rich in protein and vegetables.",
+              "estCalories": 386,
+              "estProtein": 18,
+              "estFat": 12,
+              "estCarbs": 50
+            },
+            "dinner": {
+              "recipeName": "Lau Chingri with Steamed Rice",
+              "rationale": "Bottle gourd cooked with prawns, a light and easily digestible dinner option.",
+              "estCalories": 154,
+              "estProtein": 9,
+              "estFat": 5,
+              "estCarbs": 18
+            },
+            "snack": {
+              "recipeName": "Peyajkoli Bhaja",
+              "rationale": "A quick stir-fry with onion-blossom stalk, offering a savory low-calorie snack.",
+              "estCalories": 160,
+              "estProtein": 8,
+              "estFat": 5,
+              "estCarbs": 20
+            }
+          },
+          "exerciseTip": "20-30 minutes of yoga or a moderate-paced walk.",
+          "healthTip": "Stay hydrated and include a mix of protein and vegetable sources across meals for balanced nutrition."
+        },
+        {
+          "day": "Wednesday",
+          "meals": {
+            "breakfast": {
+              "recipeName": "Alu Sheddho with Luchi",
+              "rationale": "Simple Bengali mashed potatoes paired with puffy bread for a light, comforting start to the day.",
+              "estCalories": 300,
+              "estProtein": 18,
+              "estFat": 9,
+              "estCarbs": 37
+            },
+            "lunch": {
+              "recipeName": "Phulkopi'r Dalna with Steamed Rice",
+              "rationale": "A Bengali cauliflower-and-peas curry offering fiber and vitamin C alongside staple rice.",
+              "estCalories": 420,
+              "estProtein": 22,
+              "estFat": 13,
+              "estCarbs": 55
+            },
+            "dinner": {
+              "recipeName": "Dumurer Dalna with Steamed Rice",
+              "rationale": "An indigenous variety of green figs cooked in a ginger-cumin sauce, adding a distinctive, fiber-rich dinner option.",
+              "estCalories": 350,
+              "estProtein": 19,
+              "estFat": 11,
+              "estCarbs": 44
+            },
+            "snack": {
+              "recipeName": "Mochar Ghonto",
+              "rationale": "Banana-flower medley with two variants, a fiber-rich traditional snack.",
+              "estCalories": 150,
+              "estProtein": 9,
+              "estFat": 4,
+              "estCarbs": 19
+            }
+          },
+          "exerciseTip": "A 25-30 minute walk or light stretching session.",
+          "healthTip": "Rotate vegetable types daily to widen the range of vitamins and minerals in the diet."
+        },
+        {
+          "day": "Thursday",
+          "meals": {
+            "breakfast": {
+              "recipeName": "Paat pata'r bora with Alu Sheddho",
+              "rationale": "Jute-leaf fritters with mashed potatoes, a light vegetarian breakfast combination.",
+              "estCalories": 320,
+              "estProtein": 17,
+              "estFat": 11,
+              "estCarbs": 39
+            },
+            "lunch": {
+              "recipeName": "Pepe'r Shukto with Steamed Rice",
+              "rationale": "An easy shukto with green papaya, a traditional mixed-vegetable dish that's mildly bitter and nutrient-rich.",
+              "estCalories": 400,
+              "estProtein": 22,
+              "estFat": 12,
+              "estCarbs": 50
+            },
+            "dinner": {
+              "recipeName": "Ema Datshi with Steamed Rice",
+              "rationale": "A flavorful chili-and-cheese based curry offering variety alongside the week's lighter dinners.",
+              "estCalories": 282,
+              "estProtein": 15,
+              "estFat": 9,
+              "estCarbs": 36
+            },
+            "snack": {
+              "recipeName": "Alur Khosha Bhaja",
+              "rationale": "Fried potato peels, a crunchy, low-effort snack that reduces food waste.",
+              "estCalories": 140,
+              "estProtein": 8,
+              "estFat": 5,
+              "estCarbs": 17
+            }
+          },
+          "exerciseTip": "30 minutes of moderate-intensity cycling or swimming.",
+          "healthTip": "Balance fried snacks with plenty of water and fresh vegetables at the following meal."
+        },
+        {
+          "day": "Friday",
+          "meals": {
+            "breakfast": {
+              "recipeName": "Phulkopir Bora with Luchi",
+              "rationale": "Cauliflower florets steamed and batter-fried, paired with puffy bread for a satisfying breakfast.",
+              "estCalories": 340,
+              "estProtein": 18,
+              "estFat": 10,
+              "estCarbs": 45
+            },
+            "lunch": {
+              "recipeName": "Chal Phulkopi",
+              "rationale": "Seasonal cauliflower cooked with fragrant gobindobhog rice, a wholesome one-pot lunch.",
+              "estCalories": 258,
+              "estProtein": 13,
+              "estFat": 8,
+              "estCarbs": 34
+            },
+            "dinner": {
+              "recipeName": "Uchhe-Kumro Bhaja with Steamed Rice",
+              "rationale": "Bitter gourd and pumpkin stir-fry, valued in Bengali cuisine for its digestive benefits.",
+              "estCalories": 300,
+              "estProtein": 16,
+              "estFat": 11,
+              "estCarbs": 35
+            },
+            "snack": {
+              "recipeName": "Bok Phul'er Bora",
+              "rationale": "Light, crisp batter-fried hummingbird tree flowers, a distinctive low-calorie evening snack.",
+              "estCalories": 78,
+              "estProtein": 4,
+              "estFat": 2,
+              "estCarbs": 10
+            }
+          },
+          "exerciseTip": "A brisk 30-minute walk or a home bodyweight workout.",
+          "healthTip": "Include bitter vegetables like uchhe regularly; they're a traditional feature of balanced Bengali diets."
+        },
+        {
+          "day": "Saturday",
+          "meals": {
+            "breakfast": {
+              "recipeName": "Badhakopi'r Bora with Luchi",
+              "rationale": "Cabbage pakora (fritters) paired with puffy bread, adding a crisp, savory weekend breakfast option.",
+              "estCalories": 340,
+              "estProtein": 19,
+              "estFat": 12,
+              "estCarbs": 40
+            },
+            "lunch": {
+              "recipeName": "Shada Polao",
+              "rationale": "A light, casual alternative to festive pulao, easy to prepare and pair with any side.",
+              "estCalories": 434,
+              "estProtein": 23,
+              "estFat": 13,
+              "estCarbs": 57
+            },
+            "dinner": {
+              "recipeName": "Kumro Dogar Pachmishali with Steamed Rice",
+              "rationale": "Pumpkin vine cooked with a medley of vegetables, a light and traditional dinner option.",
+              "estCalories": 223,
+              "estProtein": 11,
+              "estFat": 6,
+              "estCarbs": 30
+            },
+            "snack": {
+              "recipeName": "Chhanar Payesh",
+              "rationale": "A cottage-cheese and reduced-milk pudding, a protein-rich alternative to the classic rice payesh.",
+              "estCalories": 227,
+              "estProtein": 13,
+              "estFat": 7,
+              "estCarbs": 28
+            }
+          },
+          "exerciseTip": "A leisurely weekend walk or light family sport activity.",
+          "healthTip": "Enjoy sweeter dishes like payesh in moderation and as part of, not in addition to, the day's calorie needs."
+        },
+        {
+          "day": "Sunday",
+          "meals": {
+            "breakfast": {
+              "recipeName": "Mocha'r Paturi with Luchi",
+              "rationale": "Steamed and wrapped banana blossom paired with puffy bread for a distinctive Sunday breakfast.",
+              "estCalories": 350,
+              "estProtein": 17,
+              "estFat": 11,
+              "estCarbs": 45
+            },
+            "lunch": {
+              "recipeName": "Paneer'er Dalna with Steamed Rice",
+              "rationale": "Chunks of cottage cheese in a spicy, comforting sauce, offering a good plant-protein source for the week's final lunch.",
+              "estCalories": 307,
+              "estProtein": 18,
+              "estFat": 11,
+              "estCarbs": 33
+            },
+            "dinner": {
+              "recipeName": "Neem Jhol with Steamed Rice",
+              "rationale": "A light and mildly bitter stew of summer vegetables, easing digestion to close out the week.",
+              "estCalories": 280,
+              "estProtein": 16,
+              "estFat": 10,
+              "estCarbs": 31
+            },
+            "snack": {
+              "recipeName": "Narkel'er Naru",
+              "rationale": "A traditional coconut-and-jaggery snack, a naturally sweetened way to close out the week.",
+              "estCalories": 150,
+              "estProtein": 8,
+              "estFat": 5,
+              "estCarbs": 18
+            }
+          },
+          "exerciseTip": "Active rest day: light stretching or a gentle 20-minute walk.",
+          "healthTip": "Use Sunday to review the week's meals and plan grocery variety for the coming week."
+        }
+      ],
+      "repeatNote": "Full 7-day cycle drawn from the Bengali vegetarian recipe collection shown in the source screenshots, including later batches (Dumurer Dalna, Bok Phul'er Bora, Badhakopi'r Bora; Chhanar Payesh, Narkel'er Naru) added for variety, the latter two from the dedicated snacks page. Luchi recurs across several breakfasts since it was the most prominent featured recipe; no new recipes were invented beyond what appeared in the source. estCalories values use the kcal badges shown in the screenshots where available and are otherwise estimates, consistent with this project's placeholder-data convention — these should be run through the real nutrition pipeline before production use."
     }
   ]
 }

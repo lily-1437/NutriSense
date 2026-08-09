@@ -6,7 +6,7 @@ import {
   Box, TextField, Typography, Alert, Link, InputAdornment, IconButton,
   CircularProgress, Checkbox, FormControlLabel,
 } from '@mui/material';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeClosed } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { auth } from '../firebase';
 import { fadeUp } from '../motion/variants';
@@ -81,14 +81,16 @@ export default function Login() {
           onChange={handleChange('password')}
           onKeyDown={handleKeyDown}
           sx={{ mb: 1 }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword((s) => !s)} edge="end" size="small">
-                  {showPassword ? <EyeOff size={18} color="#6B6550" /> : <Eye size={18} color="#6B6550" />}
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword((s) => !s)} edge="end" size="small">
+                    {showPassword ? <EyeClosed size={18} color="#6B6550" /> : <Eye size={18} color="#6B6550" />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
       </motion.div>

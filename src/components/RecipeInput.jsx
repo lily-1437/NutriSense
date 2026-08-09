@@ -18,7 +18,6 @@ import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { saveRecipe, getRecipe } from '../logic/firestoreRecipes';
 import { getUserConditions } from '../logic/firestoreUser';
-import { flagRisks } from '../logic/riskFlagging';
 import { getSubstitutions } from '../logic/substitutionEngine';
 
 // ---- Confirmed analyzeRecipe.js / calculateNutrition.js interface ----
@@ -26,10 +25,12 @@ import { getSubstitutions } from '../logic/substitutionEngine';
 //   original: { quantity, unit, ingredientName, prepNote, raw },
 //   candidates: Array<{ fdc_id, name, matchScore, confidence: 'high'|'medium'|'low', ...nutritionFields }>
 // }>
-// finalizeNutrition(confirmedSelections, servings?) => {
+// finalizeNutrition(confirmedSelections, servings?, rawText?, conditions?) => {
 //   perIngredient: Array<{ ingredientName, matchedName, grams, ...nutritionFields }>,
 //   totals: { calories, protein, carbs, fat, sat_fat, fiber, sugar, sodium },
 //   perServing: { ...same fields as totals },
+//   riskFlags: array,       // now computed INSIDE finalizeNutrition when conditions is passed
+//   substitutions: array,   // derived from riskFlags, also computed inside finalizeNutrition
 // }
 import { prepareRecipeAnalysis, finalizeNutrition } from '../logic/analyzeRecipe';
 
@@ -160,25 +161,22 @@ export default function RecipeInput({ recipeId }) {
         original: ing.original,
         matchedItem: ing.candidates.find((c) => c.fdc_id === ing.selectedMatchId) ?? null,
       }));
-      const result = finalizeNutrition(confirmedSelections, servings, rawText);
+
+      // finalizeNutrition now runs risk flagging internally (Stage 3/4 of
+      // the pipeline in analyzeRecipe.js) when given a conditions array —
+      // fetch conditions first so we can pass them straight through,
+      // instead of calling flagRisks separately here afterward like before.
+      // .catch(() => []) mirrors the previous try/catch-to-[] fallback: an
+      // anonymous or condition-fetch-failed user still gets full results,
+      // just with no risk flags.
+      const conditions = user ? await getUserConditions(user.uid).catch(() => []) : [];
+      const result = finalizeNutrition(confirmedSelections, servings, rawText, conditions);
+
       setNutrition(result);
       setMatchedIngredients(confirmedSelections);
+      setRiskFlags(result.riskFlags);
       setStage('results');
       setSnackbar({ open: true, message: 'Matches confirmed', severity: 'success' });
-
-      // Increment 3: flag risks against the user's saved conditions as soon
-      // as results are available, so MedicalRiskBadge can show immediately
-      // -- not only after the recipe is explicitly saved to History.
-      if (user) {
-        try {
-          const conditions = await getUserConditions(user.uid);
-          setRiskFlags(flagRisks(conditions, { perServing: result.perServing, ingredients: confirmedSelections }));
-        } catch {
-          setRiskFlags([]);
-        }
-      } else {
-        setRiskFlags([]);
-      }
     } catch (err) {
       setSnackbar({ open: true, message: 'Could not calculate nutrition. Please try again.', severity: 'error' });
     }
@@ -274,7 +272,7 @@ export default function RecipeInput({ recipeId }) {
                       label="Servings"
                       value={servings}
                       onChange={(e) => setServings(Math.max(1, Number(e.target.value) || 1))}
-                      inputProps={{ min: 1 }}
+                      slotProps={{ htmlInput: { min: 1 } }}
                       sx={{ mt: 2, width: 120 }}
                     />
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
@@ -330,6 +328,12 @@ export default function RecipeInput({ recipeId }) {
                               secondary={
                                 ing.candidates.find((c) => c.fdc_id === ing.selectedMatchId)?.name ?? 'No match selected'
                               }
+                              primaryTypographyProps={{
+                                sx: { fontSize: '21px', color: '#000000', fontWeight: 600 },
+                              }}
+                              secondaryTypographyProps={{
+                                sx: { fontSize: '19px', color: '#000000' },
+                              }}
                             />
                             <Collapse in={expandedId === ing.id || !ing.selectedMatchId}>
                               {/* LayoutGroup scopes the chip-fill layoutId to this ingredient's row,

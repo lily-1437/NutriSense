@@ -72,33 +72,53 @@ export async function updateUserProfile(
 // -----------------------------------------------------------------------
 // Full account data wipe -- used by Profile.jsx's "Delete Account" flow.
 //
-// Deletes ALL of a user's data: goals, meal plan, recipes, and the user
-// doc itself (profile fields + conditions). Must be called BEFORE
-// deleteUser(auth.currentUser) in the deletion flow -- once the Firebase
-// Auth user is gone, Firestore security rules (which check
-// request.auth.uid == uid) will reject these deletes.
+// Deletes ALL of a user's data across every subcollection under
+// users/{uid}, plus the user doc itself (profile fields + conditions).
+// Must be called BEFORE deleteUser(auth.currentUser) in the deletion flow
+// -- once the Firebase Auth user is gone, Firestore security rules (which
+// check request.auth.uid == uid) will reject these deletes.
+//
+// SUBCOLLECTION LIST -- must stay in sync with every users/{uid}/* path
+// used anywhere in src/logic/. Whenever a new subcollection is added,
+// add it here too, or accounts will leave orphaned data behind on
+// deletion. Current subcollections, one per source file:
+//   goals            (firestoreGoals.js)
+//   recipes          (firestoreRecipes.js)
+//   mealPlans/current (firestoreMealPlans.js — single fixed-id doc, not a
+//                       collection to enumerate, so it's deleted directly)
+//   reviews          (firestoreReviews.js)
+//   tasks            (firestoreTasks.js)
+//   logs             (firestoreLogs.js)
+//   mealCompletions  (firestoreMealCompletions.js)
+//
+// FIX: reviews, tasks, logs, and mealCompletions were all added after this
+// function was first written and never retrofitted in -- deleting an
+// account previously left those four subcollections orphaned in
+// Firestore forever (no Auth user left to ever satisfy the security rule
+// that would let anyone clean them up afterward). All seven are now
+// covered.
 //
 // Uses a single atomic writeBatch: either everything is deleted or nothing
 // is, so an account is never left in a half-deleted state.
 //
 // NOTE: writeBatch caps at 500 operations. If a user could plausibly have
-// 500+ combined goals/recipes, this needs chunking -- not implemented here
-// since that's far beyond this app's current scale.
+// 500+ combined documents across all subcollections, this needs chunking
+// -- not implemented here since that's far beyond this app's current scale.
 // -----------------------------------------------------------------------
 export async function deleteUserAccountData(uid) {
   if (!uid) throw new Error('deleteUserAccountData: uid required');
 
   const batch = writeBatch(db);
 
-  // Goals subcollection: users/{uid}/goals/*
-  const goalsSnap = await getDocs(collection(db, 'users', uid, 'goals'));
-  goalsSnap.forEach((d) => batch.delete(d.ref));
+  // Subcollections that need every doc enumerated + deleted individually.
+  const collectionsToWipe = ['goals', 'recipes', 'reviews', 'tasks', 'logs', 'mealCompletions'];
+  for (const name of collectionsToWipe) {
+    const snap = await getDocs(collection(db, 'users', uid, name));
+    snap.forEach((d) => batch.delete(d.ref));
+  }
 
-  // Recipes subcollection: users/{uid}/recipes/*
-  const recipesSnap = await getDocs(collection(db, 'users', uid, 'recipes'));
-  recipesSnap.forEach((d) => batch.delete(d.ref));
-
-  // Meal plan: single doc at users/{uid}/mealPlans/current
+  // Meal plan: single doc at users/{uid}/mealPlans/current -- fixed ID,
+  // no enumeration needed.
   batch.delete(doc(db, 'users', uid, 'mealPlans', 'current'));
 
   // The user doc itself: profile fields + conditions

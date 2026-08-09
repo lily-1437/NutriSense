@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Menu, X, LogOut } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import GoProModal from './GoProModal';
 
 const NAV_LINKS = [
   { label: 'Analyze', path: '/analyze' },
@@ -37,6 +38,7 @@ const navItemVariants = {
 
 export default function AppNavbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [goProOpen, setGoProOpen] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:900px)');
@@ -51,6 +53,11 @@ export default function AppNavbar() {
     setDrawerOpen(false);
     logout();
     navigate('/');
+  };
+
+  const openGoPro = () => {
+    setDrawerOpen(false); // close the mobile drawer first, if open, so the modal isn't stacked behind it
+    setGoProOpen(true);
   };
 
   return (
@@ -145,6 +152,7 @@ export default function AppNavbar() {
 
                 <MotionButton
                   variants={navItemVariants}
+                  onClick={openGoPro}
                   whileTap={{ scale: 0.97 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                   sx={{
@@ -218,6 +226,7 @@ export default function AppNavbar() {
 
                 <MotionButton
                   variants={navItemVariants}
+                  onClick={openGoPro}
                   whileTap={{ scale: 0.97 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                   sx={{
@@ -284,6 +293,11 @@ export default function AppNavbar() {
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
+                <ListItemButton onClick={openGoPro}>
+                  <ListItemText primary="Go Pro" primaryTypographyProps={{ fontFamily: '"Special Gothic", sans-serif' }} />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
                 <ListItemButton onClick={handleLogout}>
                   <ListItemText primary="Log out" primaryTypographyProps={{ fontFamily: '"Special Gothic", sans-serif' }} />
                 </ListItemButton>
@@ -301,10 +315,17 @@ export default function AppNavbar() {
                   <ListItemText primary="Sign Up" primaryTypographyProps={{ fontFamily: '"Special Gothic", sans-serif' }} />
                 </ListItemButton>
               </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={openGoPro}>
+                  <ListItemText primary="Go Pro" primaryTypographyProps={{ fontFamily: '"Special Gothic", sans-serif' }} />
+                </ListItemButton>
+              </ListItem>
             </>
           )}
         </List>
       </Drawer>
+
+      <GoProModal open={goProOpen} onClose={() => setGoProOpen(false)} />
     </>
   );
 }

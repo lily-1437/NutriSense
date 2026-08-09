@@ -4,7 +4,7 @@ import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { Box, TextField, Typography, Alert, Link, InputAdornment, IconButton, CircularProgress } from '@mui/material';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeClosed } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { auth, db } from '../firebase';
 import { fadeUp } from '../motion/variants';
@@ -13,6 +13,11 @@ import AuthLayout from '../components/AuthLayout';
 export default function Signup() {
   const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [showPassword, setShowPassword] = useState(false);
+  // Separate state from showPassword — so revealing one field doesn't
+  // silently reveal the other. Previously both fields shared showPassword,
+  // meaning toggling the "Password" eye icon also revealed "Confirm
+  // Password" even though it has no icon of its own to control that.
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -100,14 +105,16 @@ export default function Signup() {
           onChange={handleChange('password')}
           onKeyDown={handleKeyDown}
           sx={{ mb: 2.25 }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword((s) => !s)} edge="end" size="small">
-                  {showPassword ? <EyeOff size={18} color="#6B6550" /> : <Eye size={18} color="#6B6550" />}
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword((s) => !s)} edge="end" size="small">
+                    {showPassword ? <EyeClosed size={18} color="#6B6550" /> : <Eye size={18} color="#6B6550" />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
       </motion.div>
@@ -115,12 +122,23 @@ export default function Signup() {
       <motion.div variants={fadeUp}>
         <TextField
           fullWidth
-          type={showPassword ? 'text' : 'password'}
+          type={showConfirmPassword ? 'text' : 'password'}
           label="Confirm Password"
           value={form.confirmPassword}
           onChange={handleChange('confirmPassword')}
           onKeyDown={handleKeyDown}
           sx={{ mb: 3 }}
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowConfirmPassword((s) => !s)} edge="end" size="small">
+                    {showConfirmPassword ? <EyeClosed size={18} color="#6B6550" /> : <Eye size={18} color="#6B6550" />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
         />
       </motion.div>
 
