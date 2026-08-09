@@ -20,6 +20,17 @@ const CONDITION_PRIORITY = [
   'Obesity / Weight Management',
 ];
 
+// The dedicated "no conditions on file" template (id: 'no_health_condition',
+// condition: 'Healthy' in mealPlanTemplates.json). Used for both fallback
+// cases below — previously both fell back to 'obesity_weight_management',
+// which isn't a "no condition" plan at all, it's a specific weight-
+// management plan; a user with no conditions (or with conditions that
+// don't map to anything we have) would incorrectly get weight-management
+// meals/tips instead of a genuinely general-wellness plan.
+function getNoConditionTemplate(templates) {
+  return templates.find((t) => t.id === 'no_health_condition') || templates[0];
+}
+
 /**
  * @param {string[]} userConditions - from firestoreUser.js
  * @returns {{ template: object, matchedCondition: string|null, fallback: boolean }}
@@ -28,10 +39,8 @@ export function selectMealPlanTemplate(userConditions = []) {
   const templates = templatesData.templates;
 
   if (!userConditions || userConditions.length === 0) {
-    // No conditions on file — default to the general wellness template.
-    const fallback = templates.find((t) => t.id === 'obesity_weight_management')
-      || templates[0];
-    return { template: fallback, matchedCondition: null, fallback: true };
+    // No conditions on file — use the dedicated no-health-condition template.
+    return { template: getNoConditionTemplate(templates), matchedCondition: null, fallback: true };
   }
 
   // Walk the priority list, return the first condition the user actually has
@@ -46,9 +55,7 @@ export function selectMealPlanTemplate(userConditions = []) {
   }
 
   // User has condition(s) but none map to a template we have.
-  const fallback = templates.find((t) => t.id === 'obesity_weight_management')
-    || templates[0];
-  return { template: fallback, matchedCondition: null, fallback: true };
+  return { template: getNoConditionTemplate(templates), matchedCondition: null, fallback: true };
 }
 
 export function getAllTemplateSummaries() {
