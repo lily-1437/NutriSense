@@ -328,6 +328,19 @@ export default function Dashboard() {
     return first.charAt(0).toUpperCase() + first.slice(1);
   }, [user]);
 
+  // "Good Morning" was previously hardcoded regardless of actual time of
+  // day. Derives from the local hour at render time instead — recomputed
+  // on every render (not memoized with an empty dep array) so a page left
+  // open across a boundary (e.g. sitting open at 11:59am) still updates
+  // next time this component re-renders, rather than freezing whatever
+  // greeting was true at mount.
+  const greeting = (() => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good Morning';
+    if (hour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  })();
+
   // Check profile completeness whenever the user changes (login/signup)
   useEffect(() => {
     if (!user) return;
@@ -544,7 +557,7 @@ export default function Dashboard() {
               mt: 2,
             }}
           >
-            Good Morning, {firstName}
+            {greeting}, {firstName}
           </Typography>
           <Typography sx={{ fontSize: 13.5, color: 'text.secondary', mt: 0.5, mb: 3 }}>
             You've logged {todaysIntake.calories.consumed} kcal today — {remainingCalories} kcal
